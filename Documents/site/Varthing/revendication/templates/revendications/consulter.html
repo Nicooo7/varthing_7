@@ -1,0 +1,24 @@
+{% extends "revendications/base.html" %} 
+{% load static %}
+                 
+  
+
+
+{% block barre_de_gauche%}  
+
+	<a href="consult_revendication" style="color:blue;"  >  revendications </a>
+    <a href="consult_organisation" style="color:blue;"  >  organisations </a>
+
+{% endblock %}                            	
+                            
+
+{% block barre_centrale%}  
+
+	 <h1>Navigation interactive</h1> 
+ 	<div class="logo">
+        <img src="{% static "revendications/images/carte.png" %}" alt="carte"/> 
+    </div>
+       
+ 
+{% endblock %}  
+

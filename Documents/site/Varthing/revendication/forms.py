@@ -1,0 +1,39 @@
+from django import forms
+from django.forms import ModelForm, Textarea
+from .models import *
+from .views import *
+
+
+liste_des_themes = Theme.objects.all()
+liste_des_intitules = [("aucun","aucun")]
+for theme in liste_des_themes:
+	intitule = theme.intitule 
+	couple = (intitule,intitule)
+	liste_des_intitules.append(couple)
+
+
+class RevendicationForm(forms.Form):	
+
+	liste_des_themes = Theme.objects.all()
+	liste_des_intitules = [("aucun","aucun")]
+	for theme in liste_des_themes:
+		intitule = theme.intitule 
+		couple = (intitule,intitule)
+		liste_des_intitules.append(couple)
+
+
+	intitule = forms.CharField(max_length=100)
+	theme_existant = forms.ChoiceField(choices = liste_des_intitules)
+	nouveau_theme = forms.CharField (max_length=100)
+	print (liste_des_intitules)
+
+class UtilisateurForm(forms.Form):
+	nom = forms.CharField(max_length=100)
+	mot_de_passe = forms.CharField(max_length=100)
+	mail = forms.EmailField(max_length=254)
+
+
+class AuthentificationForm(forms.Form):
+	nom = forms.CharField(max_length=100)
+	mot_de_passe = forms.CharField(max_length=100)
+
