@@ -298,13 +298,11 @@ def simulation2():
 
 
 
+
     #..........................REQUESTS.........................#
 
 
-
-
 def consulter (request):
-	
 	utilisateur= request.user
 	return render (request, 'revendications/consulter.html', {"choix_menu": "consulter"})
 
@@ -645,6 +643,8 @@ def mes_evenements(request):
 	return render(request, 'revendications/mes_evenements.html', {'evenements': evenements})
 
 
+def creer_une_petition():
+	print ("en cours")
 
 
 

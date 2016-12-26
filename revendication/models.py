@@ -77,7 +77,17 @@ class Organisation (models.Model):
 
 
 
+class Petition(models.Model):
+    titre = models.CharField(max_length=100)
+    description = models.TextField("Descrition de la pétition")
+    propositions = models.ManyToManyField(Proposition, null=True)
+    date_creation = models.DateField("Date de création", auto_now=True)
+    date_echeance = models.DateField("Date d'échéance", null=True, blank=True)
+    objectif_de_signataires = models.IntegerField(blank=True)
+    signataires = models.ManyToManyField(User, through="Soutien", null=True)
 
+    def __str__(self):
+        return self.titre
 
 
 
@@ -90,12 +100,14 @@ class Soutien(models.Model):
     propositions = models.ForeignKey(Proposition, null =True)
     user = models.ForeignKey(User, null=True)
     lien = models.CharField(max_length =2, choices= CHOIX_LIEN)
+
+    # Elément soutenu
     evenement = models.ForeignKey(Evenement, null = True)
     organisation = models.ForeignKey(Organisation, null = True)
+    petition = models.ForeignKey(Petition, null = True)
 
     def __str__(self):
         return self.user.username
-
 
 
 

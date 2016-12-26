@@ -10,7 +10,7 @@ from .models import Autre_utilisateur
 from .models import Organisation
 from .models import Evenement
 from .models import Proximite
-
+from .models import Petition
 
 admin.site.register(Proposition)
 admin.site.register(Theme)
@@ -21,3 +21,4 @@ admin.site.register(Autre_utilisateur)
 admin.site.register(Proximite)
 admin.site.register(Organisation)
 admin.site.register(Evenement)
+admin.site.register(Petition)
