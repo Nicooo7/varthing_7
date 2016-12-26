@@ -1,0 +1,101 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="style.css" />
+        <head>
+<link rel="stylesheet" href="{% static '/revendications/css/accueil.css' %}">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+
+    </head>
+        <title>base</title>
+    </head>
+    
+
+
+    <body>
+        <header>  
+            <div class="barre_du_haut" id="barre_du_haut">     
+            {% block barre_du_haut %}
+                    <a href="consulter" id="consulter" style="color:blue;"> 
+                     consulter</a>
+                    <a href="militer" id="militer" style="color:blue;"  > militer</a>
+                    <a href="organiser" id="organiser" style="color:blue;">    organiser</a> 
+            {% endblock %} 
+            </div>
+        </header>
+
+
+     
+
+
+        <div id="zone_centrale">
+
+           <div class="barre_de_gauche">
+            {% block barre_de_gauche %}
+             {% endblock %} 
+            </div>   
+          
+            <div class="barre_centrale">
+             {% block barre_centrale %}
+            {% endblock %}
+            </div>  
+                
+            <div class="barre_de_droite">
+            {% block barre_de_droite %}
+            {% endblock %} 
+            </div>  
+                    
+        </div>    
+
+         <footer>
+                   <div class "barre_du_bas" id="barre_du_bas">
+                    {% block barre_du_bas %}
+
+                        <a href="accueil_varthing.php">Page d'accueil</a>
+                    
+                        <div>
+                        {% if user.id != None %}
+                            <a href = "deconnexion" > se deconnecter de l'utilisateur {{user}} </a>
+                        {% endif %} 
+                        </div>
+
+                    {% endblock %}      
+                  </div>
+        </footer>
+    
+
+        <script>
+
+            //modifiction affichage du menu
+            var choix_menu = "{{choix_menu}}";
+            
+            if (choix_menu == "consulter")
+                {consulter.style.color="red"; consulter.style.fontSize ="22px";}
+
+            if (choix_menu == "authentification")
+                {authentification.style.color ="red"; authentification.style.fontSize ="22px";}
+            
+            if (choix_menu == "militer")
+                {militer.style.color ="red"; militer.style.fontSize ="22px";} 
+
+            if (choix_menu == "organiser")
+                {organiser.style.color="red"; organiser.style.fontSize ="22px";} 
+
+            
+    
+
+        </script>
+
+
+
+    </body>
+
+
+</html>

@@ -1,0 +1,52 @@
+{% extends "revendications/consult_revendication.html" %} 
+{% load static %}
+
+{% block barre_de_gauche %}  
+    <a href="consult_revendication" style="color:red; font-size: 22px"  >  revendications </a>
+    <a href="consult_organisations" style="color:blue;"  >  organisations </a>   
+{% endblock %}                              
+               
+
+
+{% block barre_centrale %}  
+
+            <h1>{{proposition.ennonce}}</h1>
+
+            {%for element in createur %}
+            <p> createur: {{element.user.username}}</p>
+            {% endfor %}
+
+            {%for element in soutien %}
+            <p> soutiens: {{element.user.username}}</p>
+            {% endfor %}
+
+            <p>date de création:{{proposition.date_creation}}</p>
+
+            {%for ev in evenement %}
+            <input type="button" id="evenement" value="evenement : {{ev}} " onclick = "
+        document.location.href = 'http://localhost:8000/revendication/detail_evenement.html?id_evenement={{ev.id}}';
+        "> </input>
+            {% endfor %}
+
+{% endblock %}
+
+
+
+
+{%block barre_de_droite%}
+       <INPUT TYPE="button" NAME="soutenir_revendication" VALUE="soutenir cette revendication" onclick = "document.location.href = 'http://localhost:8000/revendication/soutenir_une_revendication.html?nom={{proposition.id}}'"> 
+        </INPUT>
+
+         <input type="button" id="creer_un_evenement" value="créer un évenement " onclick = "
+        document.location.href = 'http://localhost:8000/revendication/creer_un_evenement.html?id_proposition={{proposition.id}}';
+        "> </input>
+
+        {{proposition.id}}
+{% endblock %}
+
+
+
+
+
+                                          	
+                            
