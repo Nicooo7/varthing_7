@@ -644,7 +644,7 @@ def mes_evenements(request):
 
 
 def creer_une_petition():
-	print ("en cours...")
+	print ("en cours.")
 
 
 
