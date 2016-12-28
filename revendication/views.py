@@ -643,6 +643,8 @@ def mes_evenements(request):
 	return render(request, 'revendications/mes_evenements.html', {'evenements': evenements})
 
 
+
+
 def creer_une_petition():
 	print ("en cours")
 

@@ -2,13 +2,13 @@
 {% load static %}
 
 {% block barre_de_gauche %}
-        <input type=button id="creer_une_organisation" value ="crée une organisation" onclick ="document.location.href = 'creer_une_organisation'">
+        <input type=button id="creer_un_evenement" value ="crée un evenement" onclick ="document.location.href = 'creer_un_ev_choisir_une_proposition'">
 {% endblock %}  
 
 {% block barre_centrale %}
      
 {%for evenement in evenements%}
-    <div> evenement : {{evenement}}</div>
+    <input type=button id="detail_evenement" value = "{{evenement}}" onclick ="document.location.href ='detail_evenement?id_evenement={{evenement.id}}'">
 {%endfor%}
    
 {% endblock %}   

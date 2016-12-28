@@ -36,5 +36,4 @@ urlpatterns = [
     url(r'^participer_a_un_evenement', views.participer_a_un_evenement, name = 'participer_a_un_evenement'),
     url(r'^mes_evenements', views.mes_evenements, name = 'mes_evenements'),
     url(r'^creer_une_petition', views.creer_une_petition, name = 'creer_une_petition'),
-
     ]
