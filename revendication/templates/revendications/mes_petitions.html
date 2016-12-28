@@ -1,0 +1,15 @@
+{% extends "revendications/militer.html" %} 
+{% load static %}
+
+{% block barre_de_gauche %}
+        <input type=button id="creer_une_organisation" value ="crée une organisation" onclick ="document.location.href = 'creer_une_organisation'">
+{% endblock %}  
+
+{% block barre_centrale %}
+     
+{%for pet in petitions%}
+    <div> Pétition : {{pet}}</div>
+{%endfor%}
+   
+{% endblock %}   
+ 
