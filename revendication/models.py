@@ -83,8 +83,27 @@ class Petition(models.Model):
     propositions = models.ManyToManyField(Proposition, null=True)
     date_creation = models.DateField("Date de création", auto_now=True)
     date_echeance = models.DateField("Date d'échéance", null=True, blank=True)
-    objectif_de_signataires = models.IntegerField(blank=True)
+    objectif_de_signataires = models.IntegerField(null=True)
     signataires = models.ManyToManyField(User, through="Soutien", null=True)
+
+    """
+    def __createur(self):
+        soutien = Soutien.objects.filter(petition=self, lien = 'CR')
+        return 
+    createur = property(__createur)
+    """
+
+    def __nb_signataires(self):
+        return Soutien.objects.filter(petition=self).count()
+    nb_signataires = property(__nb_signataires)
+
+
+    def __taux_objectif(self):
+        if self.objectif_de_signataires != 0:
+            return Soutien.objects.filter(petition=self).count() / self.objectif_de_signataires * 100
+        else:
+            return null
+    taux_objectif = property(__taux_objectif)
 
     def __str__(self):
         return self.titre

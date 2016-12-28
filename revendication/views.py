@@ -465,10 +465,11 @@ def proposition_detail (request):
 	proposition = Proposition.objects.get(id= id_proposition)
 	soutien= Soutien.objects.filter(propositions__id = id_proposition).filter(lien ='SO')
 	createur= Soutien.objects.filter(propositions__id = id_proposition).filter(lien = 'CR')
-	evenement = Evenement.objects.filter (proposition_id = id_proposition)
+	evenement = Evenement.objects.filter(proposition_id = id_proposition)
+	petitions = proposition.petition_set.all()
 
 	print (proposition)
-	return render (request, 'revendications/proposition_detail.html', {"createur" :createur, "proposition" :proposition, "soutien" :soutien, "evenement": evenement})	
+	return render (request, 'revendications/proposition_detail.html', {"createur" :createur, "proposition" :proposition, "soutien" :soutien, "evenement": evenement, "petitions": petitions})	
 
 
 def soutenir_une_revendication (request):
@@ -578,8 +579,11 @@ def mes_organisations (request):
 	return render(request, 'revendications/mes_organisations.html', {'organisations': organisations})
 
 
+"""
 
+	EVENEMENTS
 
+"""
 
 def creer_un_evenement (request):
 	id_proposition = request.GET['id_proposition']
@@ -643,13 +647,73 @@ def mes_evenements(request):
 	return render(request, 'revendications/mes_evenements.html', {'evenements': evenements})
 
 
-def creer_une_petition():
-	print ("en cours")
+"""
+
+	PETITION
+
+"""	
+
+def creer_une_petition(request):
+	id_proposition = request.GET['id_proposition']
+
+	if request.method == 'POST':
+		form = PetitionForm(request.POST)
+		if form.is_valid():
+			titre = form.cleaned_data['titre']
+			description = form.cleaned_data['description']
+			date_echeance = form.cleaned_data['date_echeance']
+			objectif_de_signataires = form.cleaned_data['objectif_de_signataires']
+
+			proposition = Proposition.objects.get(id = id_proposition)	
+
+			createur = request.user
+		
+			petition = Petition.objects.create(titre=titre, description=description, date_echeance=date_echeance, objectif_de_signataires=objectif_de_signataires)
+			petition.propositions.add(proposition)
+			petition.save()
+
+			soutien = Soutien.objects.create(petition = petition, user = createur, lien = 'CR')
+
+			return render(request, 'revendications/merci.html')
+	else:
+		form = PetitionForm()
+	
+	print ("voici le formulaire = {}".format(form))
+
+	return render(request, 'revendications/creer_une_petition.html', {'form': form, 'id_proposition':id_proposition})
 
 
+def detail_petition(request):
+	id_petition = request.GET['id_petition']
+	petition = Petition.objects.get(id = id_petition)
+	propositions = petition.propositions.all()
+	signataires = Soutien.objects.filter (petition = petition)
 
 
+	print ("la pétition est {}".format(petition))
 
+	return render(request, 'revendications/detail_petition.html', {'petition': petition, 'propositions': propositions, 'signataires': signataires})
+
+
+def signer_une_petition(request):
+	id_petition = request.GET['id_petition']
+	signataire = request.user
+
+	petition = Petition.objects.get(id = id_petition)
+	soutien = Soutien.objects.get_or_create(petition = petition, user = signataire)
+
+	propositions = petition.propositions.all()
+	signataires = Soutien.objects.filter(petition = petition)
+
+	return render(request, 'revendications/detail_petition.html', {'petition': petition, 'propositions': propositions, 'signataires': signataires})
+
+
+def mes_petitions(request):
+	utilisateur = request.user
+	petitions = Petition.objects.filter(soutien__user=utilisateur)
+	print ("voici la liste des pétitions : {}".format(petitions))
+	
+	return render(request, 'revendications/mes_petitions.html', {'petitions': petitions})
 
 
 
