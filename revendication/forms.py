@@ -42,7 +42,13 @@ class OrganisationForm(forms.Form):
 class EvenementForm(forms.Form):
 	lieu = forms.CharField (max_length = 100)
 	date = forms.DateField ()
-	description = forms.CharField(max_length = 10000)
+	description = forms.CharField(widget=forms.Textarea, max_length = 10000)
+
+class PetitionForm(forms.Form):
+	titre = forms.CharField(max_length = 100)
+	description = forms.CharField(widget = forms.Textarea)
+	date_echeance = forms.DateField(required = False)
+	objectif_de_signataires = forms.IntegerField(required = False, min_value = 0)
 
 
 class AuthentificationForm(forms.Form):

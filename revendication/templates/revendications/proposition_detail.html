@@ -23,23 +23,28 @@
             <p>date de création:{{proposition.date_creation}}</p>
 
             {%for ev in evenement %}
-            <input type="button" id="evenement" value="evenement : {{ev}} " onclick = "
-        document.location.href = 'http://localhost:8000/revendication/detail_evenement.html?id_evenement={{ev.id}}';
-        "> </input>
+            <input type="button" id="evenement" value="evenement : {{ev}} " onclick = "document.location.href = 'http://localhost:8000/revendication/detail_evenement.html?id_evenement={{ev.id}}';"> </input>
             {% endfor %}
+
+            <p>Pétition(s) liée(s) :</p>
+            <ul>
+                {%for pet in petitions %}
+                <li><a href="http://localhost:8000/revendication/detail_petition.html?id_petition={{pet.id}}">{{pet}}</li>
+                {% endfor %}
+            </ul>
 
 {% endblock %}
 
 
 
 
-{%block barre_de_droite%}
+{%block barre_de_droite %}
        <INPUT TYPE="button" NAME="soutenir_revendication" VALUE="soutenir cette revendication" onclick = "document.location.href = 'http://localhost:8000/revendication/soutenir_une_revendication.html?nom={{proposition.id}}'"> 
         </INPUT>
 
-         <input type="button" id="creer_un_evenement" value="créer un évenement " onclick = "
-        document.location.href = 'http://localhost:8000/revendication/creer_un_evenement.html?id_proposition={{proposition.id}}';
-        "> </input>
+         <input type="button" id="creer_un_evenement" value="créer un évenement " onclick = "document.location.href = 'http://localhost:8000/revendication/creer_un_evenement.html?id_proposition={{proposition.id}}';"> </input>
+
+         <input type="button" id="creer_une_petition" value="créer une pétition" onclick = "document.location.href = 'http://localhost:8000/revendication/creer_une_petition.html?id_proposition={{proposition.id}}';"> </input>
 
         {{proposition.id}}
 {% endblock %}

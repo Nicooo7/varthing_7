@@ -17,6 +17,7 @@ import pickle
 import os
 from nltk import *
 from bs4 import BeautifulSoup
+from random import *
 
 page = []
 liste_des_elements_de_page = []
@@ -286,19 +287,6 @@ def simulation2():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     #..........................REQUESTS.........................#
 
 
@@ -465,10 +453,11 @@ def proposition_detail (request):
 	proposition = Proposition.objects.get(id= id_proposition)
 	soutien= Soutien.objects.filter(propositions__id = id_proposition).filter(lien ='SO')
 	createur= Soutien.objects.filter(propositions__id = id_proposition).filter(lien = 'CR')
-	evenement = Evenement.objects.filter (proposition_id = id_proposition)
+	evenement = Evenement.objects.filter(proposition_id = id_proposition)
+	petitions = proposition.petition_set.all()
 
 	print (proposition)
-	return render (request, 'revendications/proposition_detail.html', {"createur" :createur, "proposition" :proposition, "soutien" :soutien, "evenement": evenement})	
+	return render (request, 'revendications/proposition_detail.html', {"createur" :createur, "proposition" :proposition, "soutien" :soutien, "evenement": evenement, "petitions": petitions})	
 
 
 def soutenir_une_revendication (request):
@@ -578,8 +567,11 @@ def mes_organisations (request):
 	return render(request, 'revendications/mes_organisations.html', {'organisations': organisations})
 
 
+"""
 
+	EVENEMENTS
 
+"""
 
 def creer_un_evenement (request):
 	id_proposition = request.GET['id_proposition']
@@ -644,17 +636,153 @@ def mes_evenements(request):
 
 
 
+"""
+>>>>>>> 195a31684d5cc7040d05fd1665e7b4393ab9f167
 
-def creer_une_petition():
-	print ("en cours")
+	PETITION
+
+"""	
+
+def creer_une_petition(request):
+	id_proposition = request.GET['id_proposition']
+
+	if request.method == 'POST':
+		form = PetitionForm(request.POST)
+		if form.is_valid():
+			titre = form.cleaned_data['titre']
+			description = form.cleaned_data['description']
+			date_echeance = form.cleaned_data['date_echeance']
+			objectif_de_signataires = form.cleaned_data['objectif_de_signataires']
+
+			proposition = Proposition.objects.get(id = id_proposition)	
+
+			createur = request.user
+		
+			petition = Petition.objects.create(titre=titre, description=description, date_echeance=date_echeance, objectif_de_signataires=objectif_de_signataires)
+			petition.propositions.add(proposition)
+			petition.save()
+
+			soutien = Soutien.objects.create(petition = petition, user = createur, lien = 'CR')
+
+			return render(request, 'revendications/merci.html')
+	else:
+		form = PetitionForm()
+	
+	print ("voici le formulaire = {}".format(form))
+
+	return render(request, 'revendications/creer_une_petition.html', {'form': form, 'id_proposition':id_proposition})
+
+
+def detail_petition(request):
+	id_petition = request.GET['id_petition']
+	petition = Petition.objects.get(id = id_petition)
+	propositions = petition.propositions.all()
+	signataires = Soutien.objects.filter (petition = petition)
+
+
+	print ("la pétition est {}".format(petition))
+
+	return render(request, 'revendications/detail_petition.html', {'petition': petition, 'propositions': propositions, 'signataires': signataires})
+
+
+def signer_une_petition(request):
+	id_petition = request.GET['id_petition']
+	signataire = request.user
+
+	petition = Petition.objects.get(id = id_petition)
+	soutien = Soutien.objects.get_or_create(petition = petition, user = signataire)
+
+	propositions = petition.propositions.all()
+	signataires = Soutien.objects.filter(petition = petition)
+
+	return render(request, 'revendications/detail_petition.html', {'petition': petition, 'propositions': propositions, 'signataires': signataires})
+
+
+def mes_petitions(request):
+	utilisateur = request.user
+	petitions = Petition.objects.filter(soutien__user=utilisateur)
+	#print ("voici la liste des pétitions : {}".format(petitions))
+	
+	return render(request, 'revendications/mes_petitions.html', {'petitions': petitions})
+
+
+
+def afficher_le_graph_des_propositions(request):
+
+	import networkx as nx
+
+
+	def creer_un_dictionnaire_proposition_soutiens (propositions):
+		dictionnaire_des_propositions = {}
+		
+		for proposition in propositions :
+			soutiens = Soutien.objects.filter(propositions__id = proposition.id)
+			soutiensl = []
+			for soutien in soutiens:
+				soutiensl.append(soutien.user)
+			soutiens = soutiensl
+			dictionnaire_des_propositions[proposition.id]=soutiens
+		
+		#print ("dictionnaire : {}".format(dictionnaire_des_propositions))
+		return dictionnaire_des_propositions
+
+
+
+	def lister_les_couples_de_proposition(propositions):
+		liste_des_couples = []
+		for proposition1 in propositions:
+			for proposition2 in propositions:
+				if proposition1 != proposition2:
+					couple = (proposition1, proposition2)
+					liste_des_couples.append(couple)
+		return liste_des_couples
 
 
 
 
+	def nb_utilisateur_communs_de_2_propositions(proposition1, proposition2, dictionnaire_des_propositions):
+		liste_commune = []
+		soutiens1 = dictionnaire_des_propositions[proposition1.id]
+		#print ("soutiens1 : {}".format(soutiens1))
+		soutiens2 = dictionnaire_des_propositions[proposition2.id]
+		#print ("soutiens2 : {}".format(soutiens2))
+		for soutien_a in soutiens1:
+			#print ("soutiena : {}".format(soutien_a))
+			for soutien2 in soutiens2:
+				#print ("soutient2 : {}".format(soutien2))
+				if soutien_a == soutien2:
+					#print ("ca appartient")
+					liste_commune.append(soutien_a)
+					#print("liste commune : {}".format(liste_commune))
+			#else:		
+				#print ("ca n'appartient pas")
+		#print ("nombre d'utilisateur commun : {}".format(len(liste_commune)))
+		return len(liste_commune)
 
 
 
 
+	def creer_les_noeuds(G, propositions):
+		for proposition in propositions:
+			G.add_node(proposition)
+
+
+	def creer_les_liens (G, liste_des_couples, dictionnaire_des_propositions):
+		for couple in liste_des_couples:
+			force = nb_utilisateur_communs_de_2_propositions(*couple, dictionnaire_des_propositions)
+			print ("************************** couple : {}, force : {}".format(couple, force))
+			if force != 0:
+				G.add_edge(*couple, weight = force)
+			
+	G = nx.Graph()
+	propositions = Proposition.objects.all()
+	dictionnaire_des_propositions = creer_un_dictionnaire_proposition_soutiens(propositions)
+	liste_des_couples = lister_les_couples_de_proposition(propositions)
+
+	creer_les_noeuds(G, propositions)
+	creer_les_liens (G, liste_des_couples, dictionnaire_des_propositions)
+
+	nx.write_gexf(G, "propositions.gexf")
 
 
 
