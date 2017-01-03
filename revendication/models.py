@@ -2,9 +2,7 @@ from django.db import models
 import datetime
 from django.utils import timezone
 from django.contrib.auth.models import User
-
-
-
+from django.urls import reverse
 
  
 
@@ -76,6 +74,11 @@ class Organisation (models.Model):
         return "organisation {0}".format(self.profile)
 
 
+######################################################
+#
+#    Petition
+#
+######################################################
 
 class Petition(models.Model):
     titre = models.CharField(max_length=100)
@@ -86,24 +89,29 @@ class Petition(models.Model):
     objectif_de_signataires = models.IntegerField(null=True)
     signataires = models.ManyToManyField(User, through="Soutien", null=True)
 
-    """
+    
+    # Méthode/Propriété : "createur" : donne le username du créateur de la pétition
     def __createur(self):
-        soutien = Soutien.objects.filter(petition=self, lien = 'CR')
-        return 
+        soutien = Soutien.objects.get(petition=self, lien = 'CR')
+        return soutien.user
     createur = property(__createur)
-    """
-
+    
+    # Méthode/Propriété : "nb_signataires" : donne le nombre de signataires de la pétition
     def __nb_signataires(self):
         return Soutien.objects.filter(petition=self).count()
     nb_signataires = property(__nb_signataires)
 
-
+    # Méthode/Propriété : "taux_objectif" : donne le pourcentage de signature par rapport à l'objectif fixé (renvoi null si pas d'objectif fixé)
     def __taux_objectif(self):
         if self.objectif_de_signataires != 0:
             return Soutien.objects.filter(petition=self).count() / self.objectif_de_signataires * 100
         else:
             return null
     taux_objectif = property(__taux_objectif)
+
+    def get_absolute_url(self):
+        #return reverse('detail_petition', args=[str(self.id)])
+        return reverse('detail_petition')
 
     def __str__(self):
         return self.titre
@@ -119,6 +127,7 @@ class Soutien(models.Model):
     propositions = models.ForeignKey(Proposition, null =True)
     user = models.ForeignKey(User, null=True)
     lien = models.CharField(max_length =2, choices= CHOIX_LIEN)
+    date = models.DateField("Date création soutien", auto_now=True)
 
     # Elément soutenu
     evenement = models.ForeignKey(Evenement, null = True)
@@ -127,6 +136,7 @@ class Soutien(models.Model):
 
     def __str__(self):
         return self.user.username
+        #return "lien entre {0} et {1}{2}{3} (type {4})".format(self.user, self.evenement, self.organisation, self.petition, self.lien)
 
 
 
@@ -139,9 +149,13 @@ class Proximite(models.Model):
         return "proximite entre {0} et {1} ".format(self.profile , self.Autre_utilisateur)
 
 
-
-
-
-
-
+"""
+    class Destinataire :
+        Destinataires des pétitions
+        Champs :
+            .nom
+            .prenom
+            .fonction
+"""
+#class Destinataire(object):
 

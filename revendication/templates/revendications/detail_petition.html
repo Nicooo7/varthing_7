@@ -10,7 +10,19 @@
 
 {% block barre_centrale %}  
 
-            <h1>{{petition.titre}}</h1>
+            <h1>{{petition.titre}}   <i> ( créée par {{petition.createur}})</i></h1>
+
+            <p>Date de création :{{petition.date_creation}}</p>
+            <p>Date d'échéance :{{petition.date_echeance}}</p>
+
+            <p>Revendication(s) liée(s) :</p>
+            <ul>
+            {%for prop in propositions %}
+                <li>{{prop}}</li>
+            {% endfor %}
+            </ul>
+
+            <p>Description :<br/>{{petition.description}}</p>
 
             <p>Signataires</p>
             <ul>
@@ -23,17 +35,7 @@
             Nombre de signataires à atteindre : {{petition.objectif_de_signataires}}<br/>
             Taux d'atteinte de l'objectif : {{petition.taux_objectif}} %</p>
 
-            <p>date de création :{{petition.date_creation}}</p>
-            <p>date d'échéance :{{petition.date_echeance}}</p>
 
-            <p>Revendication(s) liée(s) :</p>
-            <ul>
-            {%for prop in propositions %}
-                <li>{{prop}}</li>
-            {% endfor %}
-            </ul>
-
-             <p>desctiption :{{petition.description}}</p>
            
 
 {% endblock %}

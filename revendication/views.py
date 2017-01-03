@@ -1,8 +1,11 @@
 # coding: utf-8
 
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template import loader
+from django.core.exceptions import ObjectDoesNotExist
+
+
 from .forms import *
 from .models import *
 from django.contrib.auth.models import* 
@@ -17,7 +20,6 @@ import pickle
 import os
 from nltk import *
 from bs4 import BeautifulSoup
-from random import *
 
 page = []
 liste_des_elements_de_page = []
@@ -287,6 +289,19 @@ def simulation2():
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     #..........................REQUESTS.........................#
 
 
@@ -333,7 +348,7 @@ def authentification(request):
 			user = authenticate(username=username, password=password)
 			if user is not None:
 				login(request, user)
-				return render (request, 'revendications/merci.html')	
+				return render (request, 'revendications/accueil.html')	
 			else:
 				error = True
 		else:
@@ -345,6 +360,9 @@ def authentification(request):
 
 def merci (request):
 	return render(request, 'revendications/merci.html')
+
+def message (request, message):
+	return render(request, 'revendications/message.html', {'message': message})
 
 
 def deconnexion (request):
@@ -635,47 +653,118 @@ def mes_evenements(request):
 	return render(request, 'revendications/mes_evenements.html', {'evenements': evenements})
 
 
-
 """
->>>>>>> 195a31684d5cc7040d05fd1665e7b4393ab9f167
 
-	PETITION
+	PETITION (#petition)
 
 """	
 
 def creer_une_petition(request):
-	id_proposition = request.GET['id_proposition']
+	# Vérification de l'authentification utilisateur, redirection sinon
+	#   -> voir https://docs.djangoproject.com/fr/1.10/topics/auth/default/#the-login-required-decorator
+	if request.user.is_authenticated:
+		user = request.user
+	else:
+		render(request, 'authentification_necessaire.html')
+
+
+	# Récups des infos GET si transmises
+	if 'id_proposition' in request.GET:
+		id_proposition = request.GET['id_proposition']
+	else:
+		id_proposition = ''
+
 
 	if request.method == 'POST':
+		#
+		# Un formulaire a été envoyé !
+		#
 		form = PetitionForm(request.POST)
 		if form.is_valid():
+			#
+			# Traitement du formulaire valide
+			#
 			titre = form.cleaned_data['titre']
 			description = form.cleaned_data['description']
 			date_echeance = form.cleaned_data['date_echeance']
 			objectif_de_signataires = form.cleaned_data['objectif_de_signataires']
 
-			proposition = Proposition.objects.get(id = id_proposition)	
 
-			createur = request.user
-		
+
+
+			#propositions = form.cleaned_data['propositions']
+
+			proposition = Proposition.objects.get(id = id_proposition)	
+			"""
+			"""
+			# Création de la pétition puis association à la proposition source
 			petition = Petition.objects.create(titre=titre, description=description, date_echeance=date_echeance, objectif_de_signataires=objectif_de_signataires)
+
+			"""
+			some_var = request.POST.getlist('propositions')
+			for i in some_var:
+				petition.propositions.add(i.id)
+			"""
 			petition.propositions.add(proposition)
 			petition.save()
 
-			soutien = Soutien.objects.create(petition = petition, user = createur, lien = 'CR')
+			# Création de la relation de soutient (CR) entre l'user et la pétition
+			soutien = Soutien.objects.create(petition = petition, user = user, lien = 'CR')
 
+			# Retour sur la page de la pétition créée -> !ToDo
+			"""
 			return render(request, 'revendications/merci.html')
+			"""
+			return render(request, 'revendications/message.html', {'message':"Pétition correctement créée... enfin, j'espère..."})
+
 	else:
+		#
+		# Pas de formulaire reçu...
+		#
+
 		form = PetitionForm()
+		revendications_soutenues = Proposition.objects.filter(soutien__user = user)
 	
-	print ("voici le formulaire = {}".format(form))
+		return render(request, 'revendications/creer_une_petition.html', {'form': form, 'id_proposition':id_proposition, 'revendications_soutenues':revendications_soutenues})
 
-	return render(request, 'revendications/creer_une_petition.html', {'form': form, 'id_proposition':id_proposition})
+def supprimer_une_petition(request, id_petition):
+	# Vérification id_petition valide ? si non, 404
+	try:
+		petition = Petition.objects.get(id = id_petition)	
+	except Exception as e:
+		raise Http404
+
+	# Vérification de l'authentification utilisateur, redirection sinon
+	#   -> voir https://docs.djangoproject.com/fr/1.10/topics/auth/default/#the-login-required-decorator
+	if request.user.is_authenticated:
+		user = request.user
+	else:
+		return render(request, 'authentification_necessaire.html')
 
 
-def detail_petition(request):
-	id_petition = request.GET['id_petition']
 	petition = Petition.objects.get(id = id_petition)
+
+	# Vérification que l'utilisateur est bien le créateur de la pétition
+	try:
+		soutien = Soutien.objects.get(user = user, petition = petition, lien = 'CR')
+	except:
+		return render(request, 'revendications/message.html', {'message': "Vous ne pouvez pas supprimer cette pétition, vous n'en êtes pas le créateur."})
+
+	
+	# La confirmation de suppression a-t-elle été envoyée ?
+	if request.method == 'POST':
+		petition.delete()
+		return render(request, 'revendications/message.html', {'message': "La pétition a bien été supprimée !"})
+	else:
+		return render(request, 'revendications/supprimer_une_petition.html', {'petition': petition})
+
+def detail_petition(request, id_petition):
+	# Vérification id_petition valide ? si non, 404
+	try:
+		petition = Petition.objects.get(id = id_petition)	
+	except Exception as e:
+		raise Http404
+	
 	propositions = petition.propositions.all()
 	signataires = Soutien.objects.filter (petition = petition)
 
@@ -689,8 +778,13 @@ def signer_une_petition(request):
 	id_petition = request.GET['id_petition']
 	signataire = request.user
 
-	petition = Petition.objects.get(id = id_petition)
-	soutien = Soutien.objects.get_or_create(petition = petition, user = signataire)
+	# Vérification id_petition valide ? si non, 404
+	try:
+		petition = Petition.objects.get(id = id_petition)	
+	except Exception as e:
+		raise Http404
+
+	soutien = Soutien.objects.get_or_create(petition = petition, user = signataire, lien='SO')
 
 	propositions = petition.propositions.all()
 	signataires = Soutien.objects.filter(petition = petition)
@@ -700,89 +794,13 @@ def signer_une_petition(request):
 
 def mes_petitions(request):
 	utilisateur = request.user
-	petitions = Petition.objects.filter(soutien__user=utilisateur)
-	#print ("voici la liste des pétitions : {}".format(petitions))
-	
-	return render(request, 'revendications/mes_petitions.html', {'petitions': petitions})
+	petitions_crees = Petition.objects.filter(soutien__user=utilisateur, soutien__lien='CR')
+	petitions_soutenues = Petition.objects.filter(soutien__user=utilisateur)
+
+	return render(request, 'revendications/mes_petitions.html', {'petitions_crees': petitions_crees, 'petitions_soutenues':petitions_soutenues})
 
 
 
-def afficher_le_graph_des_propositions(request):
-
-	import networkx as nx
-
-
-	def creer_un_dictionnaire_proposition_soutiens (propositions):
-		dictionnaire_des_propositions = {}
-		
-		for proposition in propositions :
-			soutiens = Soutien.objects.filter(propositions__id = proposition.id)
-			soutiensl = []
-			for soutien in soutiens:
-				soutiensl.append(soutien.user)
-			soutiens = soutiensl
-			dictionnaire_des_propositions[proposition.id]=soutiens
-		
-		#print ("dictionnaire : {}".format(dictionnaire_des_propositions))
-		return dictionnaire_des_propositions
-
-
-
-	def lister_les_couples_de_proposition(propositions):
-		liste_des_couples = []
-		for proposition1 in propositions:
-			for proposition2 in propositions:
-				if proposition1 != proposition2:
-					couple = (proposition1, proposition2)
-					liste_des_couples.append(couple)
-		return liste_des_couples
-
-
-
-
-	def nb_utilisateur_communs_de_2_propositions(proposition1, proposition2, dictionnaire_des_propositions):
-		liste_commune = []
-		soutiens1 = dictionnaire_des_propositions[proposition1.id]
-		#print ("soutiens1 : {}".format(soutiens1))
-		soutiens2 = dictionnaire_des_propositions[proposition2.id]
-		#print ("soutiens2 : {}".format(soutiens2))
-		for soutien_a in soutiens1:
-			#print ("soutiena : {}".format(soutien_a))
-			for soutien2 in soutiens2:
-				#print ("soutient2 : {}".format(soutien2))
-				if soutien_a == soutien2:
-					#print ("ca appartient")
-					liste_commune.append(soutien_a)
-					#print("liste commune : {}".format(liste_commune))
-			#else:		
-				#print ("ca n'appartient pas")
-		#print ("nombre d'utilisateur commun : {}".format(len(liste_commune)))
-		return len(liste_commune)
-
-
-
-
-	def creer_les_noeuds(G, propositions):
-		for proposition in propositions:
-			G.add_node(proposition)
-
-
-	def creer_les_liens (G, liste_des_couples, dictionnaire_des_propositions):
-		for couple in liste_des_couples:
-			force = nb_utilisateur_communs_de_2_propositions(*couple, dictionnaire_des_propositions)
-			print ("************************** couple : {}, force : {}".format(couple, force))
-			if force != 0:
-				G.add_edge(*couple, weight = force)
-			
-	G = nx.Graph()
-	propositions = Proposition.objects.all()
-	dictionnaire_des_propositions = creer_un_dictionnaire_proposition_soutiens(propositions)
-	liste_des_couples = lister_les_couples_de_proposition(propositions)
-
-	creer_les_noeuds(G, propositions)
-	creer_les_liens (G, liste_des_couples, dictionnaire_des_propositions)
-
-	nx.write_gexf(G, "propositions.gexf")
 
 
 

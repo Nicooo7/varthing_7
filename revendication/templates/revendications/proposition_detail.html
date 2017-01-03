@@ -29,7 +29,7 @@
             <p>Pétition(s) liée(s) :</p>
             <ul>
                 {%for pet in petitions %}
-                <li><a href="http://localhost:8000/revendication/detail_petition.html?id_petition={{pet.id}}">{{pet}}</li>
+                <li><a href="{% url 'detail_petition' pet.id %}">{{pet}}</a></li>
                 {% endfor %}
             </ul>
 

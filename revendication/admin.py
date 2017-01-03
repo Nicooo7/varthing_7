@@ -13,10 +13,11 @@ from .models import Proximite
 from .models import Petition
 
 class SoutienAdmin(admin.ModelAdmin):
-	list_display	= ('user', 'lien', 'propositions', 'evenement', 'organisation', 'petition')
-	list_filter		= ('user', 'lien', 'propositions', 'evenement', 'organisation', 'petition')
-	ordering		= ('user', 'lien', 'propositions', 'evenement', 'organisation', 'petition')
-	search_fields	= ('user', 'lien', 'propositions', 'evenement', 'organisation', 'petition')
+	list_display	= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition')
+	list_filter		= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition')
+	date_hierarchy	= 'date'
+	ordering		= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition')
+	search_fields	= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition')
 
 class PetitionAdmin(admin.ModelAdmin):
 	list_display	= ('titre', 'date_creation', 'date_echeance', 'objectif_de_signataires')

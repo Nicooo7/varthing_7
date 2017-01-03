@@ -58,7 +58,7 @@
                    <div class "barre_du_bas" id="barre_du_bas">
                     {% block barre_du_bas %}
 
-                        <a href="accueil_varthing.php">Page d'accueil</a>
+                        <a href="{% url 'accueil' %}">Page d'accueil</a>
                     
                         <div>
                         {% if user.id != None %}

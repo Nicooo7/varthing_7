@@ -45,11 +45,20 @@ class EvenementForm(forms.Form):
 	description = forms.CharField(widget=forms.Textarea, max_length = 10000)
 
 class PetitionForm(forms.Form):
+	"""
+	"""
 	titre = forms.CharField(max_length = 100)
 	description = forms.CharField(widget = forms.Textarea)
+	#propositions = forms.CharField(widget = )
 	date_echeance = forms.DateField(required = False)
 	objectif_de_signataires = forms.IntegerField(required = False, min_value = 0)
-
+	"""
+	class Meta:
+		model = Petition
+		#fields = ['titre', 'description', 'propositions', 'date_echeance', 'objectif_de_signataires']
+		fields = '__all__'
+	"""
+		
 
 class AuthentificationForm(forms.Form):
 	nom = forms.CharField(max_length=100)
