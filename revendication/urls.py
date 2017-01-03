@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^soutenir_une_revendication', views.soutenir_une_revendication, name = 'soutenir_une_revendication'),
     url(r'^mes_revendications', views.mes_revendications, name = 'mes_revendications'),
     url(r'^voir_revendication', ListView.as_view(model = Proposition), name ='voir_revendication'),
+    url(r'^afficher_le_graph_des_propositions', views.afficher_le_graph_des_propositions, name = 'afficher_le_graph_des_propositions'),
     # Organisations
     url(r'^creer_une_organisation', views.creer_une_organisation, name = 'creer_une_organisation'),
     url(r'^afficher_une_organisation', views.afficher_une_organisation, name = 'afficher_une_organisation'),
