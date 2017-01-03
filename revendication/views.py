@@ -20,6 +20,7 @@ import pickle
 import os
 from nltk import *
 from bs4 import BeautifulSoup
+from random import *
 
 page = []
 liste_des_elements_de_page = []
@@ -800,6 +801,84 @@ def mes_petitions(request):
 	return render(request, 'revendications/mes_petitions.html', {'petitions_crees': petitions_crees, 'petitions_soutenues':petitions_soutenues})
 
 
+
+
+def afficher_le_graph_des_propositions(request):
+
+	import networkx as nx
+
+
+	def creer_un_dictionnaire_proposition_soutiens (propositions):
+		dictionnaire_des_propositions = {}
+		
+		for proposition in propositions :
+			soutiens = Soutien.objects.filter(propositions__id = proposition.id)
+			soutiensl = []
+			for soutien in soutiens:
+				soutiensl.append(soutien.user)
+			soutiens = soutiensl
+			dictionnaire_des_propositions[proposition.id]=soutiens
+		
+		#print ("dictionnaire : {}".format(dictionnaire_des_propositions))
+		return dictionnaire_des_propositions
+
+
+
+	def lister_les_couples_de_proposition(propositions):
+		liste_des_couples = []
+		for proposition1 in propositions:
+			for proposition2 in propositions:
+				if proposition1 != proposition2:
+					couple = (proposition1, proposition2)
+					liste_des_couples.append(couple)
+		return liste_des_couples
+
+
+
+
+	def nb_utilisateur_communs_de_2_propositions(proposition1, proposition2, dictionnaire_des_propositions):
+		liste_commune = []
+		soutiens1 = dictionnaire_des_propositions[proposition1.id]
+		#print ("soutiens1 : {}".format(soutiens1))
+		soutiens2 = dictionnaire_des_propositions[proposition2.id]
+		#print ("soutiens2 : {}".format(soutiens2))
+		for soutien_a in soutiens1:
+			#print ("soutiena : {}".format(soutien_a))
+			for soutien2 in soutiens2:
+				#print ("soutient2 : {}".format(soutien2))
+				if soutien_a == soutien2:
+					#print ("ca appartient")
+					liste_commune.append(soutien_a)
+					#print("liste commune : {}".format(liste_commune))
+			#else:		
+				#print ("ca n'appartient pas")
+		#print ("nombre d'utilisateur commun : {}".format(len(liste_commune)))
+		return len(liste_commune)
+
+
+
+
+	def creer_les_noeuds(G, propositions):
+		for proposition in propositions:
+			G.add_node(proposition)
+
+
+	def creer_les_liens (G, liste_des_couples, dictionnaire_des_propositions):
+		for couple in liste_des_couples:
+			force = nb_utilisateur_communs_de_2_propositions(*couple, dictionnaire_des_propositions)
+			print ("************************** couple : {}, force : {}".format(couple, force))
+			if force != 0:
+				G.add_edge(*couple, weight = force)
+			
+	G = nx.Graph()
+	propositions = Proposition.objects.all()
+	dictionnaire_des_propositions = creer_un_dictionnaire_proposition_soutiens(propositions)
+	liste_des_couples = lister_les_couples_de_proposition(propositions)
+
+	creer_les_noeuds(G, propositions)
+	creer_les_liens (G, liste_des_couples, dictionnaire_des_propositions)
+
+	nx.write_gexf(G, "propositions.gexf")
 
 
 
