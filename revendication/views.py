@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.template import loader
-from django.core.exceptions import ObjectDoesNotExist
+#from django.core.exceptions import ObjectDoesNotExist
 
 
 from .forms import *
@@ -732,7 +732,7 @@ def supprimer_une_petition(request, id_petition):
 	# Vérification id_petition valide ? si non, 404
 	try:
 		petition = Petition.objects.get(id = id_petition)	
-	except Exception as e:
+	except Petition.DoesNotExist:
 		raise Http404
 
 	# Vérification de l'authentification utilisateur, redirection sinon
@@ -743,12 +743,11 @@ def supprimer_une_petition(request, id_petition):
 		return render(request, 'authentification_necessaire.html')
 
 
-	petition = Petition.objects.get(id = id_petition)
 
 	# Vérification que l'utilisateur est bien le créateur de la pétition
 	try:
 		soutien = Soutien.objects.get(user = user, petition = petition, lien = 'CR')
-	except:
+	except Soutien.DoesNotExist:
 		return render(request, 'revendications/message.html', {'message': "Vous ne pouvez pas supprimer cette pétition, vous n'en êtes pas le créateur."})
 
 	
@@ -759,11 +758,12 @@ def supprimer_une_petition(request, id_petition):
 	else:
 		return render(request, 'revendications/supprimer_une_petition.html', {'petition': petition})
 
+
 def detail_petition(request, id_petition):
 	# Vérification id_petition valide ? si non, 404
 	try:
 		petition = Petition.objects.get(id = id_petition)	
-	except Exception as e:
+	except Petition.DoesNotExist:
 		raise Http404
 	
 	propositions = petition.propositions.all()
@@ -782,7 +782,7 @@ def signer_une_petition(request):
 	# Vérification id_petition valide ? si non, 404
 	try:
 		petition = Petition.objects.get(id = id_petition)	
-	except Exception as e:
+	except Petition.DoesNotExist:
 		raise Http404
 
 	soutien = Soutien.objects.get_or_create(petition = petition, user = signataire, lien='SO')
@@ -801,7 +801,11 @@ def mes_petitions(request):
 	return render(request, 'revendications/mes_petitions.html', {'petitions_crees': petitions_crees, 'petitions_soutenues':petitions_soutenues})
 
 
+"""
 
+	Graphe des propositions
+
+"""
 
 def afficher_le_graph_des_propositions(request):
 
