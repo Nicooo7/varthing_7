@@ -6,7 +6,7 @@
 
 {% block barre_de_gauche%}  
 <div class="barre_de_gauche">
-{% if user != None %}
+{% if user.is_authenticated %}
 	<INPUT TYPE="button" NAME="deconnexion" VALUE="se deconnecter" onclick = "document.location.href = 'http://localhost:8000/revendication/deconnexion'">
 {% else %}
 	<INPUT TYPE="button" NAME="connexion" VALUE="creer un compte" onclick = "document.location.href = 'http://localhost:8000/revendication/creation_utilisateur'">
@@ -20,7 +20,7 @@
 
 {% block barre_centrale%}  
 	<div class="barre_centrale">
-	{% if user != None %}
+	{% if user.is_authenticated %}
 		<h1>Bienvenue <strong>{{user.username}}</strong></h1>
 	{% else %}
 		<h1>Bienvenue !</h1>

@@ -23,10 +23,9 @@
         <header>  
             <div class="barre_du_haut" id="barre_du_haut">     
             {% block barre_du_haut %}
-                    <a href="consulter" id="consulter" style="color:blue;"> 
-                     consulter</a>
-                    <a href="militer" id="militer" style="color:blue;"  > militer</a>
-                    <a href="organiser" id="organiser" style="color:blue;">    organiser</a> 
+                    <a href="{% url 'consulter' %}" id="consulter" style="color:blue;"> consulter</a>
+                    <a href="{% url 'militer' %}" id="militer" style="color:blue;"  > militer</a>
+                    <a href="{% url 'organiser' %}" id="organiser" style="color:blue;">    organiser</a> 
             {% endblock %} 
             </div>
         </header>
@@ -55,19 +54,21 @@
         </div>    
 
          <footer>
-                   <div class "barre_du_bas" id="barre_du_bas">
-                    {% block barre_du_bas %}
+           <div class "barre_du_bas" id="barre_du_bas">
+            {% block barre_du_bas %}
 
-                        <a href="{% url 'accueil' %}">Page d'accueil</a>
-                    
-                        <div>
-                        {% if user.id != None %}
-                            <a href = "deconnexion" > se deconnecter de l'utilisateur {{user}} </a>
-                        {% endif %} 
-                        </div>
+                <a href="{% url 'accueil' %}">Page d'accueil</a>
+            
+                <div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'deconnexion' %}" > se deconnecter de l'utilisateur {{user}} </a>
+                {% else %}
+                    <a href="{% url 'authentification' %}" > se connecter</a>
+                {% endif %} 
+                </div>
 
-                    {% endblock %}      
-                  </div>
+            {% endblock %}      
+          </div>
         </footer>
     
 
