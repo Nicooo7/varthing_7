@@ -690,23 +690,31 @@ def creer_une_petition(request):
 			date_echeance = form.cleaned_data['date_echeance']
 			objectif_de_signataires = form.cleaned_data['objectif_de_signataires']
 
-
-
-
 			#propositions = form.cleaned_data['propositions']
 
-			proposition = Proposition.objects.get(id = id_proposition)	
+			#proposition = Proposition.objects.get(id = id_proposition)	
+
+			# Récupération des propositions cochées
+			# erreur si liste vide
+			try:
+				propositions = request.POST.getlist('propositions')
+			except:
+				raise Http404
+
+			if not propositions:
+				return render(request, 'revendications/message.html', {'message':"Cocher au moins une proposition !"})
+
+			
+
 			"""
 			"""
 			# Création de la pétition puis association à la proposition source
 			petition = Petition.objects.create(titre=titre, description=description, date_echeance=date_echeance, objectif_de_signataires=objectif_de_signataires)
 
-			"""
-			some_var = request.POST.getlist('propositions')
-			for i in some_var:
-				petition.propositions.add(i.id)
-			"""
-			petition.propositions.add(proposition)
+			for i in propositions:
+				petition.propositions.add(i)
+			
+			#petition.propositions.add(proposition)
 			petition.save()
 
 			# Création de la relation de soutient (CR) entre l'user et la pétition
