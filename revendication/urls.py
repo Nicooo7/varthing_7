@@ -23,21 +23,21 @@ urlpatterns = [
     url(r'^afficher_mon_profil', views.afficher_mon_profil, name = 'afficher_mon_profil'),
     # Revendications
     url(r'^creer_une_revendication', views.creer_une_revendication, name = 'creer_une_revendication'),
-    url(r'^proposition_detail', views.proposition_detail, name = 'proposition_detail'),
-    url(r'^consult_revendication', views.consult_revendication, name = 'consult_revendication'),
-    url(r'^soutenir_une_revendication', views.soutenir_une_revendication, name = 'soutenir_une_revendication'),
+    url(r'^proposition_detail/(\d+)$', views.proposition_detail, name = 'proposition_detail'),
+    url(r'^consult_revendications', views.consult_revendications, name = 'consult_revendications'),
+    url(r'^soutenir_une_revendication/(\d+)$', views.soutenir_une_revendication, name = 'soutenir_une_revendication'),
     url(r'^mes_revendications', views.mes_revendications, name = 'mes_revendications'),
-    url(r'^voir_revendication', ListView.as_view(model = Proposition), name ='voir_revendication'),
+    #  -> USELESS ??? url(r'^voir_revendication', ListView.as_view(model = Proposition), name ='voir_revendication'),
     url(r'^afficher_le_graph_des_propositions', views.afficher_le_graph_des_propositions, name = 'afficher_le_graph_des_propositions'),
     # Organisations
     url(r'^creer_une_organisation', views.creer_une_organisation, name = 'creer_une_organisation'),
     url(r'^afficher_une_organisation', views.afficher_une_organisation, name = 'afficher_une_organisation'),
     url(r'^consult_organisations', views.consulter_les_organisations, name = 'consult_organisations'),
-    url(r'^adherer_a_une_organisation', views.adherer_a_une_organisation, name = 'adherer_a_une_organisation'),
+    url(r'^adherer_a_une_organisation/(\d+)$', views.adherer_a_une_organisation, name = 'adherer_a_une_organisation'),
     url(r'^mes_organisations', views.mes_organisations, name = 'mes_organisations'),
     # Evénements
     url(r'^creer_un_evenement', views.creer_un_evenement, name = 'creer_un_evenement'),
-    url(r'^detail_evenement', views.detail_evenement, name = 'detail_evenement'),
+    url(r'^detail_evenement/(\d+)$', views.detail_evenement, name = 'detail_evenement'),
     url(r'^participer_a_un_evenement', views.participer_a_un_evenement, name = 'participer_a_un_evenement'),
     url(r'^mes_evenements', views.mes_evenements, name = 'mes_evenements'),
     # Pétitions

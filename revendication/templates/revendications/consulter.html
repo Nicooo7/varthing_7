@@ -5,10 +5,8 @@
 
 
 {% block barre_de_gauche%}  
-
-	<a href="consult_revendication" style="color:blue;"  >  revendications </a>
-    <a href="consult_organisations" style="color:blue;"  >  organisations </a>
-
+  <a href="{% url 'consult_revendications' %}" style="color:blue;"  >  revendications </a>
+  <a href="{% url 'consult_organisations' %}" style="color:blue;"  >  organisations </a>
 {% endblock %}                            	
                             
 

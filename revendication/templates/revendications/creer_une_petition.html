@@ -8,9 +8,6 @@
 
 <p>Proposition de provenance : {{id_proposition}}</p>
 
-{% comment %}
-<form action="/revendication/creer_une_petition.html?id_proposition={{id_proposition}} " method="post"> 
-{% endcomment %}
 <form action="{% url 'creer_une_petition' %}?id_proposition={{id_proposition}}" method="post">
     {% csrf_token %}
     {{form}}

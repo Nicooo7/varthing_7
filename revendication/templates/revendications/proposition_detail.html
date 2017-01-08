@@ -1,9 +1,9 @@
-{% extends "revendications/consult_revendication.html" %} 
+{% extends "revendications/consult_revendications.html" %} 
 {% load static %}
 
 {% block barre_de_gauche %}  
-    <a href="consult_revendication" style="color:red; font-size: 22px"  >  revendications </a>
-    <a href="consult_organisations" style="color:blue;"  >  organisations </a>   
+    <a href="{% url 'consult_revendications' %}" style="color:blue;"  >  revendications </a>
+    <a href="{% url 'consult_organisations' %}" style="color:blue;"  >  organisations </a>
 {% endblock %}                              
                
 
@@ -39,12 +39,12 @@
 
 
 {%block barre_de_droite %}
-       <INPUT TYPE="button" NAME="soutenir_revendication" VALUE="soutenir cette revendication" onclick = "document.location.href = 'http://localhost:8000/revendication/soutenir_une_revendication.html?nom={{proposition.id}}'"> 
+       <INPUT TYPE="button" NAME="soutenir_revendication" VALUE="soutenir cette revendication" onclick = "document.location.href = '{% url 'soutenir_une_revendication' proposition.id %}'"> 
         </INPUT>
 
-         <input type="button" id="creer_un_evenement" value="créer un évenement " onclick = "document.location.href = 'http://localhost:8000/revendication/creer_un_evenement.html?id_proposition={{proposition.id}}';"> </input>
+         <input type="button" id="creer_un_evenement" value="créer un évenement " onclick = "document.location.href = '{% url 'creer_un_evenement' %}?id_proposition={{proposition.id}}';"> </input>
 
-         <input type="button" id="creer_une_petition" value="créer une pétition" onclick = "document.location.href = 'http://localhost:8000/revendication/creer_une_petition.html?id_proposition={{proposition.id}}';"> </input>
+         <input type="button" id="creer_une_petition" value="créer une pétition" onclick = "document.location.href = '{% url 'creer_une_petition' %}?id_proposition={{proposition.id}}';"> </input>
 
         {{proposition.id}}
 {% endblock %}

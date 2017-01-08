@@ -12,12 +12,10 @@
 
 {{id_proposition}}
 
-<form2>
-<form action="/revendication/creer_un_evenement.html?id_proposition={{id_proposition}} " method="post">
+<form action="{% url 'creer_un_evenement' %}?id_proposition={{id_proposition}}" method="post">
     {% csrf_token %}
     {{ form}}
     <input type="submit" value="Valider" onclick= 
     	"alert ('merci d avoir crée un évenement');
     	"  />
 </form>
-</form2>

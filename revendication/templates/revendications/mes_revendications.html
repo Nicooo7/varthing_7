@@ -17,7 +17,7 @@
         <div class = "affichage_de_liste">
          	 <h3> Les revendications dont je suis l'auteur:</h3> 
              	{% for proposition in propositions %}
-             		<div> proposition: {{proposition}} (id {{proposition.id}})</div>
+             		<div> proposition: {{proposition}} (id {{proposition.id}}) <a href="{% url 'proposition_detail' proposition.id %}">[Détails]</a></div>
              	{% endfor %}
 		 </div>
 		 <p>
@@ -25,8 +25,8 @@
 		 <div class = "affichage_de_liste">
 		    <h3> Les revendications auxquelles j'adhère:</h3> 
              	{% for proposition in propositions2 %}
-             		{% comment %}<div> proposition: {{proposition}} <a href="{% url 'detail_petition' pet.id %}">[Détails]</a></div>{% endcomment %}
-                    <div> proposition: {{proposition}} (id {{proposition.id}})</div>
+             		<div> proposition: {{proposition}} <a href="{% url 'proposition_detail' proposition.id %}">[Détails]</a></div>
+                    {% comment %}<div> proposition: {{proposition}} (id {{proposition.id}})</div>{% endcomment %}
              	{% endfor %}
         </div>
          <div class = "affichage_de_liste">

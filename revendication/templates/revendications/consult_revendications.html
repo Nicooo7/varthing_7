@@ -11,19 +11,21 @@
 
 
 {% block barre_centrale %}  
-	<div> <h1>Consulter les organisations</h1> </div>
+	<div> <h1>Navigation interactive</h1> </div>
  	<div class="logo">
         <img src="{% static "revendications/images/carte.png" %}" alt="carte"/> 
     </div>
 {% endblock %}
 
 {%block barre_de_droite%}
-    	{% for organisation in organisations %}
-				 
-				    <input type="button" id="organisation_affichee" value="{{organisation.profile.utilisateur.username}} " onclick = "
-					document.location.href = 'http://localhost:8000/revendication/afficher_une_organisation.html?id_organisation={{organisation.profile.utilisateur.id}}';
-				    "> </input>
-		
-    	{% endfor %}
+	{% for proposition in propositions %}
+
+		<input type="button" id="proposition_affichee" value="{{proposition.ennonce}} " onclick="document.location.href = '{% url 'proposition_detail' proposition.id %}'"> </input>
+	
+	{% endfor %}
 {% endblock %}
     
+  
+
+
+

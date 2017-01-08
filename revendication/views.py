@@ -462,14 +462,18 @@ def creer_une_revendication (request):
 	
 
 
-def consult_revendication (request):
+def consult_revendications (request):
 	propositions = Proposition.objects.all
 
-	return render (request, 'revendications/consult_revendication.html', {"propositions" :propositions})
+	return render (request, 'revendications/consult_revendications.html', {"propositions" :propositions})
 
-def proposition_detail (request):
-	id_proposition = request.GET['nom']
-	proposition = Proposition.objects.get(id= id_proposition)
+def proposition_detail (request, id_proposition):
+	# Vérification identifiant valide ? si non, 404
+	try:
+		proposition = Proposition.objects.get(id = id_proposition)
+	except Proposition.DoesNotExist:
+		raise Http404
+
 	soutien= Soutien.objects.filter(propositions__id = id_proposition).filter(lien ='SO')
 	createur= Soutien.objects.filter(propositions__id = id_proposition).filter(lien = 'CR')
 	evenement = Evenement.objects.filter(proposition_id = id_proposition)
@@ -479,17 +483,22 @@ def proposition_detail (request):
 	return render (request, 'revendications/proposition_detail.html', {"createur" :createur, "proposition" :proposition, "soutien" :soutien, "evenement": evenement, "petitions": petitions})	
 
 
-def soutenir_une_revendication (request):
+def soutenir_une_revendication (request, id_proposition):
+	# Vérification identifiant valide ? si non, 404
+	try:
+		proposition = Proposition.objects.get(id = id_proposition)
+	except Proposition.DoesNotExist:
+		raise Http404
+
 	utilisateur = request.user
-	id_proposition = request.GET['nom']
-	proposition = Proposition.objects.get(id= id_proposition)
-	Soutien.objects.create(propositions = proposition, user= utilisateur, lien='SO')
+
+	Soutien.objects.get_or_create(propositions = proposition, user= utilisateur, lien='SO')
 	
-	request.path ="revendications/mconsult_revendications.html"
+	#request.path ="revendications/consult_revendications.html"
 	
 	propositions = Proposition.objects.all
 
-	return render (request, 'revendications/consult_revendication.html', {"propositions" :propositions})
+	return render (request, 'revendications/consult_revendications.html', {"propositions" :propositions})
 
 
 
@@ -520,6 +529,12 @@ def afficher_mon_profil (request):
 	profil = creer_objet_profil_utilisateur (request)
 	return render (request, 'revendications/afficher_mon_profil.html', {"profil" :profil})
 
+
+"""
+
+	ORGANISATIONS (#organisations)
+
+"""
 
 def creer_une_organisation (request):
 	if request.method == 'POST':
@@ -557,11 +572,17 @@ def afficher_une_organisation (request):
 
 
 
-def adherer_a_une_organisation (request):
-	id_organisation = request.GET['nom']
+def adherer_a_une_organisation (request, id_organisation):
+	# Vérification identifiant valide ? si non, 404
+	try:
+		organisation = Organisation.objects.get(id = id_organisation)
+	except Organisation.DoesNotExist:
+		raise Http404
+
+
 	utilisateur = request.user
-	organisation = Organisation.objects.get(id = id_organisation)
-	soutien = Soutien.objects.create(organisation = organisation, user = utilisateur)
+	
+	soutien = Soutien.objects.get_or_create(organisation = organisation, user = utilisateur, lien = 'SO')
 	organisation.soutien = soutien
 	organisation.save()
 
@@ -588,12 +609,19 @@ def mes_organisations (request):
 
 """
 
-	EVENEMENTS
+	EVENEMENTS (#evenements)
 
 """
 
 def creer_un_evenement (request):
+	"""
+	# Vérification identifiant valide ? si non, 404
+	try:
+		petition = Petition.objects.get(id = id_petition)	
+	except Petition.DoesNotExist:
+		raise Http404
 	id_proposition = request.GET['id_proposition']
+	"""
 
 	if request.method == 'POST':
 		form = EvenementForm(request.POST)
@@ -603,7 +631,7 @@ def creer_un_evenement (request):
 			description = request.POST['description']
 
 			id_proposition = request.GET['id_proposition']
-			proposition = Proposition.objects.get(id = id_proposition)	
+				
 
 			createur = request.user
 		
@@ -622,10 +650,15 @@ def creer_un_evenement (request):
 	return render(request, 'revendications/creer_un_evenement.html', {'form': form, 'id_proposition':id_proposition})
 
 	
-def detail_evenement(request):
-	evenement_id = request.GET['id_evenement']
-	evenement = Evenement.objects.get(id = evenement_id)
-	participants= Soutien.objects.filter (evenement = evenement)
+def detail_evenement(request, id_evenement):
+	# Vérification identifiant valide ? si non, 404
+	try:
+		evenement = Evenement.objects.get(id = id_evenement)
+	except Evenement.DoesNotExist:
+		raise Http404
+
+
+	participants= Soutien.objects.filter(evenement = evenement)
 
 	print ("l'evenement est {}".format(evenement))
 
@@ -633,11 +666,16 @@ def detail_evenement(request):
 
 
 
-def participer_a_un_evenement (request):
-	id_evenement= request.GET['evenement_id']
+def participer_a_un_evenement (request, id_evenement):
+	# Vérification identifiant valide ? si non, 404
+	try:
+		evenement = Evenement.objects.get(id = id_evenement)
+	except Evenement.DoesNotExist:
+		raise Http404
+
+
 	utilisateur = request.user
-	evenement= Evenement.objects.get(id = id_evenement)
-	soutien = Soutien.objects.create(evenement= evenement, user = utilisateur)
+	soutien = Soutien.objects.get_or_create(evenement= evenement, user = utilisateur, lien = 'SO')
 	evenement.participant = soutien
 	evenement.save()
 
@@ -737,7 +775,7 @@ def creer_une_petition(request):
 		return render(request, 'revendications/creer_une_petition.html', {'form': form, 'id_proposition':id_proposition, 'revendications_soutenues':revendications_soutenues})
 
 def supprimer_une_petition(request, id_petition):
-	# Vérification id_petition valide ? si non, 404
+	# Vérification identifiant valide ? si non, 404
 	try:
 		petition = Petition.objects.get(id = id_petition)	
 	except Petition.DoesNotExist:
@@ -768,7 +806,7 @@ def supprimer_une_petition(request, id_petition):
 
 
 def detail_petition(request, id_petition):
-	# Vérification id_petition valide ? si non, 404
+	# Vérification identifiant valide ? si non, 404
 	try:
 		petition = Petition.objects.get(id = id_petition)	
 	except Petition.DoesNotExist:
@@ -787,7 +825,7 @@ def signer_une_petition(request):
 	id_petition = request.GET['id_petition']
 	signataire = request.user
 
-	# Vérification id_petition valide ? si non, 404
+	# Vérification identifiant valide ? si non, 404
 	try:
 		petition = Petition.objects.get(id = id_petition)	
 	except Petition.DoesNotExist:
