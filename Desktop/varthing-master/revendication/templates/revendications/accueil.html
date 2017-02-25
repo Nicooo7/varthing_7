@@ -1,0 +1,32 @@
+{% extends "revendications/base.html" %} 
+{% load static %}
+                 
+  
+
+
+{% block barre_de_gauche%}  
+<div class="barre_de_gauche">
+{% if user.is_authenticated %}
+	<INPUT TYPE="button" NAME="deconnexion" VALUE="se deconnecter" onclick = "document.location.href = '{% url 'deconnexion' %}'">
+{% else %}
+	<INPUT TYPE="button" NAME="connexion" VALUE="creer un compte" onclick = "document.location.href = '{% url 'creation_utilisateur' %}'">
+	<INPUT TYPE="button" NAME="connexion" VALUE="authentification" onclick = "document.location.href = '{% url 'authentification' %}'">
+
+{% endif %}
+
+</div>    
+{% endblock %}                            	
+                            
+
+{% block barre_centrale%}  
+	<div class="barre_centrale">
+	{% if user.is_authenticated %}
+		<h1>Bienvenue <strong>{{user.username}}</strong></h1>
+	{% else %}
+		<h1>Bienvenue !</h1>
+	{% endif %}
+	<div class="logo">
+	        <img src="{% static "revendications/images/logo_galaxie.png" %}" alt="galaxie"/> 
+	    </div> 
+	</div>    
+{% endblock %}  

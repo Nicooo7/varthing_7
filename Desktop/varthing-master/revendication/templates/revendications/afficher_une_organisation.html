@@ -1,0 +1,28 @@
+
+
+{% extends "revendications/consult_revendications.html" %} 
+{% load static %}
+
+{% block barre_de_gauche %}  
+    <a href="{% url 'consult_revendications' %}" style="color:blue;"  >  revendications </a>
+    <a href="{% url 'consult_organisations' %}" style="color:blue;"  >  organisations </a>
+{% endblock %}                              
+               
+
+
+{% block barre_centrale %}  
+
+        <h1>{{profil.utilisateur}}</h1>
+
+            <p> revendications: {{profil.revendications}}</p>
+            <p> documents: {{profil.documents}}</p>
+            <p> actualites: {{profil.actualites}}</p>
+            <p> suggestions: {{profil.suggestions}}</p>
+        	<p> description: {{organisation.description}}</p>    
+
+{% endblock %}
+
+{%block barre_de_droite%}
+       <INPUT TYPE="button" NAME="adherer_organisation" VALUE="adhérer à cette organisation" onclick = "document.location.href = '{% url 'adherer_a_une_organisation' organisation.id %}'"> 
+        </INPUT>
+{% endblock %}

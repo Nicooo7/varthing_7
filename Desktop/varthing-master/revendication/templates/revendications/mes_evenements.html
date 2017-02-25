@@ -1,0 +1,15 @@
+{% extends "revendications/militer.html" %} 
+{% load static %}
+
+{% block barre_de_gauche %}
+        <input type=button id="creer_un_evenement" value ="crée un evenement" onclick ="document.location.href = 'creer_un_ev_choisir_une_proposition'">
+{% endblock %}  
+
+{% block barre_centrale %}
+     
+{%for evenement in evenements%}
+    <input type=button id="detail_evenement" value = "{{evenement}}" onclick ="document.location.href ='detail_evenement?id_evenement={{evenement.id}}'">
+{%endfor%}
+   
+{% endblock %}   
+ 

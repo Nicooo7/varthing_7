@@ -1,0 +1,25 @@
+{% extends "revendications/base.html" %} 
+{% load static %}
+
+{% block barre_de_gauche %}
+        <input type=button id="creer_une_organisation" value ="crée une organisation" onclick ="document.location.href = 'creer_une_organisation'">
+{% endblock %}  
+
+{% block barre_centrale %}
+     
+    <div><h1>Pétition(s) créée(s) :</h1>
+	{%for pet in petitions_crees%}
+	    <div> {{pet}} <a href="{% url 'detail_petition' pet.id %}">[Détails]</a> <a href="{% url 'supprimer_une_petition' pet.id %}">[Supprimer]</a></div>
+	{%endfor%}
+	</div>
+
+    <div><h1>Pétition(s) soutenue(s) :</h1>
+	{%for pet in petitions_soutenues%}
+	    <div> {{pet}} <i>(par {{pet.createur}})</i></div>
+	{%endfor%}
+	</div>
+
+
+   
+{% endblock %}   
+ 

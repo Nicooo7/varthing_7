@@ -1,0 +1,57 @@
+{% extends "revendications/consult_revendications.html" %} 
+{% load static %}
+
+{% block barre_de_gauche %}  
+    <a href="{% url 'consult_revendications' %}" style="color:blue;"  >  revendications </a>
+    <a href="{% url 'consult_organisations' %}" style="color:blue;"  >  organisations </a>
+{% endblock %}                              
+               
+
+
+{% block barre_centrale %}  
+
+            <h1>{{proposition.ennonce}}</h1>
+
+            {%for element in createur %}
+            <p> createur: {{element.user.username}}</p>
+            {% endfor %}
+
+            {%for element in soutien %}
+            <p> soutiens: {{element.user.username}}</p>
+            {% endfor %}
+
+            <p>date de création:{{proposition.date_creation}}</p>
+
+            {%for ev in evenement %}
+            <input type="button" id="evenement" value="evenement : {{ev}} " onclick = "document.location.href = 'http://localhost:8000/revendication/detail_evenement.html?id_evenement={{ev.id}}';"> </input>
+            {% endfor %}
+
+            <p>Pétition(s) liée(s) :</p>
+            <ul>
+                {%for pet in petitions %}
+                <li><a href="{% url 'detail_petition' pet.id %}">{{pet}}</a></li>
+                {% endfor %}
+            </ul>
+
+{% endblock %}
+
+
+
+
+{%block barre_de_droite %}
+       <INPUT TYPE="button" NAME="soutenir_revendication" VALUE="soutenir cette revendication" onclick = "document.location.href = '{% url 'soutenir_une_revendication' proposition.id %}'"> 
+        </INPUT>
+
+         <input type="button" id="creer_un_evenement" value="créer un évenement " onclick = "document.location.href = '{% url 'creer_un_evenement' %}?id_proposition={{proposition.id}}';"> </input>
+
+         <input type="button" id="creer_une_petition" value="créer une pétition" onclick = "document.location.href = '{% url 'creer_une_petition' %}?id_proposition={{proposition.id}}';"> </input>
+
+        {{proposition.id}}
+{% endblock %}
+
+
+
+
+
+                                          	
+                            
