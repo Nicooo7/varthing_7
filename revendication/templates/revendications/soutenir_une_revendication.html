@@ -1,0 +1,30 @@
+{% extends "revendications/consult_revendications.html" %} 
+{% load static %}
+
+{% block barre_de_gauche %}  
+    <a href="{% url 'consult_revendications' %}" style="color:blue;"  >  revendications </a>
+    <a href="{% url 'consult_organisations' %}" style="color:blue;"  >  organisations </a>
+{% endblock %}                              
+               
+
+
+{% block barre_centrale %}  
+
+            <h1></h1>
+
+            {%for element in createur %}
+            <p> createur: {{element.user.username}}</p>
+            {% endfor %}
+
+            {%for element in soutien %}
+            <p> soutiens: {{element.user.username}}</p>
+            {% endfor %}
+
+            <p>date de création:{{proposition.date_creation}}</p>
+
+{% endblock %}
+
+{%block barre_de_droite%}
+       <INPUT TYPE="button" NAME="soutenir_revendication" VALUE="soutenir cette revendication" onclick = "document.location.href = 'http://localhost:8000/revendication/soutenir_une_revendication.html?nom={{proposition.id}}'"> 
+        </INPUT>
+{% endblock %}
