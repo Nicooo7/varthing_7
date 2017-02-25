@@ -920,6 +920,25 @@ def afficher_le_graph_des_propositions(request):
 			if force != 0:
 				G.add_edge(*couple, weight = force)
 			
+
+
+	def copier_dans_des_fichiers(G):
+
+		from networkx.readwrite import json_graph
+		data = json_graph.node_link_data(G)
+		import json
+		s = json.dumps(data)
+		
+
+
+		nx.write_gexf(G, "/Users/nicolasvinurel/Documents/site/js/propositions.gexf")
+		fichier = open("/Users/nicolasvinurel/Documents/site/js/propositions.json", "w")
+		fichier.write(s)
+
+
+			
+
+
 	G = nx.Graph()
 	propositions = Proposition.objects.all()
 	dictionnaire_des_propositions = creer_un_dictionnaire_proposition_soutiens(propositions)
@@ -927,10 +946,28 @@ def afficher_le_graph_des_propositions(request):
 
 	creer_les_noeuds(G, propositions)
 	creer_les_liens (G, liste_des_couples, dictionnaire_des_propositions)
+	
+	import matplotlib.pyplot as plt
+	nx.draw(G)  # networkx draw()
+	plt.draw()  # pyplot draw()
+	plt.show()
+	
+	copier_dans_des_fichiers(G)
 
-	nx.write_gexf(G, "propositions.gexf")
+	#spring_layout(G, dim=2, k=None, pos=None, fixed=None, iterations=50, weight='weight', scale=1.0, center=None)
 
 
+
+	return render(request, 'revendications/index_modifie.html')
+
+
+def config_json(request):
+	
+	return render(request, 'revendications/config.json')
+
+def data_json(request):
+	
+	return render(request, 'revendications/data.json')
 
 
 
