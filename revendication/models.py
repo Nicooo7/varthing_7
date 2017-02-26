@@ -52,6 +52,23 @@ class Evenement (models.Model):
     def __str__(self):
         return self.titre
 
+    # Méthode/Propriété : "createur" : donne le username du créateur de la pétition
+    def __createur(self):
+        soutien = Soutien.objects.get(evenement=self, lien = 'CR')
+        return soutien.user
+    createur = property(__createur)
+    
+    # Méthode/Propriété : "nb_signataires" : donne le nombre de signataires de la pétition
+    def __nb_participant(self):
+        return Soutien.objects.filter(evenement=self).count()
+    nb_participant = property(__nb_participant)
+
+
+    def get_absolute_url(self):
+        #return reverse('detail_petition', args=[str(self.id)])
+        return reverse('detail_evenement')
+
+
 
 class Profile (models.Model):
     utilisateur = models.ForeignKey(User, null=True)

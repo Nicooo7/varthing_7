@@ -669,7 +669,9 @@ def detail_evenement(request, id_evenement):
 
 
 
-def participer_a_un_evenement (request, id_evenement):
+def participer_a_un_evenement (request):
+	id_evenement = request.GET['id_evenement']
+	signataire = request.user
 	# Vérification identifiant valide ? si non, 404
 	try:
 		evenement = Evenement.objects.get(id = id_evenement)

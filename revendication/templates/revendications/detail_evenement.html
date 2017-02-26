@@ -31,12 +31,8 @@
 
 
 {%block barre_de_droite%}
-       <INPUT TYPE="button" NAME="participer_evenement" VALUE="participer à cet évenement" onclick = "document.location.href = 'http://localhost:8000/revendication/participer_a_un_evenement.html?evenement_id={{evenement.id}}'"> 
-        </INPUT>
-
-         <input type="button" id="creer_un_evenement" value="créer un évenement " onclick = "
-        document.location.href = 'http://localhost:8000/revendication/creer_un_evenement.html?id_proposition={{proposition.id}}';
-        "> </input>
+        <INPUT TYPE="button" NAME="participer" VALUE="Participez à cet evenement" onclick = "document.location.href = 'http://localhost:8000/revendication/participer_a_un_evenement.html?id_evenement={{evenement.id}}'"> 
+        </INPUT> 
 
         {{proposition.id}}
 {% endblock %}
