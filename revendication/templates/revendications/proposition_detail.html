@@ -23,7 +23,11 @@
             <p>date de création:{{proposition.date_creation}}</p>
 
             {%for ev in evenement %}
-            <input type="button" id="evenement" value="evenement : {{ev}} " onclick = "document.location.href = 'http://localhost:8000/revendication/detail_evenement.html?id_evenement={{ev.id}}';"> </input>
+            <ul>
+                {%for ev in evenement %}
+                <li><a href="{% url 'detail_evenement' ev.id %}">{{ev}}</a></li>
+                {% endfor %}
+            </ul>
             {% endfor %}
 
             <p>Pétition(s) liée(s) :</p>
