@@ -41,7 +41,8 @@ class Autre_utilisateur (models.Model):
         return "utilisateur {0} ".format (self.user)
 
 class Evenement (models.Model):
-    titre = models.CharField(max_length = 100, null=True)
+
+    titre = models.CharField(max_length = 10000, null = True)
     lieu = models.ForeignKey (Lieu, null=True)
     date = models.DateField (null=True)
     description = models.CharField(max_length = 10000, null = True)

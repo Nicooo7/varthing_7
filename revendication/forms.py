@@ -40,6 +40,7 @@ class OrganisationForm(forms.Form):
 	description =  forms.CharField(max_length=10000)
 
 class EvenementForm(forms.Form):
+	titre = forms.CharField (max_length = 100)
 	lieu = forms.CharField (max_length = 100)
 	date = forms.DateField ()
 	description = forms.CharField(widget=forms.Textarea, max_length = 10000)

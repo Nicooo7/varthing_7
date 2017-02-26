@@ -480,6 +480,7 @@ def proposition_detail (request, id_proposition):
 	petitions = proposition.petition_set.all()
 
 	print (proposition)
+	print (createur)
 	return render (request, 'revendications/proposition_detail.html', {"createur" :createur, "proposition" :proposition, "soutien" :soutien, "evenement": evenement, "petitions": petitions})	
 
 
@@ -629,13 +630,14 @@ def creer_un_evenement (request):
 			lieu = request.POST['lieu']
 			date = request.POST['date']
 			description = request.POST['description']
-
+			titre = request.POST['titre']
 			id_proposition = request.GET['id_proposition']
+			proposition = Proposition.objects.get(id = id_proposition)
 				
 
 			createur = request.user
 		
-			evenement = Evenement.objects.create (date = date, description = description, proposition =proposition)
+			evenement = Evenement.objects.create (date = date, description = description, proposition =proposition, titre = titre)
 			evenement.save()
 			soutien = Soutien.objects.create (evenement = evenement, user = createur, lien = 'CR')
 			soutien.save()
@@ -643,6 +645,7 @@ def creer_un_evenement (request):
 
 			return render(request, 'revendications/merci.html')
 	else:
+		id_proposition = request.GET['id_proposition']
 		form = EvenementForm()
 	
 	print ("voici le formulaire = {}".format(form))
