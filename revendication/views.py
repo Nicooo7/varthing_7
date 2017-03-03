@@ -678,15 +678,14 @@ def participer_a_un_evenement (request):
 	except Evenement.DoesNotExist:
 		raise Http404
 
-
+	participants= Soutien.objects.filter(evenement = evenement)	
 	utilisateur = request.user
 	soutien = Soutien.objects.get_or_create(evenement= evenement, user = utilisateur, lien = 'SO')
-	evenement.participant = soutien
 	evenement.save()
 
 	organisations = Organisation.objects.all
 
-	return render (request, 'revendications/militer.html', {"choix_menu": "militer"})
+	return render (request, 'revendications/detail_evenement.html', {'evenement': evenement, 'participants':participants, 'alert':"oui"})
 
 
 def mes_evenements(request):

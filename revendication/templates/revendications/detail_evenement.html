@@ -12,9 +12,9 @@
 
             <h1>{{evenement.titre}}</h1>
 
-            {%for participant in participants %}
-            <p> participants: {{participant}}</p>
-            {% endfor %}
+    
+            <p> participants: {%for participant in participants %} {{participant}}   {% endfor %}</p>
+          
 
             <p>lieu :{{evenement.lieu}}</p>
 
@@ -34,5 +34,20 @@
         <INPUT TYPE="button" NAME="participer" VALUE="Participez à cet evenement" onclick = "document.location.href = 'http://localhost:8000/revendication/participer_a_un_evenement.html?id_evenement={{evenement.id}}'"> 
         </INPUT> 
 
+
         {{proposition.id}}
+
+
+
+        {% if alert == "oui"%}
+     <script>
+        alert('vous participez à cet évenement !!!!');
+    </script>
+{% endif %}
+
+
 {% endblock %}
+
+
+
+
