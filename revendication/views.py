@@ -685,7 +685,15 @@ def participer_a_un_evenement (request):
 
 	organisations = Organisation.objects.all
 
-	return render (request, 'revendications/detail_evenement.html', {'evenement': evenement, 'participants':participants, 'alert':"oui"})
+	#verifier si l'utilisateur est déjà participant et préparer un message d'alert le cas échéant
+	for participant in participants:
+		if participant == utilisateur:
+			alert = "vous participez à cet évenement"
+			break
+		else:
+			alert = "vous ne participez pas à cet évenement"
+
+	return render (request, 'revendications/detail_evenement.html', {'evenement': evenement, 'participants':participants, 'alert': alert})
 
 
 def mes_evenements(request):
