@@ -661,7 +661,7 @@ def detail_evenement(request, id_evenement):
 		raise Http404
 
 
-	participants= Soutien.objects.filter(evenement = evenement)
+	participants= Soutien.objects.filter(evenement = evenement, lien= 'SO')
 
 	print ("l'evenement est {}".format(evenement))
 
@@ -678,27 +678,32 @@ def participer_a_un_evenement (request):
 	except Evenement.DoesNotExist:
 		raise Http404
 
-	participants= Soutien.objects.filter(evenement = evenement)	
+	participants= Soutien.objects.filter(evenement = evenement, lien = 'SO')
 	utilisateur = request.user
 	soutien = Soutien.objects.get_or_create(evenement= evenement, user = utilisateur, lien = 'SO')
 	evenement.save()
 
 	organisations = Organisation.objects.all
 
+
 	#verifier si l'utilisateur est déjà participant et préparer un message d'alert le cas échéant
 	for participant in participants:
-		if participant == utilisateur:
-			alert = "vous participez à cet évenement"
+
+		if participant.user == utilisateur:
+			print ("ca match")
+			message = "vous participez déjà à cet évenement"
 			break
 		else:
-			alert = "vous ne participez pas à cet évenement"
+			message = "Vous participez désormais à cet évenement"
 
-	return render (request, 'revendications/detail_evenement.html', {'evenement': evenement, 'participants':participants, 'alert': alert})
+	print (message)
+
+	return render (request, 'revendications/detail_evenement.html', {'evenement': evenement, 'participants':participants, 'message': message})
 
 
 def mes_evenements(request):
 	utilisateur = request.user
-	evenements = Evenement.objects.filter(soutien__user=utilisateur)
+	evenements = Evenement.objects.filter(participants=utilisateur, soutien__lien = 'SO')
 	print ("voici la liste des evenements : {}".format(evenements))
 	
 	return render(request, 'revendications/mes_evenements.html', {'evenements': evenements})

@@ -13,7 +13,7 @@
             <h1>{{evenement.titre}}</h1>
 
     
-            <p> participants: {%for participant in participants %} {{participant}}   {% endfor %}</p>
+            <p> participants: {%for participant in participants %} {{participant.user}}   {% endfor %}</p>
           
 
             <p>lieu :{{evenement.lieu}}</p>
@@ -35,13 +35,11 @@
         </INPUT> 
 
 
-        {{proposition.id}}
-
         
      <script>
-        bonjour = "salut toi";
-        alert = {{alert}};
-        alert(alert);
+        message = "{{message}}";
+        if (message != "") 
+        alert(message);
     </script>
 
 {% endblock %}

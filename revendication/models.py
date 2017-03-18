@@ -57,6 +57,11 @@ class Evenement (models.Model):
         soutien = Soutien.objects.get(evenement=self, lien = 'CR')
         return soutien.user
     createur = property(__createur)
+
+     # Méthode/Propriété : "soutien" : donne le username des soutiens de la pétition
+    def __soutiens(self):
+        soutiens = Soutien.objects.filter(evenement=self, lien = 'SO')
+    soutiens = property(__soutiens)
     
     # Méthode/Propriété : "nb_signataires" : donne le nombre de signataires de la pétition
     def __nb_participant(self):

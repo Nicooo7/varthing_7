@@ -8,7 +8,9 @@
 {% block barre_centrale %}
      
 {%for evenement in evenements%}
-    <input type=button id="detail_evenement" value = "{{evenement}}" onclick ="document.location.href ='detail_evenement?id_evenement={{evenement.id}}'">
+    <input type=button id="detail_evenement" value = "{{evenement}}" onclick ="
+			document.location.href = '{% url 'detail_evenement' evenement.id %}';
+		    ">
 {%endfor%}
    
 {% endblock %}   

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf version="1.1" xmlns="http://www.gexf.net/1.1draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema-instance">
+  <graph defaultedgetype="undirected" mode="static">
+    <nodes>
+      <node id="virer tous les immigres" label="virer tous les immigres" />
+      <node id="virer certains immigres" label="virer certains immigres" />
+      <node id="accueuillir généreusement les immigres" label="accueuillir généreusement les immigres" />
+      <node id="détruire le capitalisme" label="détruire le capitalisme" />
+      <node id="encourager le capitalisme" label="encourager le capitalisme" />
+      <node id="s'accomoder du capitalisme" label="s'accomoder du capitalisme" />
+      <node id="s'en foutre de la planete" label="s'en foutre de la planete" />
+      <node id="faire comme si on s'en préoccupait de la planete" label="faire comme si on s'en préoccupait de la planete" />
+      <node id="se préoccuper de la planete" label="se préoccuper de la planete" />
+      <node id="faire de la planete sa priorité" label="faire de la planete sa priorité" />
+    </nodes>
+    <edges>
+      <edge id="0" source="virer tous les immigres" target="s'en foutre de la planete" weight="1" />
+      <edge id="1" source="virer tous les immigres" target="faire comme si on s'en préoccupait de la planete" weight="1" />
+      <edge id="2" source="virer tous les immigres" target="virer certains immigres" weight="1" />
+      <edge id="3" source="virer tous les immigres" target="détruire le capitalisme" weight="1" />
+      <edge id="4" source="virer tous les immigres" target="encourager le capitalisme" weight="1" />
+      <edge id="5" source="virer certains immigres" target="faire comme si on s'en préoccupait de la planete" weight="1" />
+      <edge id="6" source="virer certains immigres" target="encourager le capitalisme" weight="1" />
+      <edge id="7" source="accueuillir généreusement les immigres" target="détruire le capitalisme" weight="5" />
+      <edge id="8" source="accueuillir généreusement les immigres" target="encourager le capitalisme" weight="1" />
+      <edge id="9" source="accueuillir généreusement les immigres" target="s'accomoder du capitalisme" weight="2" />
+      <edge id="10" source="accueuillir généreusement les immigres" target="faire comme si on s'en préoccupait de la planete" weight="1" />
+      <edge id="11" source="accueuillir généreusement les immigres" target="se préoccuper de la planete" weight="2" />
+      <edge id="12" source="accueuillir généreusement les immigres" target="faire de la planete sa priorité" weight="1" />
+      <edge id="13" source="détruire le capitalisme" target="s'accomoder du capitalisme" weight="4" />
+      <edge id="14" source="détruire le capitalisme" target="s'en foutre de la planete" weight="1" />
+      <edge id="15" source="détruire le capitalisme" target="se préoccuper de la planete" weight="4" />
+      <edge id="16" source="détruire le capitalisme" target="faire de la planete sa priorité" weight="1" />
+      <edge id="17" source="encourager le capitalisme" target="faire comme si on s'en préoccupait de la planete" weight="2" />
+      <edge id="18" source="s'accomoder du capitalisme" target="se préoccuper de la planete" weight="2" />
+    </edges>
+  </graph>
+</gexf>
