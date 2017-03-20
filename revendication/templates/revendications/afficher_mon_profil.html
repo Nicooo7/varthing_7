@@ -6,12 +6,9 @@
 
             <h1>{{profil.utilisateur}}</h1>
 
-
-
-            
             
 
-            <p> revendications: {% for proposition in profil.revendications %}
+            <p> revendications: {% for proposition in revendications %}
 				 
 			<div> proposition: {{proposition}}</div>
 		
@@ -20,10 +17,10 @@
             
 
 
-            <p> documents: {{profil.documents}}</p>
+            <p> documents: {{documents}}</p>
             <p> organisations: {% for organisation in organisations %}
 				 
-			<div> organisation: {{organisations.organisation}}</div>
+			<div> organisation: {{organisation}}</div>
 		
     		{% endfor %}
 
@@ -32,8 +29,8 @@
             </p>
 
 
-            <p> actualites: {{profil.actualites}}</p>
-            <p> suggestions: {{profil.suggestions}}</p>
+            <p> actualites: {{actualites}}</p>
+            <p> suggestions: {{suggestions}}</p>
         
 
 {% endblock %}

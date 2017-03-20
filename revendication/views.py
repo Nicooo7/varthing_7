@@ -631,31 +631,16 @@ def soutenir_une_revendication (request, id_proposition):
 
 
 def afficher_mon_profil (request):
-	
-	def creer_objet_profil_utilisateur (request):
-		utilisateur = request.user
-		propositions_soutenues = Proposition.objects.filter (soutien__user= utilisateur)
-		militantisme = Militant.objects.filter (utilisateur = utilisateur)
-		documents = "vide"
-		organisations = "vide"
-		actualites = "vide"
-		suggestions = "vide"
 
-		class Profil:
-			
-			def __init__ (self, utilisateur, propositions_soutenues, documents, organisations, actualites, suggestions):
-				self.utilisateur = utilisateur
-				self.revendications = propositions_soutenues
-				self.documents = documents
-				self.organisations = militantisme
-				self.actualites= actualites
-				self.suggestions = suggestions
+	utilisateur = request.user
+	revendications = Proposition.objects.filter (soutien__user= utilisateur)
+	documents = "documents"
+	organisations = Organisation.objects.filter(soutien__user = utilisateur)
+	actualites= "actualites"
+	suggestions = "suggestions"
 
-		profil = Profil(utilisateur, propositions_soutenues, documents, organisations, actualites, suggestions)
-		return profil
 
-	profil = creer_objet_profil_utilisateur (request)
-	return render (request, 'revendications/afficher_mon_profil.html', {"profil" :profil})
+	return render (request, 'revendications/afficher_mon_profil.html', {"revendications":revendications, "documents":documents, "organisations": organisations, "actualites": actualites, "suggestions": suggestions})
 
 
 """
