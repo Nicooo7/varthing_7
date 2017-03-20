@@ -290,25 +290,152 @@ def simulation2():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     #..........................REQUESTS.........................#
 
 
 def consulter (request):
+
+
+	def proximite_des_propositions():
+
+		propositions = Proposition.objects.all()
+		liste = []
+		#on récupère la liste des soutiens des propositions que l'on veut comparer
+		for proposition1 in propositions:
+			soutiens1 = Soutien.objects.filter(propositions = proposition1, lien = 'SO')
+			liste_soutiens1 = []
+			for e in soutiens1:
+				liste_soutiens1.append(e.user.username)
+
+
+
+				
+			for proposition2 in propositions:
+				soutiens2 = Soutien.objects.filter(propositions = proposition2, lien = 'SO')
+				liste_soutiens2 = []
+				for e in soutiens2:
+					liste_soutiens2.append(e.user.username)
+
+				if proposition2 != proposition1:
+
+					#on compare ces propositions
+					liste_des_soutiens_communs = []
+					for soutien in liste_soutiens1:
+						"""print ("proposition1:{}".format(proposition1))
+						print ("proposition2: {}".format(proposition2))
+						print ("soutien1: {}".format(soutien))
+						print ("soutiens2: {}".format(liste_soutiens2))"""
+						if soutien in liste_soutiens2:
+							liste_des_soutiens_communs.append(soutien)
+							#print ("liste des soutiens communs : {}".format(liste_des_soutiens_communs))
+					proximite = len(liste_des_soutiens_communs)/(len (soutiens1) + len(soutiens2))
+					
+					triplet = (proposition1, proposition2, proximite)
+					liste.append(triplet)
+		
+
+
+		dictionnaire = sorted(liste, key=lambda x: x[2])
+		dictionnaire.reverse()
+		return dictionnaire
+
+	proximite = proximite_des_propositions()	
+
+	def affichage_graphique_des_proximite(proximite):
+
+		import networkx as nx
+		import matplotlib.pyplot as plt
+		
+		G = nx.Graph()
+
+		
+		propositions = Proposition.objects.all()
+		for proposition in propositions:
+			G.add_node(proposition)
+
+		for triplet in proximite:
+			if triplet[2] > 0.5: 
+				G.add_edge(triplet[0], triplet[1], weight = triplet[2])
+
+		pos = nx.spring_layout(G)
+		print (pos)
+
+		liste_noeud = []
+
+
+		#ecriture des noeuds:
+		noeuds = "{" + ' "nodes" : ' + "["
+		i = "premier"
+		for cle, valeur in pos.items():
+			
+			if i == "premier":
+				noeud = "{"  + '"id" : ' + '"' + "{}".format(str(cle)) + '"' + "," + ' "label"  : ' + '"' + "{}".format(cle) + '"' + ","  + '"x" :' + "{}".format(valeur[0]) +  "," + ' "y" : ' + "{}".format (valeur[1]) + ","  + ' "size"  : 3 ' + "}" 
+				noeuds = noeuds + "\n" + noeud
+				i = "plus_premier"
+			else :
+				noeud = "{"  + '"id" : ' + '"' + "{}".format(str(cle)) + '"' + "," + ' "label"  : ' + '"' + "{}".format(cle) + '"' + ","  + '"x" :' + "{}".format(valeur[0]) +  "," + ' "y" : ' + "{}".format (valeur[1]) + ","  + ' "size"  : 3 ' + "}" 
+				noeuds = noeuds + "\n" + "," + noeud
+
+		noeuds = noeuds + "],"
+
+	
+
+
+		#ecriture des edges:
+		edges = '"edges":'  + "["
+		i = "premier"
+		a = 0
+		for triplet in proximite:
+			if triplet[2]>0.25:
+				if i == "premier":
+					edge = "{"  +  ' "id" : ' + '"' + "{}".format(str(a)) + '"' + ","  + ' "source"  : ' + '"' + "{}".format(triplet[0]) + '"' + ","  + ' "target"  :'  + '"' + "{}".format(triplet[1]) + '"' + "}" 
+					edges = edges + "\n" +  edge
+					i= "plus_premier"
+					a = a+1
+
+				else:
+					edge = "{"  +  ' "id" : ' + '"' + "{}".format(str(a)) + '"' + ","  + ' "source"  : ' + '"' + "{}".format(triplet[0]) + '"' + ","  + ' "target"  :'  + '"' + "{}".format(triplet[1]) + '"' + "}" 
+					edges = edges + "\n" + "," + edge
+					a = a+1
+
+		edges = edges + "] }"
+
+		
+
+
+
+		#ecriture des data
+		data = noeuds + "\n" + "\n" + edges
+
+
+
+		#nx.draw_spring(G, with_labels = True, width = 0.1)
+		#path = "/Users/nicolasvinurel/Desktop/graph/graph"
+		#plt.savefig(path + ".png")
+		#nx.write_gexf(G, path + ".gexf")
+		return data
+		
+
+	data = affichage_graphique_des_proximite(proximite)
+	fichier_data = open("/Users/nicolasvinurel/Desktop/depot/revendication/templates/revendications/fichier_data.json", "w")
+	fichier_data.write(data)
+	fichier_data.close()
+
 	utilisateur= request.user
-	return render (request, 'revendications/consulter.html', {"choix_menu": "consulter"})
+	
+	return render (request, 'revendications/consulter.html', {"choix_menu": "consulter", 'data': data})
+
+
+def data_json(request):
+	
+	return render(request, 'revendications/fichier_data.json')
+
+	
+
+
+
+
+
 
 def creation_utilisateur (request):
 	if request.method == 'POST':

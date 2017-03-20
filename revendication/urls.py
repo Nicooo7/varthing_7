@@ -49,4 +49,5 @@ urlpatterns = [
     # ~ Divers ~
     url(r'^merci', views.merci, name = 'merci'),
     url(r'^message', views.message, name = 'message'),
+    url(r'^fichier_data.json', views.data_json, name = 'fichier_data_json'),
     ]

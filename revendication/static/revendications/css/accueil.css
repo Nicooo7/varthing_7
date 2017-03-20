@@ -10,6 +10,13 @@ text-align:center;
 
 
 
+#container 
+{
+   display: flex;
+	justify-content: space-around;
+	min-height: 400px
+ }
+
 
 .barre_du_haut
 {
@@ -25,7 +32,7 @@ text-align:center;
 {
 	display: flex;
 	justify-content: space-around;
-	min-height: 700px
+	min-height: 800px
 }
 
 
@@ -44,19 +51,10 @@ text-align:center;
 }
 
 
-.affichage_de_liste
-{
-
-    display:flex;
-    justify-content: space-around;
-    margin : auto;
-    flex-direction: column;
-
-}
-
-
 .barre_centrale
 {
+
+
 display:flex;
 flex-direction: column;
 order:2;
@@ -85,7 +83,15 @@ margin: auto;
 	
 }
 
+.affichage_de_liste
+{
 
+    display:flex;
+    justify-content: space-around;
+    margin : auto;
+    flex-direction: column;
+
+}
 
 
 h1 {
