@@ -1,4 +1,4 @@
-{% extends "revendications/militer.html" %} 
+{% extends "revendications/consulter.html" %} 
 {% load static %}
 
 
@@ -10,12 +10,7 @@
                
 
 
-{% block barre_centrale %}  
-	<div> <h1>Navigation interactive</h1> </div>
- 	<div class="logo">
-        <img src="{% static "revendications/images/carte.png" %}" alt="carte"/> 
-    </div>
-{% endblock %}
+
 
 {%block barre_de_droite%}
 	{% for proposition in propositions %}
