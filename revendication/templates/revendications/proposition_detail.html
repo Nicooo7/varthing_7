@@ -37,6 +37,13 @@
                 {% endfor %}
             </ul>
 
+            <p>Competences(s) liée(s) :</p>
+            <ul>
+                {%for comp in competences %}
+                <li><a href="{% url 'detail_competence' comp.id %}">{{comp}}</a></li>
+                {% endfor %}
+            </ul>
+
 {% endblock %}
 
 
@@ -49,6 +56,8 @@
          <input type="button" id="creer_un_evenement" value="créer un évenement " onclick = "document.location.href = '{% url 'creer_un_evenement' %}?id_proposition={{proposition.id}}';"> </input>
 
          <input type="button" id="creer_une_petition" value="créer une pétition" onclick = "document.location.href = '{% url 'creer_une_petition' %}?id_proposition={{proposition.id}}';"> </input>
+
+           <input type="button" id="demander_une_competence" value="demander une competence" onclick = "document.location.href = '{% url 'creer_une_competence' %}?id_proposition={{proposition.id}}';"> </input>
 
         {{proposition.id}}
 {% endblock %}

@@ -140,6 +140,29 @@ class Petition(models.Model):
         return self.titre
 
 
+class Competence (models.Model):
+    titre = models.CharField(max_length=100)
+    description = models.TextField("Descrition de la compétence recherchée")
+    propositions = models.ManyToManyField(Proposition, null=True)
+    date_creation = models.DateField("Date de création", auto_now=True)
+    date_echeance = models.DateField("Date d'échéance", null=True, blank=True)
+    personnes = models.ManyToManyField(User, through="Soutien", null=True)
+
+    
+    # Méthode/Propriété : "createur" : donne le username du créateur de la pétition
+    def __createur(self):
+        soutien = Soutien.objects.get(competence=self, lien = 'CR')
+        return soutien.user
+    createur = property(__createur)
+    
+
+    def get_absolute_url(self):
+        #return reverse('detail_petition', args=[str(self.id)])
+        return reverse('detail_petition')
+
+    def __str__(self):
+        return self.titre
+
 
 class Soutien(models.Model):
 
@@ -156,6 +179,7 @@ class Soutien(models.Model):
     evenement = models.ForeignKey(Evenement, null = True)
     organisation = models.ForeignKey(Organisation, null = True)
     petition = models.ForeignKey(Petition, null = True)
+    competence = models.ForeignKey(Competence, null = True)
 
     def __str__(self):
         return self.user.username
@@ -170,6 +194,11 @@ class Proximite(models.Model):
 
     def __str__(self):
         return "proximite entre {0} et {1} ".format(self.profile , self.Autre_utilisateur)
+
+
+
+
+
 
 
 """

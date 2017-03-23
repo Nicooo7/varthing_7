@@ -1,0 +1,25 @@
+{% extends "revendications/base.html" %} 
+{% load static %}
+
+{% block barre_de_gauche %}
+        <input type=button id="creer_une_organisation" value ="crée une organisation" onclick ="document.location.href = 'creer_une_organisation'">
+{% endblock %}  
+
+{% block barre_centrale %}
+     
+    <div><h1>Demandes de compétence(s) créée(s) :</h1>
+	{%for comp in competences_crees%}
+	    <div> {{comp}} <a href="{% url 'detail_competence' comp.id %}">[Détails]</a> <a href="{% url 'supprimer_une_competence' comp.id %}">[Supprimer]</a></div>
+	{%endfor%}
+	</div>
+
+    <div><h1>Competences(s) proposées :</h1>
+	{%for comp in competences_soutenues%}
+	    <div> {{comp}} <i>(par {{comp.createur}})</i></div>
+	{%endfor%}
+	</div>
+
+
+   
+{% endblock %}   
+ 

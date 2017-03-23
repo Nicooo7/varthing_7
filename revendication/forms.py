@@ -59,6 +59,20 @@ class PetitionForm(forms.Form):
 		#fields = ['titre', 'description', 'propositions', 'date_echeance', 'objectif_de_signataires']
 		fields = '__all__'
 	"""
+
+class CompetenceForm(forms.Form):
+	"""
+	"""
+	titre = forms.CharField(max_length = 100)
+	description = forms.CharField(widget = forms.Textarea)
+	#propositions = forms.CharField(widget = )
+	date_echeance = forms.DateField(required = False)
+	"""
+	class Meta:
+		model = Petition
+		#fields = ['titre', 'description', 'propositions', 'date_echeance', 'objectif_de_signataires']
+		fields = '__all__'
+	"""
 		
 
 class AuthentificationForm(forms.Form):

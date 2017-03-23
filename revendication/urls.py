@@ -46,6 +46,13 @@ urlpatterns = [
     url(r'^detail_petition/(\d+)$', views.detail_petition, name = 'detail_petition'),
     url(r'^signer_une_petition', views.signer_une_petition, name = 'signer_une_petition'),
     url(r'^mes_petitions', views.mes_petitions, name = 'mes_petitions'),
+    # competence
+    url(r'^creer_une_competence', views.creer_une_competence, name = 'creer_une_competence'),
+    url(r'^supprimer_une_competence/(\d+)$', views.supprimer_une_competence, name = 'supprimer_une_competence'),
+    url(r'^detail_competence/(\d+)$', views.detail_competence, name = 'detail_competence'),
+    url(r'^signer_une_competence', views.signer_une_competence, name = 'signer_une_petition'),
+    url(r'^mes_competences', views.mes_competences, name = 'mes_competences'),
+
     # ~ Divers ~
     url(r'^merci', views.merci, name = 'merci'),
     url(r'^message', views.message, name = 'message'),

@@ -1,0 +1,38 @@
+{% extends "revendications/base.html" %} 
+
+
+{% block barre_centrale %}  
+
+	<p>Vous êtes sur le point de supprimer la pétition <strong>"{{competence.titre}}"</strong>.<br/>
+	<strong>Attention, cette action est IRRÉVERSIBLE !</strong></p>
+
+	<form action="{% url 'supprimer_une_competence' competence.id %}" method="post">
+   		{% csrf_token %}
+	    <input type="submit" value="Confirmer la suppression"  />
+	</form>
+
+    <h1>Détails de la pétition</h1>
+    <p>Titre : {{competence.titre}}</p>
+
+    <p>Date de création :{{competence.date_creation}}</p>
+    <p>Date d'échéance :{{competence.date_echeance}}</p>
+
+    <p>Revendication(s) liée(s) :</p>
+    <ul>
+    {%for prop in propositions %}
+        <li>{{prop}}</li>
+    {% endfor %}
+    </ul>
+
+    <p>Description :<br/>{{competence.description}}</p>
+
+    <p>Personnes competentes</p>
+    <ul>
+        {%for competant in competant %}
+        <li>{{competant}}</li>
+        {% endfor %}
+    </ul>
+
+
+
+{% endblock %}

@@ -591,13 +591,21 @@ def creer_une_revendication (request):
 
 
 def consult_revendications (request):
-	propositions = Proposition.objects.all
-	ennonce = request.GET['ennonce']
-	proposition = Proposition.objects.get (ennonce = ennonce)
-	identifiant = proposition.id
+	
+	try:
+		ennonce = request.GET['ennonce']
+		proposition = Proposition.objects.get (ennonce = ennonce)
+		identifiant = proposition.id
 
-	if proposition:
-		return redirect('proposition_detail/{}'.format(identifiant))
+	except:
+		print ("pas d'ennonce")	
+
+	propositions = Proposition.objects.all
+	
+
+	if request.GET:
+		if proposition:
+			return redirect('proposition_detail/{}'.format(identifiant))
 
 	else:
 		return render (request, 'revendications/consult_revendications.html', {"propositions" :propositions})
@@ -616,10 +624,13 @@ def proposition_detail (request, id_proposition):
 	createur= Soutien.objects.filter(propositions__id = id_proposition).filter(lien = 'CR')
 	evenement = Evenement.objects.filter(proposition_id = id_proposition)
 	petitions = proposition.petition_set.all()
+	competences = proposition.competence_set.all()
+
+
 
 	print (proposition)
 	print (createur)
-	return render (request, 'revendications/proposition_detail.html', {"createur" :createur, "proposition" :proposition, "soutien" :soutien, "evenement": evenement, "petitions": petitions})	
+	return render (request, 'revendications/proposition_detail.html', {"createur" :createur, "proposition" :proposition, "soutien" :soutien, "evenement": evenement, "petitions": petitions, "competences": competences})	
 
 
 def soutenir_une_revendication (request, id_proposition):
@@ -985,6 +996,168 @@ def mes_petitions(request):
 	petitions_soutenues = Petition.objects.filter(soutien__user=utilisateur)
 
 	return render(request, 'revendications/mes_petitions.html', {'petitions_crees': petitions_crees, 'petitions_soutenues':petitions_soutenues})
+
+
+
+
+
+#_____________________________Bourse aux compétences__________________________#
+
+
+def creer_une_competence(request):
+	# Vérification de l'authentification utilisateur, redirection sinon
+	#   -> voir https://docs.djangoproject.com/fr/1.10/topics/auth/default/#the-login-required-decorator
+	if request.user.is_authenticated:
+		user = request.user
+	else:
+		render(request, 'authentification_necessaire.html')
+
+
+	# Récups des infos GET si transmises
+	if 'id_proposition' in request.GET:
+		id_proposition = request.GET['id_proposition']
+	else:
+		id_proposition = ''
+
+
+	if request.method == 'POST':
+		#
+		# Un formulaire a été envoyé !
+		#
+		form = CompetenceForm(request.POST)
+		if form.is_valid():
+			#
+			# Traitement du formulaire valide
+			#
+			titre = form.cleaned_data['titre']
+			description = form.cleaned_data['description']
+			date_echeance = form.cleaned_data['date_echeance']
+
+			#propositions = form.cleaned_data['propositions']
+
+			#proposition = Proposition.objects.get(id = id_proposition)	
+
+			# Récupération des propositions cochées
+			# erreur si liste vide
+			try:
+				propositions = request.POST.getlist('propositions')
+			except:
+				raise Http404
+
+			if not propositions:
+				return render(request, 'revendications/message.html', {'message':"Cocher au moins une proposition !"})
+
+			
+
+			"""
+			"""
+			# Création de la pétition puis association à la proposition source
+			competence = Competence.objects.create(titre=titre, description=description, date_echeance=date_echeance)
+
+			for i in propositions:
+				competence.propositions.add(i)
+			
+			#competence.propositions.add(proposition)
+			competence.save()
+
+			# Création de la relation de soutient (CR) entre l'user et la competence
+			soutien = Soutien.objects.create(competence = competence, user = user, lien = 'CR')
+
+			# Retour sur la page de la pétition créée -> !ToDo
+			"""
+			return render(request, 'revendications/merci.html')
+			"""
+			return render(request, 'revendications/message.html', {'message':"competence correctement créée... enfin, j'espère..."})
+
+	else:
+		#
+		# Pas de formulaire reçu...
+		#
+
+		form = CompetenceForm()
+		revendications_soutenues = Proposition.objects.filter(soutien__user = user)
+	
+		return render(request, 'revendications/creer_une_competence.html', {'form': form, 'id_proposition':id_proposition, 'revendications_soutenues':revendications_soutenues})
+
+def supprimer_une_competence(request, id_competence):
+	# Vérification identifiant valide ? si non, 404
+	try:
+		competence = Competence.objects.get(id = id_competence)	
+	except Competence.DoesNotExist:
+		raise Http404
+
+	# Vérification de l'authentification utilisateur, redirection sinon
+	#   -> voir https://docs.djangoproject.com/fr/1.10/topics/auth/default/#the-login-required-decorator
+	if request.user.is_authenticated:
+		user = request.user
+	else:
+		return render(request, 'authentification_necessaire.html')
+
+
+
+	# Vérification que l'utilisateur est bien le créateur de la pétition
+	try:
+		soutien = Soutien.objects.get(user = user, competence = competence, lien = 'CR')
+	except Soutien.DoesNotExist:
+		return render(request, 'revendications/message.html', {'message': "Vous ne pouvez pas supprimer cette pétition, vous n'en êtes pas le créateur."})
+
+	
+	# La confirmation de suppression a-t-elle été envoyée ?
+	if request.method == 'POST':
+		competence.delete()
+		return render(request, 'revendications/message.html', {'message': "La pétition a bien été supprimée !"})
+	else:
+		return render(request, 'revendications/supprimer_une_competence.html', {'competence': competence})
+
+
+def detail_competence(request, id_competence):
+	# Vérification identifiant valide ? si non, 404
+	try:
+		competence = Competence.objects.get(id = id_competence)	
+	except Competence.DoesNotExist:
+		raise Http404
+	
+	propositions = competence.propositions.all()
+	signataires = Soutien.objects.filter (competence = competence, lien = 'SO')
+
+
+	print (signataires)
+
+	return render(request, 'revendications/detail_competence.html', {'competence': competence, 'propositions': propositions, 'signataires': signataires})
+
+
+def signer_une_competence(request):
+	id_competence = request.GET['id_competence']
+	signataire = request.user
+
+	# Vérification identifiant valide ? si non, 404
+	try:
+		competence = Competence.objects.get(id = id_competence)	
+	except Competence.DoesNotExist:
+		raise Http404
+
+	soutien = Soutien.objects.get_or_create(competence = competence, user = signataire, lien='SO')
+
+	propositions = competence.propositions.all()
+	signataires = Soutien.objects.filter(competence = competence)
+
+	return render(request, 'revendications/detail_competence.html', {'competence': competence, 'propositions': propositions, 'signataires': signataires, 'message' : "merci d'avoir proposé votre compétence"})
+
+
+def mes_competences(request):
+	utilisateur = request.user
+	competences_crees = Competence.objects.filter(soutien__user=utilisateur, soutien__lien='CR')
+	competences_soutenues = Competence.objects.filter(soutien__user=utilisateur, soutien__lien = 'SO')
+
+	return render(request, 'revendications/mes_competences.html', {'competences_crees': competences_crees, 'competences_soutenues':competences_soutenues})
+
+
+
+
+
+
+
+
 
 
 """
