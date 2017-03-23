@@ -177,6 +177,18 @@ def champ_lexical_des_propositions():
 def creer_les_proximites():
 	
 
+	#supprimer les utilisateurs qui n'ont pas été crée correctement et n'ont pas de profile
+	utilisateurs = User.objects.all()
+	for utilisateur in utilisateurs:
+		print (utilisateur)
+		profile = Profile.objects.filter(utilisateur = utilisateur) 
+		if profile:
+			print(profile)
+		else: 
+			print("echec")
+			utilisateur.delete()
+
+
 	#compter_les_utilisateurs:
 	utilisateurs = User.objects.all()
 	for utilisateur in utilisateurs:
@@ -224,7 +236,7 @@ def creer_les_proximites():
 			liste_des_tuples.append(a)
 			print ("liste des probabilites : {0} ".format(liste_des_probabilites))
 			#recupere l'utilisateur avec lequel il y a la plus grande affinité.
-			
+		print (utilisateur)	
 		profile = Profile.objects.get(utilisateur = utilisateur)
 		i=1
 
@@ -238,6 +250,9 @@ def creer_les_proximites():
 					ancienne_proximite = Proximite.objects.get (profile = profile, Autre_utilisateur =autre_utilisateur)
 					print ("cette proximite existait deja et va etre remplacee par une nouvelle")
 					ancienne_proximite.delete()
+					proximite = Proximite.objects.create (profile = profile, Autre_utilisateur = autre_utilisateur, proba = p) 
+					i = i+1
+				else:
 					proximite = Proximite.objects.create (profile = profile, Autre_utilisateur = autre_utilisateur, proba = p) 
 					i = i+1
 		
@@ -431,12 +446,6 @@ def data_json(request):
 	
 	return render(request, 'revendications/fichier_data.json')
 
-	
-
-
-
-
-
 
 def creation_utilisateur (request):
 	if request.method == 'POST':
@@ -447,7 +456,7 @@ def creation_utilisateur (request):
 			mail = request.POST['mail']
 			utilisateur = User.objects.create_user(nom, mail, mot_de_passe)
 			autre_utilisateur = Autre_utilisateur.objects.create(user = utilisateur)
-			profile = Profile.objects.create (utilisateur = utilisateur, organisation = False)
+			profile = Profile.objects.create (utilisateur = utilisateur)
 
 			return render(request, 'revendications/merci.html')
 	else:
@@ -514,6 +523,10 @@ def afficher_accueil_revendiquer (request):
 
 
 def mes_revendications (request):
+
+	creer_les_proximites()
+
+
 	#supprimer_les_propositions_doublons()
 	utilisateur = request.user
 	propositions = Proposition.objects.filter(soutien__user= utilisateur).filter(soutien__lien = 'CR')
@@ -525,6 +538,7 @@ def mes_revendications (request):
 	profile = Profile.objects.get(utilisateur =utilisateur)
 	print ("profile concerné :{0}".format (profile))
 	proximites = Proximite.objects.filter(profile = profile).exclude(Autre_utilisateur__user = utilisateur)
+	print (proximites)
 	ancienne_proba_max = 1
 	ancien_utilisateur_prefere = utilisateur
 	for proximite in proximites:
@@ -533,12 +547,19 @@ def mes_revendications (request):
 			ancienne_proba_max = proximite.proba
 			ancien_utilisateur_prefere = proximite.Autre_utilisateur.user
 			print ("ancien_utilisateur_prefere :{0}".format (ancien_utilisateur_prefere))
+	
+	#utilisateur le plus proche
 	utilisateur_le_plus_proche = ancien_utilisateur_prefere
+	
+	#propositions interessantes
 	propositions_interessantes = Proposition.objects.filter(soutien__user = utilisateur_le_plus_proche).exclude(soutien__user = utilisateur)
-	for proposition in propositions_interessantes:
-		print ("proposition interessante: {0}".format(proposition.ennonce))
+	
 
-	print ("propositions interessantes :{0}".format(propositions_interessantes))
+	#revendications dont je suis l'auteur:
+	mes_revendications = Proposition.objects.filter(soutien__user = utilisateur, soutien__lien = 'CR')
+
+
+	print (propositions), "propositions"
 	return render (request, 'revendications/mes_revendications.html', {"propositions" : propositions, "propositions2" : propositions2, 'choix_menu': "militer", "propositions_interessantes": propositions_interessantes , "utilisateur_le_plus_proche": utilisateur_le_plus_proche})
 	
 

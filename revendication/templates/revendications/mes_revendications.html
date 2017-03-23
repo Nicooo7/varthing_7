@@ -16,10 +16,17 @@
      <div class = "barre_centrale">
         <div class = "affichage_de_liste">
          	 <h3> Les revendications dont je suis l'auteur:</h3> 
-             	{% for proposition in propositions %}
-             		<div> proposition: {{proposition}} (id {{proposition.id}}) <a href="{% url 'proposition_detail' proposition.id %}">[Détails]</a></div>
-             	{% endfor %}
-		 </div>
+             	{% if propositions %}
+                    {% for proposition in propositions %}    
+                 		<div> proposition: {{proposition}} (id {{proposition.id}}) <a href="{% url 'proposition_detail' proposition.id %}">[Détails]</a></div>
+                        }
+                        
+                 	{% endfor %}
+                {% else %}
+                    vous n'avez pas crée de propositions...
+                {% endif %}
+		 
+         </div>
 		 <p>
 		 <p>
 		 <div class = "affichage_de_liste">

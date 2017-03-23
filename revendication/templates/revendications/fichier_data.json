@@ -1,31 +1,25 @@
 { "nodes" : [
-{"id" : "virer tous les immigres", "label"  : "virer tous les immigres","x" :0.24393850572357248, "y" : 0.06932452006181729, "size"  : 3 }
-,{"id" : "virer certains immigres", "label"  : "virer certains immigres","x" :0.155018324972956, "y" : 0.8746790441404143, "size"  : 3 }
-,{"id" : "accueuillir généreusement les immigres", "label"  : "accueuillir généreusement les immigres","x" :0.031870294638036284, "y" : 0.2942639414323038, "size"  : 3 }
-,{"id" : "détruire le capitalisme", "label"  : "détruire le capitalisme","x" :0.0, "y" : 0.6043188830816109, "size"  : 3 }
-,{"id" : "encourager le capitalisme", "label"  : "encourager le capitalisme","x" :0.7414265831859742, "y" : 0.9329991854309305, "size"  : 3 }
-,{"id" : "s'accomoder du capitalisme", "label"  : "s'accomoder du capitalisme","x" :0.8255596028729467, "y" : 0.1306280356060041, "size"  : 3 }
-,{"id" : "s'en foutre de la planete", "label"  : "s'en foutre de la planete","x" :0.5449607995440453, "y" : 0.0, "size"  : 3 }
-,{"id" : "faire comme si on s'en préoccupait de la planete", "label"  : "faire comme si on s'en préoccupait de la planete","x" :0.4396323788368836, "y" : 1.0, "size"  : 3 }
-,{"id" : "se préoccuper de la planete", "label"  : "se préoccuper de la planete","x" :0.983020399431843, "y" : 0.39676548716971877, "size"  : 3 }
-,{"id" : "faire de la planete sa priorité", "label"  : "faire de la planete sa priorité","x" :0.9512032303273442, "y" : 0.7056890062892198, "size"  : 3 }],
+{"id" : "virer tous les immigres", "label"  : "virer tous les immigres","x" :0.6182085926235802, "y" : 0.9687155949782309, "size"  : 3 }
+,{"id" : "virer certains immigres", "label"  : "virer certains immigres","x" :0.88008269583901, "y" : 0.8043699330522232, "size"  : 3 }
+,{"id" : "accueuillir généreusement les immigres", "label"  : "accueuillir généreusement les immigres","x" :0.11222195500421099, "y" : 0.15838741285077182, "size"  : 3 }
+,{"id" : "détruire le capitalisme", "label"  : "détruire le capitalisme","x" :0.3079704235403882, "y" : 0.9505935851388, "size"  : 3 }
+,{"id" : "encourager le capitalisme", "label"  : "encourager le capitalisme","x" :0.377913609883069, "y" : 0.0, "size"  : 3 }
+,{"id" : "s'accomoder du capitalisme", "label"  : "s'accomoder du capitalisme","x" :0.9243115767931016, "y" : 0.21691522948800232, "size"  : 3 }
+,{"id" : "s'en foutre de la planete", "label"  : "s'en foutre de la planete","x" :0.6864355951315527, "y" : 0.016912384637978155, "size"  : 3 }
+,{"id" : "faire comme si on s'en préoccupait de la planete", "label"  : "faire comme si on s'en préoccupait de la planete","x" :0.0, "y" : 0.44732542940537134, "size"  : 3 }
+,{"id" : "se préoccuper de la planete", "label"  : "se préoccuper de la planete","x" :0.07466486347773817, "y" : 0.7465599970546244, "size"  : 3 }
+,{"id" : "faire de la planete sa priorité", "label"  : "faire de la planete sa priorité","x" :1.0, "y" : 0.5185791073574392, "size"  : 3 }],
 
 "edges":[
 { "id" : "0", "source"  : "se préoccuper de la planete", "target"  :"s'accomoder du capitalisme"}
 ,{ "id" : "1", "source"  : "faire comme si on s'en préoccupait de la planete", "target"  :"encourager le capitalisme"}
 ,{ "id" : "2", "source"  : "s'accomoder du capitalisme", "target"  :"se préoccuper de la planete"}
 ,{ "id" : "3", "source"  : "encourager le capitalisme", "target"  :"faire comme si on s'en préoccupait de la planete"}
-,{ "id" : "4", "source"  : "se préoccuper de la planete", "target"  :"accueuillir généreusement les immigres"}
-,{ "id" : "5", "source"  : "faire comme si on s'en préoccupait de la planete", "target"  :"virer certains immigres"}
-,{ "id" : "6", "source"  : "s'en foutre de la planete", "target"  :"virer tous les immigres"}
-,{ "id" : "7", "source"  : "s'accomoder du capitalisme", "target"  :"accueuillir généreusement les immigres"}
-,{ "id" : "8", "source"  : "encourager le capitalisme", "target"  :"virer certains immigres"}
-,{ "id" : "9", "source"  : "accueuillir généreusement les immigres", "target"  :"se préoccuper de la planete"}
-,{ "id" : "10", "source"  : "accueuillir généreusement les immigres", "target"  :"s'accomoder du capitalisme"}
-,{ "id" : "11", "source"  : "virer certains immigres", "target"  :"faire comme si on s'en préoccupait de la planete"}
-,{ "id" : "12", "source"  : "virer certains immigres", "target"  :"encourager le capitalisme"}
-,{ "id" : "13", "source"  : "virer certains immigres", "target"  :"virer tous les immigres"}
-,{ "id" : "14", "source"  : "virer tous les immigres", "target"  :"s'en foutre de la planete"}
-,{ "id" : "15", "source"  : "virer tous les immigres", "target"  :"virer certains immigres"}
-,{ "id" : "16", "source"  : "détruire le capitalisme", "target"  :"accueuillir généreusement les immigres"}
-,{ "id" : "17", "source"  : "accueuillir généreusement les immigres", "target"  :"détruire le capitalisme"}] }
+,{ "id" : "4", "source"  : "s'en foutre de la planete", "target"  :"virer tous les immigres"}
+,{ "id" : "5", "source"  : "virer certains immigres", "target"  :"virer tous les immigres"}
+,{ "id" : "6", "source"  : "virer tous les immigres", "target"  :"s'en foutre de la planete"}
+,{ "id" : "7", "source"  : "virer tous les immigres", "target"  :"virer certains immigres"}
+,{ "id" : "8", "source"  : "se préoccuper de la planete", "target"  :"accueuillir généreusement les immigres"}
+,{ "id" : "9", "source"  : "s'accomoder du capitalisme", "target"  :"accueuillir généreusement les immigres"}
+,{ "id" : "10", "source"  : "accueuillir généreusement les immigres", "target"  :"se préoccuper de la planete"}
+,{ "id" : "11", "source"  : "accueuillir généreusement les immigres", "target"  :"s'accomoder du capitalisme"}] }
