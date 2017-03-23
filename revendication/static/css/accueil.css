@@ -12,9 +12,10 @@ text-align:center;
 
 #container 
 {
-   display: flex;
- 	justify-content: space-around;
-	min-height: 800px
+   
+display : flex;
+min-height: 600px;
+	
  }
 
 
@@ -31,7 +32,7 @@ text-align:center;
 #zone_centrale
 {
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
 	min-height: 800px
 }
 
@@ -61,7 +62,7 @@ order:2;
 background-color: white;
 text-align: center;
 width : 1000px;
-justify-content: space-around;
+justify-content: center;
 margin: auto;
 
 }
@@ -129,5 +130,3 @@ body
     border: 3px solid black;
     
 }
-
-

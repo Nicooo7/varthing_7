@@ -73,6 +73,20 @@ gris = '#eee'
       // edges that have both extremities colored.
       s.bind('clickNode', function(e) {
 
+        var text = "voulez vous aller sur la page:  "
+        var label = e.data.node.id
+        var point = "?"
+        var text = text + label + point
+        if (confirm (text))
+        {
+
+          document.location.href="consult_revendications.html?ennonce=" + label
+
+        }
+
+
+        
+  
         var nodeId = e.data.node.id,
             toKeep = s.graph.neighbors(nodeId);
         toKeep[nodeId] = e.data.node;

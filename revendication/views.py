@@ -1,6 +1,7 @@
 # coding: utf-8
 
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
 #from django.core.exceptions import ObjectDoesNotExist
@@ -591,11 +592,21 @@ def creer_une_revendication (request):
 
 def consult_revendications (request):
 	propositions = Proposition.objects.all
+	ennonce = request.GET['ennonce']
+	proposition = Proposition.objects.get (ennonce = ennonce)
+	identifiant = proposition.id
 
-	return render (request, 'revendications/consult_revendications.html', {"propositions" :propositions})
+	if proposition:
+		return redirect('proposition_detail/{}'.format(identifiant))
+
+	else:
+		return render (request, 'revendications/consult_revendications.html', {"propositions" :propositions})
 
 def proposition_detail (request, id_proposition):
 	# Vérification identifiant valide ? si non, 404
+
+
+
 	try:
 		proposition = Proposition.objects.get(id = id_proposition)
 	except Proposition.DoesNotExist:

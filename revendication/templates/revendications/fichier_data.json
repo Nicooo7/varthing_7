@@ -1,14 +1,14 @@
 { "nodes" : [
-{"id" : "virer tous les immigres", "label"  : "virer tous les immigres","x" :0.15001738402987813, "y" : 0.1256333356808867, "size"  : 3 }
-,{"id" : "virer certains immigres", "label"  : "virer certains immigres","x" :0.9886582643371984, "y" : 0.5878307399672028, "size"  : 3 }
-,{"id" : "accueuillir généreusement les immigres", "label"  : "accueuillir généreusement les immigres","x" :0.040975241453693856, "y" : 0.7103865538465692, "size"  : 3 }
-,{"id" : "détruire le capitalisme", "label"  : "détruire le capitalisme","x" :0.9563402501136887, "y" : 0.2780733888806121, "size"  : 3 }
-,{"id" : "encourager le capitalisme", "label"  : "encourager le capitalisme","x" :0.0, "y" : 0.4005387826092378, "size"  : 3 }
-,{"id" : "s'accomoder du capitalisme", "label"  : "s'accomoder du capitalisme","x" :0.4338816973106331, "y" : 0.0, "size"  : 3 }
-,{"id" : "s'en foutre de la planete", "label"  : "s'en foutre de la planete","x" :0.8435285697632461, "y" : 0.8624733053644799, "size"  : 3 }
-,{"id" : "faire comme si on s'en préoccupait de la planete", "label"  : "faire comme si on s'en préoccupait de la planete","x" :0.7386856864890186, "y" : 0.05392377083554358, "size"  : 3 }
-,{"id" : "se préoccuper de la planete", "label"  : "se préoccuper de la planete","x" :0.2533171226214861, "y" : 0.9402573468363462, "size"  : 3 }
-,{"id" : "faire de la planete sa priorité", "label"  : "faire de la planete sa priorité","x" :0.561939267658512, "y" : 1.0, "size"  : 3 }],
+{"id" : "virer tous les immigres", "label"  : "virer tous les immigres","x" :0.0, "y" : 0.4680022460713097, "size"  : 3 }
+,{"id" : "virer certains immigres", "label"  : "virer certains immigres","x" :0.65496876740224, "y" : 0.00499761448332313, "size"  : 3 }
+,{"id" : "accueuillir généreusement les immigres", "label"  : "accueuillir généreusement les immigres","x" :0.35104068712891057, "y" : 0.0, "size"  : 3 }
+,{"id" : "détruire le capitalisme", "label"  : "détruire le capitalisme","x" :0.9017918411500154, "y" : 0.7646892022972779, "size"  : 3 }
+,{"id" : "encourager le capitalisme", "label"  : "encourager le capitalisme","x" :0.9056709351847708, "y" : 0.17903702179708753, "size"  : 3 }
+,{"id" : "s'accomoder du capitalisme", "label"  : "s'accomoder du capitalisme","x" :0.34438122989414105, "y" : 0.9472237870538163, "size"  : 3 }
+,{"id" : "s'en foutre de la planete", "label"  : "s'en foutre de la planete","x" :0.6552440550494999, "y" : 0.951075523776373, "size"  : 3 }
+,{"id" : "faire comme si on s'en préoccupait de la planete", "label"  : "faire comme si on s'en préoccupait de la planete","x" :1.0, "y" : 0.4728526003772497, "size"  : 3 }
+,{"id" : "se préoccuper de la planete", "label"  : "se préoccuper de la planete","x" :0.09417765897192124, "y" : 0.7637380915786774, "size"  : 3 }
+,{"id" : "faire de la planete sa priorité", "label"  : "faire de la planete sa priorité","x" :0.09752306807871296, "y" : 0.17352965026735884, "size"  : 3 }],
 
 "edges":[
 { "id" : "0", "source"  : "se préoccuper de la planete", "target"  :"s'accomoder du capitalisme"}
