@@ -12,6 +12,7 @@
       <node id="faire comme si on s'en préoccupait de la planete" label="faire comme si on s'en préoccupait de la planete" />
       <node id="se préoccuper de la planete" label="se préoccuper de la planete" />
       <node id="faire de la planete sa priorité" label="faire de la planete sa priorité" />
+      <node id="pour la sortie du nucléaire" label="pour la sortie du nucléaire" />
     </nodes>
     <edges>
       <edge id="0" source="virer tous les immigres" target="s'en foutre de la planete" weight="1" />
@@ -19,20 +20,26 @@
       <edge id="2" source="virer tous les immigres" target="virer certains immigres" weight="1" />
       <edge id="3" source="virer tous les immigres" target="détruire le capitalisme" weight="1" />
       <edge id="4" source="virer tous les immigres" target="encourager le capitalisme" weight="1" />
-      <edge id="5" source="virer certains immigres" target="faire comme si on s'en préoccupait de la planete" weight="1" />
-      <edge id="6" source="virer certains immigres" target="encourager le capitalisme" weight="1" />
-      <edge id="7" source="accueuillir généreusement les immigres" target="détruire le capitalisme" weight="5" />
-      <edge id="8" source="accueuillir généreusement les immigres" target="encourager le capitalisme" weight="1" />
-      <edge id="9" source="accueuillir généreusement les immigres" target="s'accomoder du capitalisme" weight="2" />
-      <edge id="10" source="accueuillir généreusement les immigres" target="faire comme si on s'en préoccupait de la planete" weight="1" />
-      <edge id="11" source="accueuillir généreusement les immigres" target="se préoccuper de la planete" weight="2" />
-      <edge id="12" source="accueuillir généreusement les immigres" target="faire de la planete sa priorité" weight="1" />
-      <edge id="13" source="détruire le capitalisme" target="s'accomoder du capitalisme" weight="4" />
-      <edge id="14" source="détruire le capitalisme" target="s'en foutre de la planete" weight="1" />
-      <edge id="15" source="détruire le capitalisme" target="se préoccuper de la planete" weight="4" />
-      <edge id="16" source="détruire le capitalisme" target="faire de la planete sa priorité" weight="1" />
-      <edge id="17" source="encourager le capitalisme" target="faire comme si on s'en préoccupait de la planete" weight="2" />
-      <edge id="18" source="s'accomoder du capitalisme" target="se préoccuper de la planete" weight="2" />
+      <edge id="5" source="virer certains immigres" target="s'en foutre de la planete" weight="1" />
+      <edge id="6" source="virer certains immigres" target="faire comme si on s'en préoccupait de la planete" weight="1" />
+      <edge id="7" source="virer certains immigres" target="encourager le capitalisme" weight="2" />
+      <edge id="8" source="accueuillir généreusement les immigres" target="détruire le capitalisme" weight="2" />
+      <edge id="9" source="accueuillir généreusement les immigres" target="encourager le capitalisme" weight="2" />
+      <edge id="10" source="accueuillir généreusement les immigres" target="s'accomoder du capitalisme" weight="2" />
+      <edge id="11" source="accueuillir généreusement les immigres" target="faire comme si on s'en préoccupait de la planete" weight="2" />
+      <edge id="12" source="accueuillir généreusement les immigres" target="se préoccuper de la planete" weight="2" />
+      <edge id="13" source="accueuillir généreusement les immigres" target="faire de la planete sa priorité" weight="1" />
+      <edge id="14" source="accueuillir généreusement les immigres" target="pour la sortie du nucléaire" weight="1" />
+      <edge id="15" source="détruire le capitalisme" target="s'accomoder du capitalisme" weight="1" />
+      <edge id="16" source="détruire le capitalisme" target="s'en foutre de la planete" weight="1" />
+      <edge id="17" source="détruire le capitalisme" target="se préoccuper de la planete" weight="1" />
+      <edge id="18" source="détruire le capitalisme" target="faire de la planete sa priorité" weight="1" />
+      <edge id="19" source="détruire le capitalisme" target="pour la sortie du nucléaire" weight="1" />
+      <edge id="20" source="encourager le capitalisme" target="s'en foutre de la planete" weight="1" />
+      <edge id="21" source="encourager le capitalisme" target="faire comme si on s'en préoccupait de la planete" weight="3" />
+      <edge id="22" source="s'accomoder du capitalisme" target="pour la sortie du nucléaire" weight="1" />
+      <edge id="23" source="s'accomoder du capitalisme" target="se préoccuper de la planete" weight="2" />
+      <edge id="24" source="se préoccuper de la planete" target="pour la sortie du nucléaire" weight="1" />
     </edges>
   </graph>
 </gexf>

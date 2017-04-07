@@ -56,5 +56,8 @@ urlpatterns = [
     # ~ Divers ~
     url(r'^merci', views.merci, name = 'merci'),
     url(r'^message', views.message, name = 'message'),
-    url(r'^fichier_data.json', views.data_json, name = 'fichier_data_json'),
+    url(r'^data_u.json', views.data_u, name = 'data_u_json'),
+    url(r'^data_l.json', views.data_l, name = 'data_l_json'),
+    url(r'^sigma.min.js', views.sigma_min_js, name = 'sigma_min_js'),
+    url(r'^sigma.parsers.json.min.js', views.sigma_parser_json_min_js, name = 'sigma_parser_json_min_js'),
     ]

@@ -19,7 +19,7 @@
              	{% if propositions %}
                     {% for proposition in propositions %}    
                  		<div> proposition: {{proposition}} (id {{proposition.id}}) <a href="{% url 'proposition_detail' proposition.id %}">[Détails]</a></div>
-                        }
+            
                         
                  	{% endfor %}
                 {% else %}

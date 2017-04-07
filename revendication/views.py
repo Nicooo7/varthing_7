@@ -30,10 +30,18 @@ liste_des_elements_de_page = []
 app_name = 'revendication'
 
 
-  #..........................PROPOSITIONS.........................#
 
 
 
+
+
+
+
+
+  #..........................VOCABULAIRE.........................#
+
+
+#fonctions generales utiles pour traiter le vocabulaire
 class Vocabulaire: #motclé et  son champs lexical.
 	
 	def __init__(self,motcle):
@@ -41,47 +49,48 @@ class Vocabulaire: #motclé et  son champs lexical.
 		motcle = urllib.parse.quote(motcle)
 		url = """{base}{motcle}""".format(base =base, motcle = motcle)
 		with urllib.request.urlopen(url) as f:
-		    print (f)
+		    #print (f)
 		    data = f.read().decode('utf-8')
 		    soup = bs4.BeautifulSoup(data, 'html.parser')
 		   
 		champ_lexical =[]
-		for d in soup.find_all('a'):
-			mot= d.get_text() 
-			champ_lexical.append(mot) 
-		for i in range (1,12):
-			del champ_lexical[0]
-		champ_lexical.reverse()
-		for i in range (1,5):
-			del champ_lexical[0]	
-		champ_lexical.reverse()
+		liste = []
+		for d in soup.find_all('a'): 
+			liste.append(d)
+		if len(liste) != 17:
+			i = 0
+			for i in range (1, 30):
+				mot= liste[i].get_text() 
+				champ_lexical.append(mot) 
+				#print ("champ_lexical : {}".format(champ_lexical), i)
+				i = i+1
+			for i in range (1,12):
+				del champ_lexical[0]
+			champ_lexical.reverse()
+			for i in range (1,5):
+				del champ_lexical[0]	
+			champ_lexical.reverse()
+			#print (champ_lexical)
 
 
 		self.motcle = motcle
 		self.champ_lexical = champ_lexical
-
-	
-def afficher_bonjour():
-	print ("bonjour")
-
-
 def initialiser_le_fichier():
-	with open('vocabulaire', 'wb') as fichier:
+	with open('/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/vocabulaire', 'wb') as fichier:
 		mon_pickler = pickle.Pickler(fichier)
-		le_mot = Vocabulaire("debut")
+		le_mot = Vocabulaire("tous")
 		mon_pickler.dump(le_mot)
-
 def enregistrer_un_nouveau_mot(mot):
 	print ("ca demarre")
-	with open('vocabulaire', 'ab') as fichier:
+	with open('/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/vocabulaire', 'ab') as fichier:
 		liste_des_vocabulaires = []
 		le_mot = Vocabulaire(mot)
 		mon_pickler = pickle.Pickler(fichier)
-		print ("c'est ok")
+		#print ("c'est ok")
+		print ("________________le mot : {}".format(le_mot))
 		mon_pickler.dump(le_mot)
-
 def acceder_aux_vocabulaires():
-	with open('vocabulaire', 'rb') as fichier:
+	with open('/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/vocabulaire', 'rb') as fichier:
 		mon_depickler = pickle.Unpickler(fichier)
 		print (mon_depickler)
 		un_mot = mon_depickler.load()
@@ -90,13 +99,11 @@ def acceder_aux_vocabulaires():
 			print (un_mot.motcle)
 			if un_mot.motcle == "fin":
 				break
-
 def implementer_la_liste_des_vocabulaires(la_liste_des_vocabulaires):
 
-	with open('vocabulaire', 'rb') as fichier:
+	with open('/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/vocabulaire', 'rb') as fichier:
 		mon_depickler = pickle.Unpickler(fichier)
-		for i in range (1, 10):
-			un_mot = mon_depickler.load()
+		un_mot = "vide"
 		while un_mot:
 			un_mot = mon_depickler.load()
 			if un_mot.motcle == "fin":
@@ -107,7 +114,6 @@ def implementer_la_liste_des_vocabulaires(la_liste_des_vocabulaires):
 				for element in un_mot.champ_lexical:
 					une_liste.append(element)
 				la_liste_des_vocabulaires.append(une_liste)
-
 
 
 def filtrer_ennonce(ennonce,filtrat):
@@ -123,23 +129,33 @@ def filtrer_ennonce(ennonce,filtrat):
 
 	# un petit filtre
 	tokens = [token for token in tokens if token.lower() not in french_stopwords]
+	
 	for element in tokens:
 		filtrat.append(element)
-	print ("voici le resultat dans le premier programme {0}".format(filtrat))
+	#print ("voici le resultat dans le premier programme {0}".format(filtrat))
 
 
-
-def champ_lexical_des_propositions():
+#ecriture du champ lexical des propositions dans la bdd
+def ecriture_du_champ_lexical_des_propositions():
 	#pour chaque proposition
 	propositions = Proposition.objects.all()
 	for proposition in propositions:
 	#récupérer l'ennoncé de la propostion
 		ennonce = proposition.ennonce
+		
+		#se débarrasser des verbes:
+		fichier_ennonce = open('/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/ennonce', 'a') 
+		fichier_ennonce.write(ennonce)
+		fichier_ennonce.close
+		os.system ("/Users/nicolasvinurel/anaconda/envs/icutestenv/bin/python /Users/nicolasvinurel/Desktop/depot/revendication/fonctions/tagger.py")
+
+
 		filtrat = []
 		filtrer_ennonce(ennonce,filtrat)
+	
 
 		initialiser_le_fichier()
-
+		print (filtrat)
 		for mot in filtrat:
 			print ("*****************")
 			print ("on va enregister le mot {0}".format (mot))
@@ -159,6 +175,46 @@ def champ_lexical_des_propositions():
 		proposition.champ_lexical = liste
 		proposition.save()
 
+#retourne un triplet correspondant à chaque proposition et au pourcentage du chp lexical en commun
+def comparer_deux_propositions (proposition1, proposition2):
+		champ1 = []
+		filtrer_ennonce(proposition1.champ_lexical, champ1)
+		
+		for element in champ1:
+			if element  == "," or '%' or 'C3' or 'les' or 'A9n' or 'g':
+				champ1.remove(element)
+		#print ("champ1 = {}".format(champ1))
+
+		champ2 = []
+
+		filtrer_ennonce(proposition2.champ_lexical, champ2)
+		for element in champ2:
+			if element  == "," or '%' or 'C3' or 'les' or 'A9n' or 'g':
+				champ2.remove(element)
+		
+		liste_commune = []
+		for element in champ1:
+			if element in champ2:
+				liste_commune.append(element)
+
+		try:	
+			pourcentage = len (liste_commune) * 100 / (len(champ1) + len(champ2))
+		except :
+			pourcentage = "inconnu"	
+
+		else:
+			triplet = (proposition1, proposition2, pourcentage)
+			return triplet
+	
+#retourne la liste de tous les triplets pour affichage graphique des proximites des propositions selon leur champ lexical
+def creer_les_triplets_des_proximites_lexicales():
+	triplets = []
+	propositions = Proposition.objects.all()
+	for proposition1 in propositions:
+		for proposition2 in propositions:
+			triplet = comparer_deux_propositions(proposition1, proposition2)
+			triplets.append(triplet)
+	return triplets
 
 
 
@@ -168,13 +224,19 @@ def champ_lexical_des_propositions():
 
 
 
-#..........................AUTRES.........................#
 
 
 
 
 
-def creer_les_proximites():
+
+#..........................PROXIMITES entre UTILISATEURS.........................#
+
+
+
+
+#ecriture des proximites de tous les utilisateurs dans l'objet Profile de la bdd
+def ecrire_les_proximites_entre_utilisateurs():
 	
 
 	#supprimer les utilisateurs qui n'ont pas été crée correctement et n'ont pas de profile
@@ -273,46 +335,35 @@ def creer_les_proximites():
 	propositions_interessantes = Proposition.objects.filter(soutien__user = utilisateur_le_plus_proche).exclude(soutien__user = utilisateur)
 	for proposition in propositions_interessantes:
 		print ("proposition interessante: {0}".format(proposition.ennonce))
-
-
-
-def effacer_proximites():
+#def effacer_proximites_entre_utilisateur():
 	proximites =Proximite.objects.all()
 	for proximite in proximites:
 		proximite.delete()
 
 
-def simulation1 ():
-	liste_personnalite = ["lepen","sarkozy", "bayrou", "hollande", "melanchon"]
-	liste_ennonce = ["s'en foutre de la planete", "faire comme si on s'en préoccupait de la planete", "se préoccuper de la planete", "faire de la planete sa priorité"] 
-	"""for personnalite in liste_personnalite:
-		utilisateur = User.objects.create (username = personnalite)
-		utilisateur.save()
-		autre_utilisateur = Autre_utilisateur.objects.create (user = utilisateur)
-		autre_utilisateur.save()
-		profile = Profile.objects.create (utilisateur = utilisateur)
-		profile.save()"""
-	for ennonce in liste_ennonce:
-		proposition = Proposition.objects.create(ennonce = ennonce)
-
-
-def simulation2():
-	utilisateurs = User.objects.all().exclude(username ="nicolas").exclude(username = "nico")
-	for utilisateur in utilisateurs:
-		utilisateur.set_password("chienchat")
-		utilisateur.password.save()
 
 
 
 
 
-    #..........................REQUESTS.........................#
 
 
-def consulter (request):
 
 
-	def proximite_des_propositions():
+
+
+
+
+
+
+#____________proximites des propositions selon leur spectre d'utilisateur________#
+
+
+
+
+
+#creation de triplet à utiliser pour affichage graphique de la galaxie des propositions
+def creer_les_triplets_selon_la_proximite_des_propositions_selon_les_utilisateurs():
 
 		propositions = Proposition.objects.all()
 		liste = []
@@ -351,58 +402,78 @@ def consulter (request):
 		
 
 
-		dictionnaire = sorted(liste, key=lambda x: x[2])
-		dictionnaire.reverse()
-		return dictionnaire
-
-	proximite = proximite_des_propositions()	
-
-	def affichage_graphique_des_proximite(proximite):
-
-		import networkx as nx
-		import matplotlib.pyplot as plt
-		
-		G = nx.Graph()
-
-		
-		propositions = Proposition.objects.all()
-		for proposition in propositions:
-			G.add_node(proposition)
-
-		for triplet in proximite:
-			if triplet[2] > 0.5: 
-				G.add_edge(triplet[0], triplet[1], weight = triplet[2])
-
-		pos = nx.spring_layout(G)
-		print (pos)
-
-		liste_noeud = []
-
-
-		#ecriture des noeuds:
-		noeuds = "{" + ' "nodes" : ' + "["
-		i = "premier"
-		for cle, valeur in pos.items():
-			
-			if i == "premier":
-				noeud = "{"  + '"id" : ' + '"' + "{}".format(str(cle)) + '"' + "," + ' "label"  : ' + '"' + "{}".format(cle) + '"' + ","  + '"x" :' + "{}".format(valeur[0]) +  "," + ' "y" : ' + "{}".format (valeur[1]) + ","  + ' "size"  : 3 ' +  "}" 
-				noeuds = noeuds + "\n" + noeud
-				i = "plus_premier"
-			else :
-				noeud = "{"  + '"id" : ' + '"' + "{}".format(str(cle)) + '"' + "," + ' "label"  : ' + '"' + "{}".format(cle) + '"' + ","  + '"x" :' + "{}".format(valeur[0]) +  "," + ' "y" : ' + "{}".format (valeur[1]) + ","  + ' "size"  : 3 ' + "}" 
-				noeuds = noeuds + "\n" + "," + noeud
-
-		noeuds = noeuds + "],"
-
+		triplets = sorted(liste, key=lambda x: x[2])
+		triplets.reverse()
+		return triplets
 	
 
 
-		#ecriture des edges:
-		edges = '"edges":'  + "["
-		i = "premier"
-		a = 0
-		for triplet in proximite:
-			if triplet[2]>0.25:
+
+
+
+
+
+
+
+
+
+
+
+#-----------------------------affichage graphique------------------------------#
+
+
+
+#fonction renvoyant les data en format JSON
+def affichage_graphique_de_triplet(triplets, seuil): 
+
+	import networkx as nx
+	import matplotlib.pyplot as plt
+	
+	G = nx.Graph()
+
+	
+	propositions = Proposition.objects.all()
+	for proposition in propositions:
+		G.add_node(proposition)
+
+	for triplet in triplets:
+		try:
+			if triplet[2] > seuil: 
+				G.add_edge(triplet[0], triplet[1], weight = triplet[2])
+		except:
+			print ("oups, objet vide...")
+
+	pos = nx.spring_layout(G)
+	print (pos)
+
+	liste_noeud = []
+
+
+	#ecriture des noeuds:
+	noeuds = "{" + ' "nodes" : ' + "["
+	i = "premier"
+	for cle, valeur in pos.items():
+		
+		if i == "premier":
+			noeud = "{"  + '"id" : ' + '"' + "{}".format(str(cle)) + '"' + "," + ' "label"  : ' + '"' + "{}".format(cle) + '"' + ","  + '"x" :' + "{}".format(valeur[0]) +  "," + ' "y" : ' + "{}".format (valeur[1]) + ","  + ' "size"  : 3 ' +  "}" 
+			noeuds = noeuds + "\n" + noeud
+			i = "plus_premier"
+		else :
+			noeud = "{"  + '"id" : ' + '"' + "{}".format(str(cle)) + '"' + "," + ' "label"  : ' + '"' + "{}".format(cle) + '"' + ","  + '"x" :' + "{}".format(valeur[0]) +  "," + ' "y" : ' + "{}".format (valeur[1]) + ","  + ' "size"  : 3 ' + "}" 
+			noeuds = noeuds + "\n" + "," + noeud
+
+	noeuds = noeuds + "],"
+
+
+
+
+	#ecriture des edges:
+	edges = '"edges":'  + "["
+	i = "premier"
+	a = 0
+	for triplet in triplets:
+		try:
+			if triplet[2]>seuil:
 				if i == "premier":
 					edge = "{"  +  ' "id" : ' + '"' + "{}".format(str(a)) + '"' + ","  + ' "source"  : ' + '"' + "{}".format(triplet[0]) + '"' + ","  + ' "target"  :'  + '"' + "{}".format(triplet[1]) + '"'  + "}" 
 					edges = edges + "\n" +  edge
@@ -410,41 +481,76 @@ def consulter (request):
 					a = a+1
 
 				else:
+					print (triplet[2])
 					edge = "{"  +  ' "id" : ' + '"' + "{}".format(str(a)) + '"' + ","  + ' "source"  : ' + '"' + "{}".format(triplet[0]) + '"' + ","  + ' "target"  :'  + '"' + "{}".format(triplet[1]) + '"' + "}" 
+					print(edge)
 					edges = edges + "\n" + "," + edge
 					a = a+1
+		except:
+			print("oups, objet vide pour les edges")
 
-		edges = edges + "] }"
+	edges = edges + "] }"
 
+	
+
+
+
+	#ecriture des data
+	data = noeuds + "\n" + "\n" + edges
+
+
+
+	#nx.draw_spring(G, with_labels = True, width = 0.1)
+	#path = "/Users/nicolasvinurel/Desktop/graph/graph"
+	#plt.savefig(path + ".png")
+	#nx.write_gexf(G, path + ".gexf")
+	return data
 		
 
-
-
-		#ecriture des data
-		data = noeuds + "\n" + "\n" + edges
-
-
-
-		#nx.draw_spring(G, with_labels = True, width = 0.1)
-		#path = "/Users/nicolasvinurel/Desktop/graph/graph"
-		#plt.savefig(path + ".png")
-		#nx.write_gexf(G, path + ".gexf")
-		return data
-		
-
-	data = affichage_graphique_des_proximite(proximite)
-	fichier_data = open("/Users/nicolasvinurel/Desktop/depot/revendication/templates/revendications/fichier_data.json", "w")
+def enregistrer_les_datas(data, nom):
+	fichier_data = open("/Users/nicolasvinurel/Desktop/depot/revendication/templates/revendications/{}.json".format(nom), "w")
 	fichier_data.write(data)
 	fichier_data.close()
 
+
+
+
+#____________________________________views____________________________________
+
+
+
+
+
+def consulter (request):
+
+	#ecriture_du_champ_lexical_des_propositions()
+	triplets_u = creer_les_triplets_selon_la_proximite_des_propositions_selon_les_utilisateurs()
+	#triplets_l = creer_les_triplets_des_proximites_lexicales()
+
+	data_u = affichage_graphique_de_triplet (triplets_u, seuil= 0.05)
+	enregistrer_les_datas(data_u, nom= "data_u" )
+
+	#data_l = affichage_graphique_de_triplet (triplets_l, seuil= 20)
+	#enregistrer_les_datas(data_l, nom= "data_l" )
+
+
 	utilisateur= request.user
-	
-	return render (request, 'revendications/consulter.html', {"choix_menu": "consulter", 'data': data})
+	return render (request, 'revendications/consulter.html', {"choix_menu": "consulter", 'data': data_u})
 
 
-def data_json(request):
+
+def data_u(request):
+	return render(request, 'revendications/data_u.json')
+
+def data_l(request):
+	return render(request, 'revendications/data_l.json')
+
+def sigma_min_js(request):
+	return render (request, 'revendications/sigma.min.js')
+
+def sigma_parser_json_min_js(request):
+	return render (request, 'revendications/sigma.parsers.json.min.js')
 	
-	return render(request, 'revendications/fichier_data.json')
 
 
 def creation_utilisateur (request):
@@ -514,6 +620,8 @@ def accueil(request):
 	from django.contrib.auth.models import User
 	utilisateur = request.user.username
 	print ("voici l'utilisateur" , utilisateur)
+
+
 	return render(request, 'revendications/accueil.html', {"utilisateur":utilisateur})
 
 
