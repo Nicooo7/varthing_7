@@ -632,7 +632,7 @@ def afficher_accueil_revendiquer (request):
 
 def mes_revendications (request):
 
-	creer_les_proximites()
+	ecrire_les_proximites_entre_utilisateurs()
 
 
 	#supprimer_les_propositions_doublons()
