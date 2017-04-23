@@ -60,4 +60,12 @@ urlpatterns = [
     url(r'^data_l.json', views.data_l, name = 'data_l_json'),
     url(r'^sigma.min.js', views.sigma_min_js, name = 'sigma_min_js'),
     url(r'^sigma.parsers.json.min.js', views.sigma_parser_json_min_js, name = 'sigma_parser_json_min_js'),
+    url(r'^auto_completion', views.auto_completion, name = 'auto_completion'),
+
+
     ]
+
+
+
+
+

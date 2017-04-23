@@ -675,7 +675,48 @@ def affiche(mot):
 	print ("voici l'élément demandé : {0}".format(mot))
 
 
+
+def auto_completion(request):
+
+	if request.GET:
+
+
+		from nltk.tokenize import TreebankWordTokenizer
+		from nltk.corpus import stopwords
+		tokenizer = TreebankWordTokenizer()
+		champ_recherche=request.GET ['champ_recherche']
+
+		#obtenir les 10 premiers résultats correspondant au champ de recherche en auto-completion:
+		propositions = Proposition.objects.all()
+		proposition_resultat = []
+		ennonce_resultat = []
+		i = 1
+		while i < 10:
+			#pour chacune des propositions et de son ennonce,
+			for proposition in propositions:
+				ennonce = proposition.ennonce
+				#on découpe l'ennonce en mot
+				tokens = tokenizer.tokenize(ennonce)
+				#pour chacun des mots, on teste si la recherche correspond
+				for mot in tokens:
+					if champ_recherche in mot:
+						#si c'est le cas, on conserve la proposition dans le resultat à afficher
+						if ennonce  not in ennonce_resultat:
+							proposition_resultat.append(proposition)
+							ennonce_resultat.append(ennonce)
+							i = i+1
+
+		return render (request, 'revendications/auto_completion.html', {"ennonce_resultat" :ennonce_resultat})					
+
+	else:
+
+		return render (request, 'revendications/auto_completion.html')	
+
+						
+
+
 def creer_une_revendication (request):
+	
 
 
 	utilisateur= request.user
@@ -714,8 +755,16 @@ def creer_une_revendication (request):
 			return render (request, 'revendications/mes_revendications.html', {"propositions" : propositions, "propositions2" : propositions2, 'choix_menu': "militer", 'num':num})		
 			
 	else:
+
 		form = RevendicationForm()
-		return render(request, 'revendications/creer_une_revendication.html', {'form': form})
+		liste = []
+		propositions = Proposition.objects.all()
+		for proposition in propositions:
+			ennonce = proposition.ennonce
+			with open ("/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/ennonce2", "a") as fichier:
+				fichier.write(ennonce + "___")
+
+		return render(request, 'revendications/creer_une_revendication.html', {'form': form, "liste" : liste})
 	
 
 

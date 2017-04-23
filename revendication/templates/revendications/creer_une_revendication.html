@@ -1,14 +1,51 @@
+
+
 {% load static %}
 
 
 
+
+
 <head>
-<link rel="stylesheet" href="{% static '/gestion_patient/css/formulaire.css' %}">
+
+
+ <!-- inclusion des libraries jQuery et jQuery UI (fichier principal et plugins) -->
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
+    
+ </body>
+</html>
+
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 </head>
 
 <h1>Page pour creer une revendication</h1>
+
+{{liste}}
+
+
+
+ <form>
+    <input type="text" id="recherche"/> champ de recherche
+</form>
+
+		<script>
+	 
+
+		var completion = {{liste}}
+
+
+	
+	alert (completion);
+
+$('#recherche').autocomplete({
+    source : completion
+});
+    
+
+    </script>
+
 
 <form2>
 <form action="/revendication/creer_une_revendication.html " method="post">
