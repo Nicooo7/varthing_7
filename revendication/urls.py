@@ -21,6 +21,9 @@ urlpatterns = [
     url(r'^deconnexion', views.deconnexion, name = 'deconnexion'),
     url(r'^authentification', views.authentification, name = 'authentification'),
     url(r'^afficher_mon_profil', views.afficher_mon_profil, name = 'afficher_mon_profil'),
+    url(r'^modifier_profil', views.modifier_profil, name = 'modifier_profil'),
+
+
     # Revendications
     url(r'^creer_une_revendication', views.creer_une_revendication, name = 'creer_une_revendication'),
     url(r'^proposition_detail/(\d+)$', views.proposition_detail, name = 'proposition_detail'),
@@ -40,6 +43,7 @@ urlpatterns = [
     url(r'^detail_evenement/(\d+)$', views.detail_evenement, name = 'detail_evenement'),
     url(r'^participer_a_un_evenement', views.participer_a_un_evenement, name = 'participer_a_un_evenement'),
     url(r'^mes_evenements', views.mes_evenements, name = 'mes_evenements'),
+
     # Pétitions
     url(r'^creer_une_petition', views.creer_une_petition, name = 'creer_une_petition'),
     url(r'^supprimer_une_petition/(\d+)$', views.supprimer_une_petition, name = 'supprimer_une_petition'),
@@ -53,6 +57,9 @@ urlpatterns = [
     url(r'^signer_une_competence', views.signer_une_competence, name = 'signer_une_petition'),
     url(r'^mes_competences', views.mes_competences, name = 'mes_competences'),
 
+
+
+
     # ~ Divers ~
     url(r'^merci', views.merci, name = 'merci'),
     url(r'^message', views.message, name = 'message'),
@@ -61,8 +68,9 @@ urlpatterns = [
     url(r'^sigma.min.js', views.sigma_min_js, name = 'sigma_min_js'),
     url(r'^sigma.parsers.json.min.js', views.sigma_parser_json_min_js, name = 'sigma_parser_json_min_js'),
     url(r'^auto_completion', views.auto_completion, name = 'auto_completion'),
-
-
+    url(r'^departements.min.js', views.departements_min_js, name = 'departements_min_js'),
+    url(r'^vectormap.min.js', views.vectormap_min_js, name = 'vectormap_min_js'),
+    url(r'^vectormap.css', views.vectormap_css, name = 'vectormap_css'),
     ]
 
 

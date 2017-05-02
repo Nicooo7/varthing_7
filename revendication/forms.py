@@ -27,6 +27,19 @@ class RevendicationForm(forms.Form):
 	nouveau_theme = forms.CharField (max_length=100)
 	print (liste_des_intitules)
 
+
+class ProfilForm(forms.Form):
+
+	homme_femme = [("homme","homme"), ("femme","femme")]
+
+	mail = forms.EmailField(max_length = 254)
+	age = forms.IntegerField()
+	sexe = forms.MultipleChoiceField(choices = homme_femme)
+	profession = forms.CharField(max_length = 10)
+	interets = forms.CharField (max_length = 1000)
+
+
+
 class UtilisateurForm(forms.Form):
 	nom = forms.CharField(max_length=100)
 	mot_de_passe = forms.CharField(max_length=100)
@@ -41,7 +54,6 @@ class OrganisationForm(forms.Form):
 
 class EvenementForm(forms.Form):
 	titre = forms.CharField (max_length = 100)
-	lieu = forms.CharField (max_length = 100)
 	date = forms.DateField ()
 	description = forms.CharField(widget=forms.Textarea, max_length = 10000)
 

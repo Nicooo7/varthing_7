@@ -43,7 +43,7 @@ class Autre_utilisateur (models.Model):
 class Evenement (models.Model):
 
     titre = models.CharField(max_length = 10000, null = True)
-    lieu = models.ForeignKey (Lieu, null=True)
+    lieu = models.CharField (max_length = 10, null = True)
     date = models.DateField (null=True)
     description = models.CharField(max_length = 10000, null = True)
     proposition = models.ForeignKey (Proposition, null=True)
@@ -77,9 +77,15 @@ class Evenement (models.Model):
 
 class Profile (models.Model):
     utilisateur = models.ForeignKey(User, null=True)
-    lieu = models.ForeignKey (Lieu, null=True)
+    lieu = models.CharField(max_length = 200, null = True)
     theme_favoris = models.CharField(max_length = 200, null = True)
     utilisateurs_proches = models.ManyToManyField (Autre_utilisateur, through ="Proximite")
+    mail = models.EmailField(max_length = 254, null = True)
+    age = models.PositiveSmallIntegerField(null = True)
+    sexe = models.CharField(max_length = 10, null = True)
+    profession = models.CharField(max_length = 10, null = True)
+    interets = models.CharField (max_length = 1000, null = True)
+
 
     def __str__(self):
         return "profile de {0}".format(self.utilisateur)
@@ -147,6 +153,7 @@ class Competence (models.Model):
     date_creation = models.DateField("Date de création", auto_now=True)
     date_echeance = models.DateField("Date d'échéance", null=True, blank=True)
     personnes = models.ManyToManyField(User, through="Soutien", null=True)
+    lieu = models.CharField(max_length=100, null = True)
 
     
     # Méthode/Propriété : "createur" : donne le username du créateur de la pétition

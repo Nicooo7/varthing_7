@@ -22,26 +22,55 @@
 
 <h1>Page pour creer une revendication</h1>
 
-{{liste}}
-
-
 
  <form>
-    <input type="text" id="recherche"/> champ de recherche
+    <input type="text" id="recherche"/> vérifier si votre idée n'existe pas dans le champ de recherche
+    <input type="button" id="lien" value="aller sur la page de cette proposition" />
+    <p>
+    <input type="text" id="tags"/> entrez un mot correspondant à votre proposition
+      <input type="button" id="nouveau_tag" value="nouveau tag" onclick= 
+      		"
+      		if (typeof liste == 'undefined')
+      		{
+      		var liste = '';
+      		alert ('ok');
+      		}
+      		else
+      		{
+      		var tags = document.getElementById('tags');
+      		liste = liste + '/' + tags.value;
+      		tags.value = '';
+      		var liste_tag = document.getElementById('liste_tag');
+      		liste_tag.value = liste;
+      		}
+      		"/>
+      
+  </p>
+
 </form>
 
-		<script>
+
+
+<input id ="liste_tag" type="text"/> liste des tags ajoutés />
+
+
+
+
+	<script>
 	 
 
-		var completion = {{liste}}
+            	var completion = "{{liste}}"
+                var reg=new RegExp("_", "g");
+                var tableau=completion.split(reg);
 
 
-	
-	alert (completion);
+                $('#recherche').autocomplete({source : tableau});
+                var lien = document.getElementById('lien');
+                var recherche = document.getElementById('recherche');
+                lien.onclick = function() {
+                document.location.href = "consult_revendications.html?ennonce=" + recherche.value
+                 };
 
-$('#recherche').autocomplete({
-    source : completion
-});
     
 
     </script>

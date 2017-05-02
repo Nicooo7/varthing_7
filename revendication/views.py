@@ -31,13 +31,6 @@ app_name = 'revendication'
 
 
 
-
-
-
-
-
-
-
   #..........................VOCABULAIRE.........................#
 
 
@@ -76,13 +69,13 @@ class Vocabulaire: #motclé et  son champs lexical.
 		self.motcle = motcle
 		self.champ_lexical = champ_lexical
 def initialiser_le_fichier():
-	with open('/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/vocabulaire', 'wb') as fichier:
+	with open('/revendication/static/vocabulaire/vocabulaire', 'wb') as fichier:
 		mon_pickler = pickle.Pickler(fichier)
 		le_mot = Vocabulaire("tous")
 		mon_pickler.dump(le_mot)
 def enregistrer_un_nouveau_mot(mot):
 	print ("ca demarre")
-	with open('/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/vocabulaire', 'ab') as fichier:
+	with open('/revendication/static/vocabulaire/vocabulaire', 'ab') as fichier:
 		liste_des_vocabulaires = []
 		le_mot = Vocabulaire(mot)
 		mon_pickler = pickle.Pickler(fichier)
@@ -90,7 +83,7 @@ def enregistrer_un_nouveau_mot(mot):
 		print ("________________le mot : {}".format(le_mot))
 		mon_pickler.dump(le_mot)
 def acceder_aux_vocabulaires():
-	with open('/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/vocabulaire', 'rb') as fichier:
+	with open('/revendication/static/vocabulaire/vocabulaire', 'rb') as fichier:
 		mon_depickler = pickle.Unpickler(fichier)
 		print (mon_depickler)
 		un_mot = mon_depickler.load()
@@ -101,7 +94,7 @@ def acceder_aux_vocabulaires():
 				break
 def implementer_la_liste_des_vocabulaires(la_liste_des_vocabulaires):
 
-	with open('/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/vocabulaire', 'rb') as fichier:
+	with open('/revendication/static/vocabulaire/vocabulaire', 'rb') as fichier:
 		mon_depickler = pickle.Unpickler(fichier)
 		un_mot = "vide"
 		while un_mot:
@@ -144,7 +137,7 @@ def ecriture_du_champ_lexical_des_propositions():
 		ennonce = proposition.ennonce
 		
 		#se débarrasser des verbes:
-		fichier_ennonce = open('/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/ennonce', 'a') 
+		fichier_ennonce = open('/revendication/static/vocabulaire/ennonce', 'a') 
 		fichier_ennonce.write(ennonce)
 		fichier_ennonce.close
 		os.system ("/Users/nicolasvinurel/anaconda/envs/icutestenv/bin/python /Users/nicolasvinurel/Desktop/depot/revendication/fonctions/tagger.py")
@@ -508,7 +501,7 @@ def affichage_graphique_de_triplet(triplets, seuil):
 		
 
 def enregistrer_les_datas(data, nom):
-	fichier_data = open("/Users/nicolasvinurel/Desktop/depot/revendication/templates/revendications/{}.json".format(nom), "w")
+	fichier_data = open("revendication/templates/revendications/{}.json".format(nom), "w")
 	fichier_data.write(data)
 	fichier_data.close()
 
@@ -550,7 +543,16 @@ def sigma_min_js(request):
 
 def sigma_parser_json_min_js(request):
 	return render (request, 'revendications/sigma.parsers.json.min.js')
-	
+
+
+def departements_min_js(request):
+	return render (request, 'revendications/departements.min.js')
+
+def vectormap_min_js(request):
+	return render (request, 'revendications/vectormap.min.js')	
+
+def vectormap_css(request):
+	return render (request, 'revendications/vectormap.css')		
 
 
 def creation_utilisateur (request):
@@ -755,14 +757,13 @@ def creer_une_revendication (request):
 			return render (request, 'revendications/mes_revendications.html', {"propositions" : propositions, "propositions2" : propositions2, 'choix_menu': "militer", 'num':num})		
 			
 	else:
-
+		liste = ""
 		form = RevendicationForm()
-		liste = []
 		propositions = Proposition.objects.all()
 		for proposition in propositions:
 			ennonce = proposition.ennonce
-			with open ("/Users/nicolasvinurel/Desktop/depot/revendication/static/vocabulaire/ennonce2", "a") as fichier:
-				fichier.write(ennonce + "___")
+			liste = liste + ennonce + "_"
+
 
 		return render(request, 'revendications/creer_une_revendication.html', {'form': form, "liste" : liste})
 	
@@ -841,6 +842,40 @@ def afficher_mon_profil (request):
 
 
 	return render (request, 'revendications/afficher_mon_profil.html', {"revendications":revendications, "documents":documents, "organisations": organisations, "actualites": actualites, "suggestions": suggestions})
+
+
+def modifier_profil(request):
+
+	utilisateur = request.user
+
+
+	if request.method == 'POST':
+		form = ProfilForm(request.POST)
+		if form.is_valid():
+		    lieu =request.POST['lieu']
+		    mail = request.POST['mail']
+		    age = request.POST['age']
+		    sexe = request.POST['sexe']
+		    profession = request.POST['profession']
+		    interets = request.POST['interets']
+
+		Profil = Profile.objects.get(utilisateur= utilisateur)
+		Profil.lieu = lieu
+		Profil.mail = mail
+		Profil.age= age
+		Profil.sexe= sexe
+		Profil.profession = profession
+		Profil.interets = interets
+		Profil.save()
+	
+		return render(request, 'revendications/merci.html')	
+
+	else:
+		form = ProfilForm()
+		return render(request, 'revendications/modifier_profil.html', {'form': form, })
+
+
+
 
 
 """
@@ -949,7 +984,7 @@ def creer_un_evenement (request):
 
 			createur = request.user
 		
-			evenement = Evenement.objects.create (date = date, description = description, proposition =proposition, titre = titre)
+			evenement = Evenement.objects.create (date = date, description = description, proposition =proposition, titre = titre, lieu = lieu)
 			evenement.save()
 			soutien = Soutien.objects.create (evenement = evenement, user = createur, lien = 'CR')
 			soutien.save()
@@ -957,7 +992,12 @@ def creer_un_evenement (request):
 
 			return render(request, 'revendications/merci.html')
 	else:
-		id_proposition = request.GET['id_proposition']
+		try:
+			id_proposition = request.GET['id_proposition']
+		except:
+			propositions = Proposition.objects.all()
+			return render(request, 'revendications/choisir_proposition.html', {'fonction': "evenement", "propositions": propositions})
+
 		form = EvenementForm()
 	
 	print ("voici le formulaire = {}".format(form))
@@ -972,12 +1012,21 @@ def detail_evenement(request, id_evenement):
 	except Evenement.DoesNotExist:
 		raise Http404
 
+	code_lieu = evenement.lieu
+	#recuperer le lieu correspondant au code
+
+	with open ('revendication/static/departements_codes', 'r') as f:
+		lignes = f.readlines()
+		for ligne in lignes:
+			if code_lieu in ligne:
+				liste = ligne.split('\t')
+				lieu = liste[2]
 
 	participants= Soutien.objects.filter(evenement = evenement, lien= 'SO')
 
 	print ("l'evenement est {}".format(evenement))
 
-	return render(request, 'revendications/detail_evenement.html', {'evenement': evenement, 'participants':participants})
+	return render(request, 'revendications/detail_evenement.html', {'evenement': evenement, 'participants':participants, 'lieu': lieu})
 
 
 
@@ -1210,6 +1259,12 @@ def creer_une_competence(request):
 			titre = form.cleaned_data['titre']
 			description = form.cleaned_data['description']
 			date_echeance = form.cleaned_data['date_echeance']
+			propositions = Proposition.objects.get(id = id_proposition)
+	
+
+
+
+			lieu = request.POST ['lieu']
 
 			#propositions = form.cleaned_data['propositions']
 
@@ -1222,15 +1277,15 @@ def creer_une_competence(request):
 			except:
 				raise Http404
 
-			if not propositions:
-				return render(request, 'revendications/message.html', {'message':"Cocher au moins une proposition !"})
+			#if not propositions:
+				#return render(request, 'revendications/message.html', {'message':"Cocher au moins une proposition !"})
 
 			
 
 			"""
 			"""
 			# Création de la pétition puis association à la proposition source
-			competence = Competence.objects.create(titre=titre, description=description, date_echeance=date_echeance)
+			competence = Competence.objects.create(titre=titre, description=description, date_echeance=date_echeance, lieu=lieu )
 
 			for i in propositions:
 				competence.propositions.add(i)
@@ -1297,11 +1352,20 @@ def detail_competence(request, id_competence):
 	
 	propositions = competence.propositions.all()
 	signataires = Soutien.objects.filter (competence = competence, lien = 'SO')
+	code_lieu = competence.lieu
+
+
+	with open ('revendication/static/departements_codes', 'r') as f:
+		lignes = f.readlines()
+		for ligne in lignes:
+			if code_lieu in ligne:
+				liste = ligne.split('\t')
+				lieu = liste[2]
 
 
 	print (signataires)
 
-	return render(request, 'revendications/detail_competence.html', {'competence': competence, 'propositions': propositions, 'signataires': signataires})
+	return render(request, 'revendications/detail_competence.html', {'competence': competence, 'propositions': propositions, 'signataires': signataires, 'lieu': lieu})
 
 
 def signer_une_competence(request):
@@ -1420,6 +1484,7 @@ def afficher_le_graph_des_propositions(request):
 	creer_les_liens (G, liste_des_couples, dictionnaire_des_propositions)
 
 	nx.write_gexf(G, "propositions.gexf")
+
 
 
 
