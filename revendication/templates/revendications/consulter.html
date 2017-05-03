@@ -13,9 +13,13 @@
 
 <div id="container">  </div>
 
-<script src="sigma.min.js"></script>
+<script src="{% static "json/sigma.min.js" %}"> 
+</script> 
 
-<script src="sigma.parsers.json.min.js"></script>
+bonjour
+
+<script src="{% static "json/sigma.parsers.json.min.js" %}"> 
+</script>
 
 <script>
 
@@ -39,7 +43,7 @@ gris = '#eee'
   });
 
 
- sigma.parsers.json('data_u.json', 
+ sigma.parsers.json ( "{% static "/data_u.json" %}", 
 	{
 	    container: 'container',
 	    settings: 

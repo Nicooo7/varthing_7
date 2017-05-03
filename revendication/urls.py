@@ -63,14 +63,7 @@ urlpatterns = [
     # ~ Divers ~
     url(r'^merci', views.merci, name = 'merci'),
     url(r'^message', views.message, name = 'message'),
-    url(r'^data_u.json', views.data_u, name = 'data_u_json'),
-    url(r'^data_l.json', views.data_l, name = 'data_l_json'),
-    url(r'^sigma.min.js', views.sigma_min_js, name = 'sigma_min_js'),
-    url(r'^sigma.parsers.json.min.js', views.sigma_parser_json_min_js, name = 'sigma_parser_json_min_js'),
     url(r'^auto_completion', views.auto_completion, name = 'auto_completion'),
-    url(r'^departements.min.js', views.departements_min_js, name = 'departements_min_js'),
-    url(r'^vectormap.min.js', views.vectormap_min_js, name = 'vectormap_min_js'),
-    url(r'^vectormap.css', views.vectormap_css, name = 'vectormap_css'),
     ]
 
 

@@ -501,7 +501,7 @@ def affichage_graphique_de_triplet(triplets, seuil):
 		
 
 def enregistrer_les_datas(data, nom):
-	fichier_data = open("revendication/templates/revendications/{}.json".format(nom), "w")
+	fichier_data = open("revendication/static/{}.json".format(nom), "w")
 	fichier_data.write(data)
 	fichier_data.close()
 
@@ -531,15 +531,6 @@ def consulter (request):
 	return render (request, 'revendications/consulter.html', {"choix_menu": "consulter", 'data': data_u})
 
 
-
-def data_u(request):
-	return render(request, 'revendications/data_u.json')
-
-def data_l(request):
-	return render(request, 'revendications/data_l.json')
-
-def sigma_min_js(request):
-	return render (request, 'revendications/sigma.min.js')
 
 def sigma_parser_json_min_js(request):
 	return render (request, 'revendications/sigma.parsers.json.min.js')

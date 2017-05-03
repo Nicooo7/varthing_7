@@ -1,20 +1,19 @@
 {% load static %}
 <head>
-<link rel="stylesheet" href="vectormap.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href= "{% static "json/vectormap.css" %}" type="text/css" media="screen"/>
 
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
   
-<script src="vectormap.min.js"></script>
-<script src="departements.min.js"></script>
+<script src="{% static "json/vectormap.min.js" %}" > 
+</script>
+<script src="{% static "departements.min.js" %}" >
+</script>
 
 
 
 
-
-
-<link rel="stylesheet" href="{% static '/gestion_patient/css/formulaire.css' %}">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 </head>

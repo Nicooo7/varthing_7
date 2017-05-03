@@ -1,15 +1,15 @@
 { "nodes" : [
-{"id" : "virer tous les immigres", "label"  : "virer tous les immigres","x" :0.3663833420128543, "y" : 0.13361110890058267, "size"  : 3 }
-,{"id" : "virer certains immigres", "label"  : "virer certains immigres","x" :0.8026149691159733, "y" : 0.11820168242565886, "size"  : 3 }
-,{"id" : "accueuillir généreusement les immigres", "label"  : "accueuillir généreusement les immigres","x" :0.5050061054539953, "y" : 1.0, "size"  : 3 }
-,{"id" : "détruire le capitalisme", "label"  : "détruire le capitalisme","x" :0.36245172893462607, "y" : 0.6036654108791935, "size"  : 3 }
-,{"id" : "encourager le capitalisme", "label"  : "encourager le capitalisme","x" :0.9035920519065792, "y" : 0.3688363310567509, "size"  : 3 }
-,{"id" : "s'accomoder du capitalisme", "label"  : "s'accomoder du capitalisme","x" :0.7128176288645046, "y" : 0.9475887625077614, "size"  : 3 }
-,{"id" : "s'en foutre de la planete", "label"  : "s'en foutre de la planete","x" :0.5302664436797005, "y" : 0.0, "size"  : 3 }
-,{"id" : "faire comme si on s'en préoccupait de la planete", "label"  : "faire comme si on s'en préoccupait de la planete","x" :0.9012812544842033, "y" : 0.772178647748189, "size"  : 3 }
-,{"id" : "se préoccuper de la planete", "label"  : "se préoccuper de la planete","x" :0.9566169943474011, "y" : 0.6454630487965483, "size"  : 3 }
-,{"id" : "faire de la planete sa priorité", "label"  : "faire de la planete sa priorité","x" :0.07629129830753473, "y" : 0.7849488825069072, "size"  : 3 }
-,{"id" : "pour la sortie du nucléaire", "label"  : "pour la sortie du nucléaire","x" :0.0, "y" : 0.34811229612491146, "size"  : 3 }],
+{"id" : "virer tous les immigres", "label"  : "virer tous les immigres","x" :0.8724031221110544, "y" : 0.14137503653950378, "size"  : 3 }
+,{"id" : "virer certains immigres", "label"  : "virer certains immigres","x" :0.979511657972901, "y" : 0.3762264015087453, "size"  : 3 }
+,{"id" : "accueuillir généreusement les immigres", "label"  : "accueuillir généreusement les immigres","x" :0.37657858559089724, "y" : 0.631645612430053, "size"  : 3 }
+,{"id" : "détruire le capitalisme", "label"  : "détruire le capitalisme","x" :0.23047594959752088, "y" : 0.12172563987459026, "size"  : 3 }
+,{"id" : "encourager le capitalisme", "label"  : "encourager le capitalisme","x" :0.8609468093643794, "y" : 0.5412436577812724, "size"  : 3 }
+,{"id" : "s'accomoder du capitalisme", "label"  : "s'accomoder du capitalisme","x" :0.13788640837073934, "y" : 0.8515456554272222, "size"  : 3 }
+,{"id" : "s'en foutre de la planete", "label"  : "s'en foutre de la planete","x" :0.6512632042348115, "y" : 0.0, "size"  : 3 }
+,{"id" : "faire comme si on s'en préoccupait de la planete", "label"  : "faire comme si on s'en préoccupait de la planete","x" :0.9552765786612188, "y" : 0.7457842384424411, "size"  : 3 }
+,{"id" : "se préoccuper de la planete", "label"  : "se préoccuper de la planete","x" :0.0, "y" : 0.6177028513991034, "size"  : 3 }
+,{"id" : "faire de la planete sa priorité", "label"  : "faire de la planete sa priorité","x" :0.030427618650672655, "y" : 0.2880740282006234, "size"  : 3 }
+,{"id" : "pour la sortie du nucléaire", "label"  : "pour la sortie du nucléaire","x" :0.66748877518221, "y" : 1.0, "size"  : 3 }],
 
 "edges":[
 { "id" : "0", "source"  : "se préoccuper de la planete", "target"  :"s'accomoder du capitalisme"}
