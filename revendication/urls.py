@@ -64,6 +64,9 @@ urlpatterns = [
     url(r'^merci', views.merci, name = 'merci'),
     url(r'^message', views.message, name = 'message'),
     url(r'^auto_completion', views.auto_completion, name = 'auto_completion'),
+    url(r'^index2', views.index2, name='index2'),
+     url(r'^i2modif', views.index2modif, name='index2modif'),
+    url(r'^base2', views.base2, name='base2'),
     ]
 
 

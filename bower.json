@@ -1,0 +1,26 @@
+{
+  "name": "varthing",
+  "authors": [],
+  "description": "varthing social network",
+  "main": "",
+  "keywords": [
+    "varthing",
+    "social",
+    "network"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "varthing/static/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "materialize": "^0.98.2",
+    "jquery": "^3.2.1"
+  }
+}

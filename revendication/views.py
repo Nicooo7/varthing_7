@@ -867,7 +867,25 @@ def modifier_profil(request):
 
 
 
+def index2(request):
+    context = {
+        'test': 'varthing'
+    }
+    return render(request, 'revendications/index2.html',context)
 
+def index2modif(request):
+    context = {
+        'test': 'varthing'
+    }
+    return render(request, 'revendications/index2modif.html')   
+
+
+
+def base2(request):
+    context = {
+        'test': 'varthing'
+    }
+    return render(request, 'revendications/base2.html',context)
 
 """
 

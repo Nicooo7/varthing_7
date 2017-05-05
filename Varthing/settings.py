@@ -53,7 +53,6 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Varthing.urls'
 
 
-STATIC_URL = '/static/'
 
 TEMPLATES = [
     {
@@ -120,4 +119,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+
+
+PROJECT_DIR = os.path.dirname(__file__)
+STATICFILES_DIRS = (os.path.join(PROJECT_DIR, 'static'),)
+
+STATIC_URL = '/static/'
+
+
+
+
+
+
+
+
 

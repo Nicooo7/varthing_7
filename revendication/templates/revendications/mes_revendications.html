@@ -1,58 +1,113 @@
 
-	
 {% extends "revendications/militer.html" %} 
 {% load static %}
+                                
 
-<h1> {{propositions2}} </h1>
+{% block contenu_central%} 
 
-   
-    {% block barre_de_gauche %}
-		<input type=button id="creer_revendication" value ="créer une revendication" onclick ="document.location.href = 'creer_une_revendication'">
 
-     {% endblock %}  
-  
 
-     {% block barre_centrale %}
-     <div class = "barre_centrale">
-        <div class = "affichage_de_liste">
-         	 <h3> Les revendications dont je suis l'auteur:</h3> 
-             	{% if propositions %}
-                    {% for proposition in propositions %}    
-                 		<div> proposition: {{proposition}} (id {{proposition.id}}) <a href="{% url 'proposition_detail' proposition.id %}">[Détails]</a></div>
+        <div class= "section"> </div>
+        <div class= "section"> </div>
+        <div class= "section"> </div>
+        <div class= "section"> </div>
+
+
+
+
+
+
+
+           <div class="row">
+                <div class="col s12 ">
+                  <div class="card #ef5350 red lighten-1 ">
+
+                    <div class="card-content white-text">
+                      <span class="card-title"> Mes revendications  !</span>
+                      <p>Consultez  le détail de vos revendications</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+        <ul class="collapsible" data-collapsible="accordion">
             
-                        
-                 	{% endfor %}
-                {% else %}
-                    vous n'avez pas crée de propositions...
-                {% endif %}
-		 
-         </div>
-		 <p>
-		 <p>
-		 <div class = "affichage_de_liste">
-		    <h3> Les revendications auxquelles j'adhère:</h3> 
-             	{% for proposition in propositions2 %}
-             		<div> proposition: {{proposition}} <a href="{% url 'proposition_detail' proposition.id %}">[Détails]</a></div>
-                    {% comment %}<div> proposition: {{proposition}} (id {{proposition.id}})</div>{% endcomment %}
-             	{% endfor %}
-        </div>
-         <div class = "affichage_de_liste">
-		    <h3> l'utilisateur dont je suis le plus proche: {{utilisateur_le_plus_proche}}</h3> 
-        </div>
+            <li>
+              <div class="collapsible-header"><i class="material-icons">new_releases</i>Les revendications dont je suis l'auteur:</div>
+              <div class="collapsible-body">  
+                      
+                            <ul class="collection with-header">
+                            <li class="collection-header"><h5>J'ai crée:</h5></li>
+                                {% for proposition in propositions %}    
+                                <li class="collection-item red"><div>{{proposition}}<a href=""{% url 'proposition_detail' proposition.id %}"" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                            {% endfor %}
+                            </ul>   
+              </div>
+            </li>
+           
+            <li>
+              <div class="collapsible-header"><i class="material-icons">supervisor_account</i>Les revendications auxquelles d'adhère</div>
+              <div class="collapsible-body">
+                   <ul class="collection with-header">
+                            <li class="collection-header"><h5>Je suis d'accord avec ça:</h5></li>
+                            {% for proposition in propositions2 %}                               
+                             <li class="collection-item red"><div>{{proposition}}<a href="{% url 'proposition_detail' proposition.id %}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                            {% endfor %}
+                            </ul>   
+              </div>
+            </li>
 
-         <div class = "affichage_de_liste">
-		    <h3> Les revendications qui pourraient m'interesser:</h3> 
-             	{% for proposition in propositions_interessantes %}
-             		<input type="button" id="proposition_affichee" value="{{proposition.ennonce}} " onclick = "
-			document.location.href = 'http://localhost:8000/revendication/proposition_detail.html?nom={{proposition.id}}';
-		    "> 
-             	{% endfor %}
-        </div>
-        </div>
-   
-      {% endblock %}   
-    
-              
+                <li>
+              <div class="collapsible-header"><i class="material-icons">perm_media</i>l'utilisateur dont je suis le plus proche</div>
+              <div class="collapsible-body">
+                   <ul class="collection with-header">
+                            <li class="collection-header"><h5>Il me ressemble !</h5></li>
+                                <li class="collection-item red"><div>{{utilisateur_le_plus_proche}}<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                            </ul>   
+              </div>
+            </li>
+
+                <li>
+              <div class="collapsible-header"><i class="material-icons">radio</i>Les revendications qui pourraient m'interesser:</div>
+              <div class="collapsible-body">
+                   <ul class="collection with-header">
+                            <li class="collection-header"><h5>Et si j'adherai à ces revendications ?! :</h5></li>
+                            {% for proposition in propositions_interessantes %}
+                                <li class="collection-item red"><div>{{proposition}}<a href="{% url 'proposition_detail' proposition.id %}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                            {% endfor %}
+                            </ul>   
+              </div>
+            </li>
+
+           </ul> 
+
+     
+        <div class= "section"> </div>
+        <div class= "section"> </div>
+
+        <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'creer_une_revendication'">add</i></a> Je crée une revendication
+
+
+        <div class= "section"> </div>
+        <div class= "section"> </div>      
+        
+
+{% endblock %}
+
+
+
+
+
+{% block scripts %}
+<script>
+ $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+  </script>
+{% endblock%}
 
    
 		      

@@ -1,0 +1,169 @@
+{% extends 'revendications/base2.html' %}
+{% load static %}
+{% block content %}
+                    {% block navigation %}
+                    <nav class="white" role="navigation">
+                          <div class="nav-wrapper container">
+                              <ul class="left hide-on-med-and-down">
+                                  <a href="" class="brand-logo center"><img class="materialboxed" width="100" src="{%  static 'revendication/images/logo_varthing.jpg' %}" /> </a>
+                                  <li><a href="{% url 'consulter' %}">consulter</a></li>
+                                  <li><a href="{% url 'militer' %}">participer</a></li>
+                                  <li><a href="{% url 'organiser' %}">agir</a></li>
+                                  <li class="active"><a href="collapsible.html"></a></li>
+                
+                                </ul>
+
+                              <ul class="right hide-on-med-and-down">
+                                <li><a href="#">A propos</a></li>
+
+                                {% if user.is_authenticated %}
+                                <li><a href="{% url 'deconnexion' %}">se déconnecter</a></li>
+                                {% else %}
+                                <li><a href="{% url 'authentification' %}">Connexion</a></li>
+                                <li><a href="{% url 'creation_utilisateur' %}">Inscription</a></li>
+                                {% endif %}
+                              </ul>
+
+                           </div>
+
+                    </nav>
+                    {% endblock %}
+
+
+
+
+              {%block page%}
+     
+
+              <div class="row">
+                    
+
+                    {% block menu_gauche %}
+                          
+                          
+                             <div class="col s1"> 
+                                            <!-- Dropdown Trigger -->
+                                  <a class='dropdown-button btn' href='#' data-activates='dropdown1'>ACTIONS</a>
+
+                                  <!-- Dropdown Structure -->
+                                  <ul id='dropdown1' class='dropdown-content'>
+                                    <li><a href="#!">one</a></li>
+                                    <li><a href="#!">two</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#!">three</a></li>
+                                    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+                                    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+                                  </ul>
+                                                 
+                              </div>
+
+                      {% endblock %} 
+                                        
+                                      
+                                     
+
+
+                            
+                        {% block centre%}
+                                <div class="col s12 "> 
+                     
+                                
+                                          <div class="section no-pad-bot">
+                                            <div class="container">
+                                              <br><br>
+                                              <h1 class="header center red-text text-lighten-1"> 
+                                              {% block titre_central%}
+                                                {% endblock %}
+                                              </h1>
+                                            </div>
+                                           </div>
+
+                            {% block image_parallax %}
+                             <div class="parallax-container valign-wrapper">
+                            <div class="parallax"><img src="/static/revendication/images/bibliotheque.jpg" alt="Unsplashed background img 2" style="display: block; transform: translate3d(-50%, 268px, 0px);"></div>
+                            </div>  
+                              {% endblock%}
+
+      
+
+
+                                 <div class="col s12"> 
+                                        <div class="container">
+                                            
+                                                  {% block contenu_central%}
+                                                  CONTENU DU CENTRE
+                                                  <p> 1 </p>
+                                                  <p> 2 </p>
+                                                  <p> 3 </p>
+                                                  <p> 4 </p>
+                                                  <p> 5 </p>
+                                                  {% endblock %}
+                                        </div>
+                                </div>
+                                </div>
+                        {% endblock%}
+  
+                          
+               </div>
+                    
+
+                          {% block bas%}
+
+                          <div class= "section"> </div>
+
+
+                          <div class="parallax-container valign-wrapper">
+                            <div class="parallax"><img src="/static/revendication/images/logo_galaxie.png" alt="Unsplashed background img 2" style="display: block; transform: translate3d(-50%, 268px, 0px);"></div>
+                          </div>
+
+                          <div class = "row" >
+                            <div class= "col s12"> 
+                                  <footer class="page-footer #80cbc4 teal lighten-3">
+                                    <div class="container">
+                                      <div class="row">
+                                        <div class="col s12">
+                                          CONTENU DU FOOTER
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="footer-copyright">
+                                        <div class="container #80cbc4 ">
+                                          © 2014 Copyright Text
+                                          <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+                                        </div>
+                                    </div>
+                                  </footer>
+                            </div>
+                          </div>
+                          {% endblock%}
+   
+
+
+
+              {% endblock%}
+
+{% endblock %}
+
+
+
+
+<script type="text/javascript">
+$( document ).ready(function() {
+    ('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    }
+  );
+});
+</script>
+
+{% block scripts %}
+{% endblock %}
+
+
