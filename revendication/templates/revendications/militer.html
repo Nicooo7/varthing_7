@@ -18,6 +18,17 @@ PARTICIPER
 
 
  {% block menu_gauche %}
+                        <a class='dropdown-button btn red'  href='#' data-activates='dropdown2'> <i class="material-icons left">toc</i>GO !</a>
+
+                                      <!-- Dropdown Structure -->
+                                  <ul id='dropdown2' class='dropdown-content'>
+                                   <li><a href="{% url 'afficher_mon_profil' %}"> mon profil</a></li>
+                                   <li><a href="{% url 'mes_organisations' %}"> mes organisations</a></li>
+                                   <li><a href="{% url 'mes_revendications' %}"> mes revendications</a></li>
+                                   <li><a href="{% url 'mes_petitions' %}"> mes pétitions</a></li>
+                                   <li><a href="{% url 'mes_evenements' %}"> mes évenements</a></li>
+                        
+                                  </ul>
 {% endblock %} 
 
 
@@ -41,7 +52,7 @@ PARTICIPER
 			<div class="card-action">
              <div class="col s4 offset-s4"> 
                            
-		                                  <a class='dropdown-button btn'  href='#' data-activates='dropdown1'>AGIR !</a>
+		                                  <a class='dropdown-button btn'  href='#' data-activates='dropdown1'>GO !</a>
 
 		                                  <!-- Dropdown Structure -->
 		                              <ul id='dropdown1' class='dropdown-content'>

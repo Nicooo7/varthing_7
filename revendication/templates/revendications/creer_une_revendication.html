@@ -1,34 +1,52 @@
-
-
+{% extends 'revendications/militer.html' %}
 {% load static %}
 
 
+{% block titre_central%}
+Participer: créer une revendication
+{% endblock %}
 
 
+{% block contenu_central%}
 
-<head>
-
-
- <!-- inclusion des libraries jQuery et jQuery UI (fichier principal et plugins) -->
- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
-    
- </body>
-</html>
-
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-</head>
-
-<h1>Page pour creer une revendication</h1>
-
+  <div class = "section"> </div>
+       <div class = "section"> </div>
+        <div class = "section"> </div>
+         <div class = "section"> </div>
 
  <form>
-    <input type="text" id="recherche"/> vérifier si votre idée n'existe pas dans le champ de recherche
-    <input type="button" id="lien" value="aller sur la page de cette proposition" />
+    <div class="input-field col s8">
+    <textarea id="recherche" class="materialize-textarea" value = "bonjour"></textarea>
+    <label for="textarea1">vérifier si votre idée n'existe pas dans le champ de recherche</label>
+    </div>
+
+     <div class="col s4">
+       <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">trending_down</i></a>
+        <input type="button" id="lien" value="aller sur la page de cette proposition" />
+       </div>
+
+    <div class = "section"> </div>
+     <div class = "section"> </div>
+    
+     <div class = "section"> </div>
+      <div class = "section"> </div>
+       <div class = "section"> </div>
+        <div class = "section"> </div>
+         <div class = "section"> </div>
+     <div class = "section"> </div>
+      <div class = "section"> </div>
+       <div class = "section"> </div>
+       </div>
+
+      
+
+   
     <p>
     <input type="text" id="tags"/> entrez un mot correspondant à votre proposition
-      <input type="button" id="nouveau_tag" value="nouveau tag" onclick= 
+
+
+
+    <input type="button" id="nouveau_tag" value="nouveau tag" onclick= 
       		"
       		if (typeof liste == 'undefined')
       		{
@@ -56,15 +74,59 @@
 
 
 
-	<script>
-	 
 
-            	var completion = "{{liste}}"
+
+
+<form2>
+<form action="/revendication/creer_une_revendication.html " method="post">
+    {% csrf_token %}
+      <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s6">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="icon_prefix" type="text" class="validate">
+          <label for="icon_prefix">First Name</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">phone</i>
+          <input id="icon_telephone" type="tel" class="validate">
+          <label for="icon_telephone">Telephone</label>
+        </div>
+      </div>
+    </form>
+  </div>
+    <input type="submit" value="Valider" onclick= 
+    	"alert ('merci d avoir crée une revendication');
+    	document.location.href = 'http://localhost:8000/revendication/mes_rendications.html'"
+    	/>
+</form>
+</form2>
+
+
+{% endblock %}
+
+
+
+
+{% block scripts %}
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+<script>
+   
+
+              var completion = "{{liste}}"
                 var reg=new RegExp("_", "g");
                 var tableau=completion.split(reg);
 
 
-                $('#recherche').autocomplete({source : tableau});
+                $('#recherche').autocomplete({source : tableau });
+                $('#recherche').trigger('autoresize');
+
                 var lien = document.getElementById('lien');
                 var recherche = document.getElementById('recherche');
                 lien.onclick = function() {
@@ -73,16 +135,11 @@
 
     
 
-    </script>
+</script>
 
 
-<form2>
-<form action="/revendication/creer_une_revendication.html " method="post">
-    {% csrf_token %}
-    {{ form}}
-    <input type="submit" value="Valider" onclick= 
-    	"alert ('merci d avoir crée une revendication');
-    	document.location.href = 'http://localhost:8000/revendication/mes_rendications.html'"
-    	/>
-</form>
-</form2>
+
+{% endblock %}
+
+
+
