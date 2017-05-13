@@ -15,8 +15,6 @@ from bs4 import BeautifulSoup
 from django.template.response import *
 import bs4
 import re
-import urllib.request
-import urllib.parse
 import pickle
 import os
 from nltk import *
@@ -1479,10 +1477,10 @@ def afficher_le_graph_des_propositions(request):
 
 	def creer_les_liens (G, liste_des_couples, dictionnaire_des_propositions):
 		for couple in liste_des_couples:
-			force = nb_utilisateur_communs_de_2_propositions(*couple, dictionnaire_des_propositions)
+			force = nb_utilisateur_communs_de_2_propositions(couple, dictionnaire_des_propositions)
 			print ("************************** couple : {}, force : {}".format(couple, force))
 			if force != 0:
-				G.add_edge(*couple, weight = force)
+				G.add_edge(couple, weight = force)
 			
 	G = nx.Graph()
 	propositions = Proposition.objects.all()

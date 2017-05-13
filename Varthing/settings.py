@@ -25,7 +25,7 @@ SECRET_KEY = '%)o^^jz2&naa1spqw!r1to5f)dr8f=z5d-vdc^+wxvz7mt%3!b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [u'92.222.91.213', u'varthing.tisset.fr']
 
 
 # Application definition
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'revendication.apps.RevendicationConfig'
+    'revendication.apps.RevendicationConfig',
+    'gunicorn',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +125,7 @@ USE_TZ = True
 PROJECT_DIR = os.path.dirname(__file__)
 STATICFILES_DIRS = (os.path.join(PROJECT_DIR, 'static'),)
 
-STATIC_URL = '/static/'
+STATIC_URL = '/revendication/static/'
 
 
 
