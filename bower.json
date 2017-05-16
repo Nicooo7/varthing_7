@@ -15,7 +15,7 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "varthing/static/bower_components",
+    "Varthing/static/bower_components",
     "test",
     "tests"
   ],
