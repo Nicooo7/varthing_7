@@ -3,7 +3,7 @@
 
 
 {% block titre_central%}
-CONSULTER
+{{data_proposition.proposition.ennonce}}
 {% endblock %}
 
 
@@ -12,9 +12,6 @@ CONSULTER
 
 
  {% block image_parallax %}
-  <div class="parallax-container valign-wrapper">
-                            <div class="parallax"><img src="/static/revendication/images/bibliotheque.jpg" alt="Unsplashed background img 2" style="display: block; transform: translate3d(-50%, 268px, 0px);"></div>
-                            </div>   
 {% endblock %}
 
 
@@ -24,25 +21,105 @@ CONSULTER
 <div class= "section"> </div>
 <div class= "section"> </div>
 
+
 <div class="row">
+<div class="col s4"> 
+ <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_revendication'">add</i></a> PETITION
+ </div>
+ <div class="col s4"> 
+ <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_revendication'">add</i></a> EVENEMENT
+ </div>
+ <div class="col s4"> 
+ <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_revendication'">add</i></a>   ORGANISATION
+ </div>
+	
+<div class= "section"> </div>
+<div class= "section"> </div>
+<div class= "section"> </div>
+<div class= "section"> </div>
+<div class= "section"> </div>
+
+	
+</div>
 	 <div class="col s12"> 
-		<div class = "container" id = "container">
+		<div class = "container"  style= "border: 10px solid teal; height: : 3000px;
+    min-width: 1000px;" id = "container">
 		</div>
 	</div>
 </div>
 
-	<div class= "section"> </div>
+
+       <div class="row">
+      <div class="col s12">
+<div class= "section"> </div>
+<div class= "section"> </div>
+<div class= "section"> </div>
+      	</div>
+
+
+          <div class="col s12">
+          <div class="card teal darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Revendications les plus proches</span>
+              {% for proposition in propositions_proches %}
+              <p>{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
+              {% endfor %}
+
+            </div>
+            <div class="card-action">
+              <a href="#">This is a link</a>
+              <a href="#">This is a link</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class= "section"> </div>
 	<div class= "section"> </div>
 	<div class= "section"> </div>
 
-      <div class="col s6 ">
-      	<a class="waves-effect waves-light center btn"><i class="material-icons left">cloud</i>REVENDICATIONS</a>
+       <div class="row">
+        <div class="col s12">
+          <div class="card teal darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Soutiens</span>
+              {% for soutien in data_proposition.soutiens %}
+              <p>{{soutien}}</p>
+              {% endfor %}
+
+            </div>
+            <div class="card-action">
+              <a href="#">This is a link</a>
+              <a href="#">This is a link</a>
+            </div>
+          </div>
+        </div>
       </div>
-      
-      <div class="col s4 push-s2">
-      <a class="waves-effect waves-light center btn"><i class="material-icons right">cloud</i>ORGANISATIONS</a>
+
+        <div class= "section"> </div>
+	<div class= "section"> </div>
+	<div class= "section"> </div>
+
+       <div class="row">
+        <div class="col s12">
+          <div class="card teal darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Createur</span>
+   		
+              <p>{{data_proposition.createur}}</p>
+              
+             
+
+            </div>
+            <div class="card-action">
+              <a href="#">This is a link</a>
+              <a href="#">This is a link</a>
+            </div>
+          </div>
+        </div>
       </div>
- </div>
+
+
 
  {% endblock %}
 
@@ -78,7 +155,7 @@ gris = '#eee'
   });
 
 
- sigma.parsers.json ( "{% static "revendication/js/data_u.json" %}", 
+ sigma.parsers.json ( "{% static "/graph_proposition.json" %}", 
 	{
 	    container: 'container',
 	    settings: 
@@ -90,6 +167,7 @@ gris = '#eee'
 		      cloner : true,
 		      labelThreshold : 1,
 		      zoomingRatio : 1.1
+		      
 			}
   	},
 
@@ -119,7 +197,7 @@ gris = '#eee'
         if (confirm (text))
         {
 
-          document.location.href="page_revendication.html?ennonce=" + label
+          document.location.href="page_revendications.html?ennonce=" + label
 
         }
 

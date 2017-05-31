@@ -5,6 +5,11 @@ from django.views.generic import ListView
 from django.views.generic import TemplateView
 from .models import *
 from . import views
+from . import view_page_revendication
+from . import view_accueil
+from . import view_tableau_de_bord
+from . import view_page_organisation
+from . import view_creer
 page =[]
 liste_des_elements_de_page = []
 
@@ -58,7 +63,12 @@ urlpatterns = [
     url(r'^signer_une_competence', views.signer_une_competence, name = 'signer_une_petition'),
     url(r'^mes_competences', views.mes_competences, name = 'mes_competences'),
 
-
+    #nouvelles_vues:
+    url(r'^page_revendication', view_page_revendication.page_revendication, name = 'page_revendication'),
+    url(r'^page_accueil', view_accueil.accueil, name = 'page_accueil'),
+    url(r'^page_tableau_de_bord', view_tableau_de_bord.tableau_de_bord, name = 'page_tableau_de_bord'),
+    url(r'^page_organisations', view_page_organisation.page_organisation, name = 'page_organisation'),
+    url(r'^page_creer_revendication', view_creer.creer_une_revendication, name = 'page_creer_revendication'),
 
 
     # ~ Divers ~

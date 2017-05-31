@@ -1,0 +1,14 @@
+{ "nodes" : [
+{"id" : "virer tous les immigres", "label"  : "virer tous les immigres","x" :1.0, "y" : 0.26821354307295514, "size"  : 3 }
+,{"id" : "virer certains immigres", "label"  : "virer certains immigres","x" :0.8055176475110559, "y" : 0.9659057428769863, "size"  : 3 }
+,{"id" : "accueuillir généreusement les immigres", "label"  : "accueuillir généreusement les immigres","x" :0.0, "y" : 0.36540051158562337, "size"  : 3 }
+,{"id" : "encourager le capitalisme", "label"  : "encourager le capitalisme","x" :0.5387332835286744, "y" : 0.5044914810602245, "size"  : 3 }
+,{"id" : "s'en foutre de la planete", "label"  : "s'en foutre de la planete","x" :0.16963052185827326, "y" : 0.952171715545435, "size"  : 3 }
+,{"id" : "faire comme si on s'en préoccupait de la planete", "label"  : "faire comme si on s'en préoccupait de la planete","x" :0.4738534198485067, "y" : 0.0, "size"  : 3 }],
+
+"edges":[
+{ "id" : "0", "source"  : "encourager le capitalisme", "target"  :"faire comme si on s'en préoccupait de la planete"}
+,{ "id" : "1", "source"  : "encourager le capitalisme", "target"  :"virer certains immigres"}
+,{ "id" : "2", "source"  : "encourager le capitalisme", "target"  :"accueuillir généreusement les immigres"}
+,{ "id" : "3", "source"  : "encourager le capitalisme", "target"  :"s'en foutre de la planete"}
+,{ "id" : "4", "source"  : "encourager le capitalisme", "target"  :"virer tous les immigres"}] }

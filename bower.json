@@ -1,6 +1,5 @@
 {
-  "name": "varthing",
-  "authors": [],
+  "name": "y",
   "description": "varthing social network",
   "main": "",
   "keywords": [
@@ -9,15 +8,15 @@
     "network"
   ],
   "license": "MIT",
-  "homepage": "",
-  "private": true,
+  "homepage": "https://github.com/Nicooo7/Varthing-2",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "Varthing/static/bower_components",
     "test",
-    "tests"
+    "tests",
+    "revendication/static/bower_components"
   ],
   "dependencies": {
     "materialize": "^0.98.2",
