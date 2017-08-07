@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'revendication.apps.RevendicationConfig',
     #'gunicorn',
-]
+  ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,7 +129,6 @@ USE_TZ = True
 
 
 PROJECT_DIR = os.path.dirname(__file__)
-STATICFILES_DIRS = (os.path.join(PROJECT_DIR, 'static'),)
 
 STATIC_ROOT = "/var/www/revendication/static/"
 

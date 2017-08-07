@@ -20,8 +20,8 @@ import os
 from nltk import *
 from bs4 import BeautifulSoup
 from random import *
-from revendication.fonctions.creation_graph import *
 from unidecode import unidecode
+from .creation_graph import *
 
 app_name = 'revendication'
 
@@ -34,7 +34,7 @@ app_name = 'revendication'
 
 def page_revendication(request):
 
-	ennonce = unidecode(request.GET ['ennonce'])
+	ennonce = unidecode(request.GET ['ennonce']).encode("utf-8")
 	print (ennonce)
 	try:
 		proposition = Proposition.objects.get(ennonce = ennonce)

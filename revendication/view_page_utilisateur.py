@@ -15,7 +15,6 @@ from bs4 import BeautifulSoup
 from django.template.response import *
 import bs4
 import re
-import urllib.parse
 import pickle
 import os
 from nltk import *
@@ -23,7 +22,7 @@ from bs4 import BeautifulSoup
 from random import *
 from datetime import datetime
 from datetime import timedelta
-from revendication.fonctions.creation_graph import *
+from .creation_graph import *
 from unidecode import unidecode
 
 page = []
