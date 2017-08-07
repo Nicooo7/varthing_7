@@ -1,0 +1,12 @@
+{ "nodes" : [
+{"id" : "encourager le capitalisme", "label"  : "encourager le capitalisme","x" :0.6419003531137384, "y" : 0.46319880619130255, "size"  : 3 }
+,{"id" : "virer certains immigres", "label"  : "virer certains immigres","x" :0.9072468871584184, "y" : 0.9995296771298284, "size"  : 3 }
+,{"id" : "virer tous les immigres", "label"  : "virer tous les immigres","x" :0.0, "y" : 0.8643329823843348, "size"  : 3 }
+,{"id" : "faire comme si on s'en préoccupait de la planete", "label"  : "faire comme si on s'en préoccupait de la planete","x" :1.0, "y" : 0.044814009517178725, "size"  : 3 }
+,{"id" : "accueuillir généreusement les immigres", "label"  : "accueuillir généreusement les immigres","x" :0.12387327416981682, "y" : 0.0, "size"  : 3 }],
+
+"edges":[
+{ "id" : "0", "source"  : "encourager le capitalisme", "target"  :"faire comme si on s'en préoccupait de la planete"}
+,{ "id" : "1", "source"  : "encourager le capitalisme", "target"  :"virer certains immigres"}
+,{ "id" : "2", "source"  : "encourager le capitalisme", "target"  :"accueuillir généreusement les immigres"}
+,{ "id" : "3", "source"  : "encourager le capitalisme", "target"  :"virer tous les immigres"}] }

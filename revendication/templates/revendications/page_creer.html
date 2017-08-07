@@ -1,0 +1,56 @@
+{% extends 'revendications/page_type.html' %}
+{% load static %}
+
+
+{% block titre_central%}
+{{titre}}
+
+{% endblock %}
+
+
+{% block container %}
+
+
+
+
+    <div class = "section"> </div>
+    <div class = "section"> </div>
+    <div class = "section"> </div>
+    <div class = "section"> </div>
+
+{% endblock container %}
+
+{% block contenu_central%}
+
+         
+       
+<div class="col s12">
+
+
+ 
+
+
+
+<form action="{{url}}?id_proposition={{id_proposition}}" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <ul>
+{% comment %}
+{% endcomment %}
+
+
+   
+
+
+    <button class="btn waves-effect waves-light" type="submit" name="action" 
+
+            >Valider
+    <i class="material-icons right">send</i>
+  </button>
+          </form>
+      
+</div>
+
+
+
+{% endblock %}

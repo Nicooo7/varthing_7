@@ -5,10 +5,11 @@
                     <nav class="white" role="navigation">
                           <div class="nav-wrapper container">
                               <ul class="left hide-on-med-and-down">
-                                  <a href="" class="brand-logo center"><img class="materialboxed" width="100" src="{%  static 'revendication/images/logo_varthing.jpg' %}" /> </a>
+                                  <a href="" class="brand-logo center"><img class="materialboxed" width="100" src="{%  static 'revendication/images/logo_varthing.png' %}" /> </a>
                                   <li><a href="{% url 'page_accueil' %}">accueil</a></li>
+                                  {% if user.is_authenticated %}
                                   <li><a href="{% url 'page_tableau_de_bord' %}">tableau de bord</a></li>
-                          
+                                  {% endif  %}
                                   <li class="active"><a href="collapsible.html"></a></li>
                 
                                 </ul>
@@ -17,10 +18,10 @@
                                 <li><a href="#">A propos</a></li>
 
                                 {% if user.is_authenticated %}
-                                <li><a href="{% url 'deconnexion' %}">se déconnecter</a></li>
+                                <li><a href="{% url 'page_deconnexion' %}">se déconnecter</a></li>
                                 {% else %}
-                                <li><a href="{% url 'authentification' %}">Connexion</a></li>
-                                <li><a href="{% url 'creation_utilisateur' %}">Inscription</a></li>
+                                <li><a href="{% url 'page_authentification' %}">Connexion</a></li>
+                                <li><a href="{% url 'page_creer_utilisateur' %}">Inscription</a></li>
                                 {% endif %}
                               </ul>
 
@@ -31,33 +32,27 @@
 
 
 
-
-              {%block page%}
-     
-
-              <div class="row">
-                    
-
-                    {% block menu_gauche %}
-                          
-                          
-                             <div class="col s1"> 
-                                            <!-- Dropdown Trigger -->
-                                  <a class='dropdown-button btn' href='#' data-activates='dropdown1'>ACTIONS</a>
-
                                   <!-- Dropdown Structure -->
                                   <ul id='dropdown1' class='dropdown-content'>
-                                    <li><a href="#!">one</a></li>
-                                    <li><a href="#!">two</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#!">three</a></li>
-                                    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-                                    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+                                        <li class="divider"></li> 
+                                        {%block option1 %}{% endblock %}
+                                        <li class="divider"></li>  
+                                        {%block option2 %}{% endblock %}
+                                        <li class="divider"></li> 
+                                        {%block option3 %}{% endblock %}
+                                        <li class="divider"></li> 
+                                        {%block option4 %}{% endblock %}
+                                        <li class="divider"></li> 
+                                        {%block option5 %}{% endblock %}
+                                        <li class="divider"></li> 
                                   </ul>
-                                                 
-                              </div>
 
-                      {% endblock %} 
+
+                             <div class="col s12">         
+                                <a class='dropdown-button btn' href='#' data-activates='dropdown1'> <i class="material-icons left">add</i> </a>
+
+                            </div>
+ 
                                         
                                       
                                      
@@ -65,10 +60,15 @@
 
                             
                         {% block centre%}
+
+
+
+
                                 <div class="col s12 "> 
                      
                                 
                                           <div class="section no-pad-bot">
+                                      
                                             <div class="container">
                                               <br><br>
                                               <h1 class="header center red-text text-lighten-1"> 
@@ -90,7 +90,39 @@
                                  <div class="col s12"> 
                                         <div class="container">
                                             
+
+
+
+                                          {% block container %}
+                                                  <div class= "section"> </div>
+                                                  <div class= "section"> </div>
+                                                  <div class= "section"> </div>
+
+                                                  <div class="row">
+                                                     <div class="col s12"> 
+                                                      <div class = "container"  style= 
+
+                                                      "
+                                                     
+                                                      height : 100%;
+                                                      width : 100%;
+                                                      
+
+                                                      " 
+
+
+                                                      id = "container">
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                          {% endblock %}
+
                                                   {% block contenu_central%}
+
+
+
+
+
                                                   CONTENU DU CENTRE
                                                   <p> 1 </p>
                                                   <p> 2 </p>
@@ -122,7 +154,7 @@
                                     <div class="container">
                                       <div class="row">
                                         <div class="col s12">
-                                          CONTENU DU FOOTER
+                                          Session de {{user}}
                                         </div>
                                       </div>
                                     </div>
@@ -142,7 +174,7 @@
 
               {% endblock%}
 
-{% endblock %}
+
 
 
 
@@ -153,10 +185,10 @@ $( document ).ready(function() {
       inDuration: 300,
       outDuration: 225,
       constrainWidth: false, // Does not change width of dropdown to that of the activator
-      hover: true, // Activate on hover
-      gutter: 0, // Spacing from edge
-      belowOrigin: false, // Displays dropdown below the button
-      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      hover: false, // Activate on hover
+      gutter: 3, // Spacing from edge
+      belowOrigin: true, // Displays dropdown below the button
+      alignment: 'right', // Displays dropdown with edge aligned to the left of button
       stopPropagation: false // Stops event propagation
     }
   );
@@ -164,6 +196,136 @@ $( document ).ready(function() {
 </script>
 
 {% block scripts %}
+  
+      {% block graphique %}
+
+            <script src="{% static "revendication/js/sigma.min.js" %}"> 
+            </script> 
+
+            <script src="{% static "revendication/js/sigma.parsers.json.min.js" %}"> 
+            </script>
+
+            <script>$(document).ready(function() {
+    $('select').material_select();
+    $('.parallax').parallax();
+   
+  });
+            </script>
+            
+            <script>
+
+            bleu_ciel = '#0099FF'
+            rouge = '#ec5148'
+            noir = '#000000'
+            bleu_fonce = '#000066'
+            blanc = '#FFFFFF'
+            jaune_pale = '#FFFFCC'
+            gris = '#eee'
+            teal = '#3DAA90'
+            orange = '#EC5117'
+
+             sigma.classes.graph.addMethod('neighbors', function(nodeId) {
+                var k,
+                    neighbors = {},
+                    index = this.allNeighborsIndex[nodeId] || {};
+
+                for (k in index)
+                  neighbors[k] = this.nodesIndex[k];
+
+                return neighbors;
+              });
+
+
+             sigma.parsers.json ("{% static '/revendication/graph.json' %}" , 
+              {
+                  container: 'container',
+                  settings: 
+                    {
+                      defaultNodeColor: orange,
+                      DefaultNodeBorderColor: teal,
+                      defaultLabelColor: noir,
+                      defaultLabelSize : 12,
+                      cloner : true,
+                      labelThreshold : 1,
+                      zoomingRatio : 1.2,
+                      ZoomMax: 1.0,
+                      ZoomMin: 1.0,
+                      SideMargin: 10,
+
+                      
+                  }
+                },
+
+
+                function(s) {
+                  // We first need to save the original colors of our
+                  // nodes and edges, like this:
+                  s.graph.nodes().forEach(function(n) {
+                    n.originalColor = n.color;
+                  });
+                  s.graph.edges().forEach(function(e) {
+                    e.originalColor = e.color;
+                  });
+
+                  // When a node is clicked, we check for each node
+                  // if it is a neighbor of the clicked one. If not,
+                  // we set its color as grey, and else, it takes its
+                  // original color.
+                  // We do the same for the edges, and we only keep
+                  // edges that have both extremities colored.
+                  s.bind('clickNode', function(e) {
+
+                    
+                    var label = e.data.node.id
+                    document.location.href="page_revendications.html?ennonce=" + label
+
+                    var nodeId = e.data.node.id,
+                        toKeep = s.graph.neighbors(nodeId);
+                    toKeep[nodeId] = e.data.node;
+
+                    s.graph.nodes().forEach(function(n) {
+                      if (toKeep[n.id])
+                        n.color = n.originalColor;
+                      else
+                        n.color = '#eee';
+                    });
+
+                    s.graph.edges().forEach(function(e) {
+                      if (toKeep[e.source] && toKeep[e.target])
+                        e.color = e.originalColor;
+                      else
+                        e.color = '#eee';
+                    });
+
+                    // Since the data has been modified, we need to
+                    // call the refresh method to make the colors
+                    // update effective.
+                    s.refresh();
+                  });
+
+                  // When the stage is clicked, we just color each
+                  // node and edge with its original color.
+                  s.bind('clickStage', function(e) {
+                    s.graph.nodes().forEach(function(n) {
+                      n.color = n.originalColor;
+                    });
+
+                    s.graph.edges().forEach(function(e) {
+                      e.color = gris ;
+                    });
+
+                    // Same as in the previous event:
+                    s.refresh();
+                  });
+                }
+              );
+
+            </script>
+
+      {% endblock %}
+
+
+
 {% endblock %}
 
 

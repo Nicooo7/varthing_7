@@ -19,7 +19,7 @@ class Proposition(models.Model):
 
     ennonce = models.CharField(max_length=200, null=True)
     date_creation = models.DateField (default= timezone.now, null=True)
-    categorie =  models.ForeignKey(Theme, null=True, blank = True)
+    tags = models.CharField(max_length=200, null=True)
     supporter = models.ManyToManyField(User, through= "Soutien", null =True)
     champ_lexical = models.CharField (max_length = 100000, default = "vide", null = True)
 

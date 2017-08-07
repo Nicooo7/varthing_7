@@ -14,7 +14,6 @@ from bs4 import BeautifulSoup
 from django.template.response import *
 import bs4
 import re
-import urllib.request
 import urllib.parse
 import pickle
 import os
@@ -23,6 +22,8 @@ from bs4 import BeautifulSoup
 from random import *
 from datetime import datetime
 from datetime import timedelta
+from revendication.fonctions.creation_graph import *
+from unidecode import unidecode
 
 page = []
 liste_des_elements_de_page = []
@@ -30,13 +31,38 @@ liste_des_elements_de_page = []
 
 app_name = 'accueil'
 
+
+
+
+
+
+
+
+
+
+#__________________vues _______________________
+
+
+
+def varthing(request):
+	return render(request, 'revendications/varthing.html')
+
+
+
 def accueil(request):
+
 
 	from django.contrib.auth.models import User
 	utilisateur = request.user.username
 	#print ("voici l'utilisateur" , utilisateur)
 
-	data_graph = open ("revendication/static/data_u.json", "r")
+
+
+	propositions = Proposition.objects.all()
+	for proposition in propositions:
+		p = Proposition.objects.get(id = proposition.id)
+		p.ennonce = unidecode(p.ennonce).lower()
+		p.save()
 
 	
 	#dernieres revendications crees:
@@ -47,9 +73,12 @@ def accueil(request):
 		propositions = Proposition.objects.all()
 		for proposition in propositions:
 			liste.append((proposition, proposition.date_creation))
-			lambda colonne: colonne[1]
-			liste = sorted(liste, key=lambda colonnes: colonnes[1])
-			#print (liste)
+			
+		lambda colonne: colonne[1]
+		liste = sorted(liste, key=lambda colonnes: colonnes[1])
+		print (liste)
+		liste.reverse()
+		print (liste)
 		
 		dernieres_revendication_creees = [t[0] for t in liste[0:4]]
 		return dernieres_revendication_creees
@@ -120,7 +149,11 @@ def accueil(request):
 	propositions_populaires = populaires()		
 
 
-	return render(request, 'revendications/page_accueil.html', {"utilisateur":utilisateur, "propositions_populaires":propositions_populaires, "data_graph": data_graph, "dernieres_revendication_creees" : dernieres_revendication_creees, "proposition_en_acceleration" : proposition_en_acceleration})
+
+	graph_accueil()
+
+
+	return render(request, 'revendications/page_accueil.html', {"utilisateur":utilisateur, "propositions_populaires":propositions_populaires,  "dernieres_revendication_creees" : dernieres_revendication_creees, "proposition_en_acceleration" : proposition_en_acceleration})
 
 
 
