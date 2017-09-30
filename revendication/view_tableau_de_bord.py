@@ -21,11 +21,15 @@ from nltk import *
 from bs4 import BeautifulSoup
 from random import *
 from .creation_graph import *
+from unidecode import unidecode
 
 
 
 
 app_name = 'revendication'
+
+
+
 
 
 
@@ -40,6 +44,65 @@ def tableau_de_bord(request):
 	utilisateur = request.user
 
 
+	def creer_les_evenements_du_calendriers ():
+		fichier_evenement = u""
+		mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		#print ("mes_propositions", mes_propositions)
+		evenements = Evenement.objects.all()
+		selection = []
+		for evenement in evenements:
+			#print ("evenement", evenement, "evenement.proposition", evenement.proposition)
+			if evenement.proposition in mes_propositions:
+				ligne =   evenement.titre + "/" + str(evenement.date) + "ggg" 
+				fichier_evenement = fichier_evenement + ligne
+
+		fichier_evenement = unidecode(fichier_evenement).encode("utf-8")
+		print ("************************** fichier_evenement", fichier_evenement)
+		return fichier_evenement
+
+
+
+	def les_revendications_les_plus_populaires():
+		
+
+		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+
+		propositions = Proposition.objects.all()
+		liste = []
+		for p in propositions:
+			soutiens = Soutien.objects.filter(propositions = p, lien = 'SO')
+			i= 0
+			for s in soutiens:
+				i += 1
+			liste.append((p,i))
+		liste = sorted(liste, key=lambda x: x[1])
+		liste.reverse()
+		#print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ liste",liste)
+		selection = []
+		for element in liste:
+			if element[0] not in liste_de_mes_propositions:
+				selection.append(element[0])
+
+
+
+
+
+		print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ selection",selection)
+		return selection
+
+
+
+	def liste_autocompletion():
+		liste = u""
+		propositions = Proposition.objects.all()
+		for proposition in propositions:
+			ennonce = proposition.ennonce
+			liste = liste + ennonce + u"_"
+		liste = unidecode(liste)
+		liste = liste.encode("utf-8")
+		return liste
+
+
 
 	def les_x_revendications_les_plus_proches_des_miennes(n):
 
@@ -48,14 +111,14 @@ def tableau_de_bord(request):
 		selection.reverse()
 		selection2= []
 		liste_p = []
-		#print ("selection:",selection)
+		print ("******************************************selection:",selection)
 
 		#eliminer les propositions dont je suis déjà supporter
 		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
 		for p in liste_de_mes_propositions:
 			liste_p.append(p.ennonce)
 
-		print ("selection:", selection)
+		#print ("selection:", selection)
 		for triplet in selection:
 			if triplet[1] in liste_p:
 				print ("le triplet contenant", triplet[1] , "va être enlevé.")
@@ -82,10 +145,15 @@ def tableau_de_bord(request):
 			def __init__ (self):
 				self.evenements = Evenement.objects.filter(soutien__user = utilisateur)
 				self.organisations = Organisation.objects.filter(soutien__user = utilisateur)
-				#datas.documents = Documents.objects.filter(soutien__user = utilisateur)
+				#self.documents = Documents.objects.filter(soutien__user = utilisateur)
 				self.competence = Competence.objects.filter(soutien__user = utilisateur)
 				self.petition = Petition.objects.filter(soutien__user = utilisateur)
 				self.revendications = Proposition.objects.filter(soutien__user = utilisateur)
+				self.suggestions = les_x_revendications_les_plus_proches_des_miennes(4)
+				if self.suggestions == []:
+					self.suggestions = les_revendications_les_plus_populaires()[0:5]
+				self.autocompletion = liste_autocompletion()
+				self.calendrier = creer_les_evenements_du_calendriers()
 		
 		datas = Datas()
 		return datas
@@ -99,12 +167,11 @@ def tableau_de_bord(request):
  
 
 
-	datas = creer_les_datas(utilisateur)	
-	revendications_proches = les_x_revendications_les_plus_proches_des_miennes(4)	
+	datas = creer_les_datas(utilisateur)		
 	graph_utilisateur(utilisateur)
 
 
-	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas, "revendications_proches":revendications_proches})
+	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas})
 
 
 

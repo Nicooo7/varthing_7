@@ -5,17 +5,25 @@
   <head>
     <meta charset="utf-8">
     <meta name="description" content="Varthing - Le réseau social qui vous permet d'agir">
+
     <title>{% block title %}Varthing{% endblock %}</title>
+
+
     <link rel="stylesheet" type="text/css" href="{% static 'revendication/css/revendication.min.css' %}" >
     <link rel="stylesheet" type="text/css" href="{% static 'revendication/css/base.css' %}" >
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel='stylesheet' href="{% static 'revendication/fullcalendar-3.5.1/fullcalendar.min.css' %}"/>
+
+
     {% block styles %}{% endblock %}
   </head>
   <body>
     {% block content %}{% endblock %}
+    
+    {% block bowercomponents %}
     <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}" ></script>
     <script src="{% static 'bower_components/materialize/dist/js/materialize.min.js' %}" ></script>
-
+    {% endblock %}
   
     {% block scripts %}{% endblock %}
   </body>

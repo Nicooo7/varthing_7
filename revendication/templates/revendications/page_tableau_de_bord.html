@@ -15,28 +15,15 @@ TABLEAU DE BORD
 {% endblock %}
 
 
+{% block bowercomponents %}
+<!--<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}" ></script> -->
+<script src="{% static 'bower_components/materialize/dist/js/materialize.min.js' %}" ></script>
 
-{% block contenu_central%}
+
+{% endblock %}
 
 
-	<div class= "section"> </div>
-	<div class= "section"> </div>
-	<div class= "section"> </div>
-
-       <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">mes revendications</span>
-              {% for proposition in datas.revendications %}
-              <p>{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-              {% endfor %}
-
-            </div>
-          
-          </div>
-        </div>
-      </div>
+{% block centre%}
 
 
 
@@ -44,92 +31,252 @@ TABLEAU DE BORD
   <div class= "section"> </div>
   <div class= "section"> </div>
 
-       <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">mes suggestions</span>
-              {% for proposition in revendications_proches %}
-              <p>{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-              {% endfor %}
 
-            </div>
-          
-          </div>
-        </div>
-      </div>
-
-
-
-
-      <div class= "section"> </div>
 
 
        <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">mes documents</span>
-              {% for proposition in propositions_populaires %}
-                <p>{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-              {% endfor %}
 
-            </div>
-          
-          </div>
-        </div>
-      </div>
+ <!--Zone de gauche-->       
+                  <div class="col s3" >
+                            <div class="card teal darken-1" style= "height: 300px">
+                              <div class="card-content white-text">
+                                <span class="card-title" > suggestions: </span>
+                                 <div class="carousel">
+                                    {% for proposition in datas.suggestions %}
+                                      <a class="carousel-item" style="height: 400px" href="page_revendication.html?ennonce={{proposition}}">
+                                        <div class="card red darken-1" >
+                                          <div class="card-content white-text">
+                                           <h5>{{proposition}} </h5>
+                                          </div>
+                                        </div>
+                                      </a> 
+                                     {% endfor %}
+                                </div>
+                              </div>
+                            </div>
 
-        <div class= "section"> </div>
+
+                            <div class="card teal darken-1" style= "height: 700px">
+                              <div class="card-content white-text">
+                                <span class="card-title center">mes revendications</span>
+                                 <ul>
+                                    {% for proposition in datas.revendications %}
+                                        <li> 
+                                          <a href="page_revendication.html?ennonce={{proposition}}">
+                                            <p style="color: white"> {{proposition}} </p>
+                                          </a> 
+                                        </li>
+                                     {% endfor %}
+                                  </ul>
+                                </div>
+                              </div>
+                  </div>
 
 
-       <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">mes évenements et petitions
-            </span>
-   		
-             {% for evenement in datas.evenement %}
-              <p>{{evenement.titre}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-              {% endfor %}
-               {% for petition in datas.petition %}
-              <p>{{petition.titre}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-              {% endfor %}
-             
+
+<!--Zone de gauche-->
+
+<!--ZONE DU MILIEU-->
+
+
+
+                  <div class="col s6"> 
+                        <div class = "container"  style= 
+                            "
+                            height : 100%;
+                            width : 100%;
+                          
+                            " 
+                            id = "container">
+
+                           
+                          </div> 
+
+                            <div class= "section"> </div>
+                            <div class= "section"> </div>
+                            <div class= "section"> </div>
+                
+
+                            <div class="row">
+                              <div class="col s10">          
+                                  <nav>
+                                    <div class="nav-wrapper">
+                                      <form>
+                                        <div class="input-field">
+                                          <input type="search" id="recherche">recherche
+                                          <label class="label-icon" for="search" ><i class="material-icons" >search</i> </label>
+                                          <i class="material-icons">close</i>
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </nav>
+                              </div>
+                                
+                                <div class="col s2"> 
+                                  <a class="waves-effect waves-light btn" id="lien"> <i class="material-icons right">  arrow_forward </i> button</a> 
+                                </div>
+                            </div>
               
-             
 
-            </div>
-           
-          </div>
+                
+
+                            <div class= "section"> </div>
+                             <div class= "section"> </div>
+                              <div class= "section"> </div>
+                               <div class= "section"> </div>
+                                <div class= "section"> </div>
+                  
+
+                            <div class="row">
+
+                                <div class="col s4">
+                                    <ul id="dropdown3" class="dropdown-content">
+                                      {% for proposition in propositions_populaires %}
+                                      <li><a href="page_revendication.html?ennonce={{proposition}}"><span class="badge"><p class="flow-text">{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p></span></a></li>
+                                      {% endfor %}
+                                    </ul>
+                                    <a class="btn dropdown-button" style="height: 200px" href="#!" data-activates="dropdown3">Mes documents <div class= "section"> </div> <div class= "section"> </div> <i class="large material-icons" style ="font-size: 100px" >card_travel</i></a>
+                              </div> 
+
+
+                               <div class="col s4">
+                                    <ul id="dropdown3" class="dropdown-content">
+                                      {% for proposition in propositions_populaires %}
+                                      <li><a href="page_revendication.html?ennonce={{proposition}}"><span class="badge"><p class="flow-text">{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p></span></a></li>
+                                      {% endfor %}
+                                    </ul>
+                                    <a class="btn dropdown-button" style="height: 200px" href="#!" data-activates="dropdown3"> Les actualités  <div class= "section"> </div> <div class= "section"> </div> <i class="large material-icons" style ="font-size: 100px" >fiber_new</i></a>
+                              </div> 
+                   
+
+
+
+                               <div class="col s4">
+                                    <ul id="dropdown4" class="dropdown-content">
+                                      {% for proposition in proposition_en_acceleration %}
+                                      <li><a href="page_revendication.html?ennonce={{proposition}}"><span class="badge"><p class="flow-text">{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"> <div class= "section"> </div><i class="material-icons">  &nbsp pageview</i></a></p></span></a></li>
+                                      {% endfor %}
+                                    </ul>
+                                    <a class="btn dropdown-button" style="height: 200px" href="#!" data-activates="dropdown4">Les demandes de competences <div class= "section"> </div> <i class="large material-icons" style ="font-size: 100px" >fitness_center</i></a>
+                              </div>             
+                          </div>     
+                     </div>  
+
+<!--FIN ZONE DU MILIEU-->
+
+
+<!--Zone de droite-->
+
+
+                   <div class="col s3">
+                            <div class="card teal darken-1" style="height: 500px">
+                                  <div class="card-content white-text">
+                                    <div id="calendar"></div>
+                                  </div>               
+                            </div>
+
+                              
+                            <div class="card teal darken-1" style="height: 500px">
+                                <div class="card-content white-text">
+                                    <span class="card-title">mes évenements et petitions
+                                  </span>
+                                   {% for evenement in datas.evenement %}
+                                    <p>{{evenement.titre}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
+                                    {% endfor %}
+                                     {% for petition in datas.petition %}
+                                    <p>{{petition.titre}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
+                                    {% endfor %}
+                                </div> 
+                            </div>
+                         
+                  </div>
         </div>
-      </div>
+
+<!--Fin zone de droite-->	
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
 
- <div class= "section"> </div>
 
-       <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">mes compétences:
-            </span>
-      
-             {% for proposition in proposition_en_acceleration %}
-              <p>{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-              {% endfor %}
+<script src="{% static 'revendication/fullcalendar-3.5.1/lib/jquery.min2.js' %}"></script>
+<script src="{% static 'revendication/fullcalendar-3.5.1/lib/moment.min.js' %}"></script>
+<script src="{% static 'revendication/fullcalendar-3.5.1/fullcalendar.js' %}"></script>
+
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+<script>
+   
+                
+                var completion = "{{datas.autocompletion}}".split("&#39;").join("\'");
+                var reg=new RegExp("_", "g");
+                var tableau=completion.split(reg);
+                $('#recherche').autocomplete({source: tableau });
+                $('#recherche').trigger('autoresize');
+
+                var lien = document.getElementById('lien');
+                var recherche = document.getElementById('recherche');
+                lien.onclick = function() {
+                document.location.href = "page_revendications.html?ennonce=" + recherche.value
+                 };
+        
               
-             
+</script>    
 
-            </div>
-          
-          </div>
-        </div>
-      </div>
-      
 
- {% endblock %}
+<script>
+   $(document).ready(function() {
+
+    // page is now ready, initialize the calendar...
+
+    var evenements = "{{datas.calendrier}}".split("ggg");
+    var liste_evenement = new Array();
+    for(var i= 0; i < evenements.length; i++)
+{    
+     evenement = evenements[i] ;
+     evenement = evenement.split("/");
+     var evenement =  {title: evenement[0], start: evenement[1]};
+     liste_evenement.push(evenement);
+}
+    
+
+  
+
+        $('#calendar').fullCalendar({
+
+            eventSources: [{
+                                  events: liste_evenement,
+                                  color: 'black',     // an option!
+                                  textColor: 'yellow' // an option!
+                              
+                            }],
+
+            defaultView: "listMonth",
+            eventClick: function(calEvent, jsEvent, view) {
+
+                alert('Event: ' + calEvent.title);
+
+                // change the border color just for fun
+                $(this).css('border-color', 'red');
+
+            }
+
+
+
+
+        });
+
+
+});
+
+
+</script>
+
+{% endblock %}
+
 
 
 

@@ -21,7 +21,7 @@ from bs4 import BeautifulSoup
 from random import *
 from datetime import datetime
 from datetime import timedelta
-from creation_graph import *
+from .creation_graph import *
 from unidecode import unidecode
 
 page = []

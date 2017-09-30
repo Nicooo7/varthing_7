@@ -23,11 +23,18 @@ from random import *
 from unidecode import unidecode
 
 
-app_name = 'revendication'
-	
+def retourner_la_proposition(request):
+	app_name = 'revendication'
+	ennonce = request.GET["ennonce"]
+	proposition = Proposition.objects.get(ennonce)	
+	return proposition
+
+
 
 def creer_revendication(request):
 
+
+	#proposition =retourner_la_proposition(request)
 	utilisateur= request.user
 
 	if request.method == 'POST':
@@ -69,6 +76,7 @@ def creer_revendication(request):
 
 def creer_petition(request):
 
+	proposition =retourner_la_proposition(request)
 	utilisateur= request.user
 
 	if request.user.is_authenticated:
@@ -78,10 +86,10 @@ def creer_petition(request):
 
 
 	# Récups des infos GET si transmises
-	if 'id_proposition' in request.GET:
+	"""if 'id_proposition' in request.GET:
 		id_proposition = request.GET['id_proposition']
 	else:
-		id_proposition = ''
+		id_proposition = ''"""
 
 
 	if request.method == 'POST':
@@ -143,6 +151,9 @@ def creer_petition(request):
 
 def creer_evenement(request):
 
+	proposition =retourner_la_proposition(request)
+	print ("___________creation evenement_")
+
 	utilisateur= request.user
 
 	if request.user.is_authenticated:
@@ -173,7 +184,7 @@ def creer_evenement(request):
 				
 
 			# Création de l'evenement'puis association à la proposition source
-			evenement = Evenement.objects.create(titre=titre, description=description, date=date)
+			evenement = Evenement.objects.create(titre=titre, description=description, date=date, proposition = proposition)
 
 			
 			#petition.propositions.add(proposition)
@@ -186,15 +197,15 @@ def creer_evenement(request):
 			return render (request, 'revendications/page_accueil.html')	
 		
 
-		else:
-			#
-			# Pas de formulaire reçu...
-			#
+	else:
+		#
+		print ("Pas de formulaire reçu...")
+		#
 
-			form = EvenementForm()
-			revendications_soutenues = Proposition.objects.filter(soutien__user = user)
-			titre = u"creer un evenement"
-			return render(request, 'revendications/page_creer.html', {'form': form, 'id_proposition':id_proposition, 'revendications_soutenues':revendications_soutenues, "titre": titre})
+		form = EvenementForm()
+		revendications_soutenues = Proposition.objects.filter(soutien__user = user)
+		titre = u"creer un evenement"
+		return render(request, 'revendications/page_creer.html', {'form': form, 'id_proposition':id_proposition, 'revendications_soutenues':revendications_soutenues, "titre": titre})
 
 
 def creer_competence(request):
@@ -205,6 +216,7 @@ def creer_competence(request):
 		user = request.user
 	else:
 		render(request, 'authentification_necessaire.html')
+	proposition =retourner_la_proposition(request)
 
 
 	# Récups des infos GET si transmises
@@ -226,11 +238,6 @@ def creer_competence(request):
 			titre = unidecode(form.cleaned_data['titre']).encode('utf-8')
 			description = unidecode(form.cleaned_data['description']).encode('utf-8')
 			date_echeance = form.cleaned_data['date_echeance']
-			propositions = Proposition.objects.get(id = id_proposition)
-	
-
-
-
 			lieu = request.POST ['lieu']
 
 			#propositions = form.cleaned_data['propositions']
@@ -239,20 +246,14 @@ def creer_competence(request):
 
 			# Récupération des propositions cochées
 			# erreur si liste vide
-			try:
-				propositions = request.POST.getlist('propositions')
-			except:
-				raise Http404
+			
 
 			#if not propositions:
 				#return render(request, 'revendications/message.html', {'message':"Cocher au moins une proposition !"})
 
 			
-
-			"""
-			"""
 			# Création de la pétition puis association à la proposition source
-			competence = Competence.objects.create(titre=titre, description=description, date_echeance=date_echeance, lieu=lieu )
+			competence = Competence.objects.create(titre=titre, description=description, date_echeance=date_echeance, lieu=lieu, proposition = proposition )
 
 			for i in propositions:
 				competence.propositions.add(i)

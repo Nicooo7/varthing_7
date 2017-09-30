@@ -19,7 +19,11 @@
     "revendication/static/bower_components"
   ],
   "dependencies": {
-    "materialize": "^0.98.2",
-    "jquery": "^3.2.1"
+    "materialize": "latest",
+    "jquery": "latest",
+    "fullcalendar":"latest",
+    "materialize-autocomplete":"latest"
+    }
+  
   }
-}
+

@@ -61,7 +61,7 @@ def creer_les_triplets(): #(selon_mes_propositions_selon_les_utilisateurs)
 							liste_des_soutiens_communs.append(soutien)
 							print ("liste des soutiens communs : {}".format(liste_des_soutiens_communs))
 					proximite = len(liste_des_soutiens_communs)/(len (liste_soutiens1) + len(liste_soutiens2))
-					print ("calcul:", len(liste_des_soutiens_communs),len(liste_soutiens1), len(liste_soutiens2), proximite)	
+					#print ("calcul:", len(liste_des_soutiens_communs),len(liste_soutiens1), len(liste_soutiens2), proximite)	
 					triplet = (proposition1.ennonce, proposition2.ennonce, proximite)
 					#print (triplet)
 					if triplet not in liste:
@@ -77,7 +77,7 @@ def creer_les_triplets(): #(selon_mes_propositions_selon_les_utilisateurs)
 					if triplet1[1] == triplet2[0]:
 						triplets.remove(triplet1)
 
-		print ("triplets^^^^^^^^^^^^^^^^^^^^^^^^^",triplets)
+		#print ("triplets^^^^^^^^^^^^^^^^^^^^^^^^^",triplets)
 		return triplets	
 
 
@@ -96,7 +96,7 @@ def affichage_graphique_de_triplet(triplets, seuil):
 			if triplet[2] >= seuil: 
 				G.add_edge(triplet[0], triplet[1], weight = triplet[2])
 		except:
-			print ("oups, objet vide...")
+			print ("objet vide")
 
 	pos = nx.spring_layout(G)
 	#print (pos)
@@ -142,7 +142,7 @@ def affichage_graphique_de_triplet(triplets, seuil):
 					edges = edges + "\n" + "," + edge
 					a = a+1
 		except:
-			print("oups, objet vide pour les edges")
+			print("objet vide pour les edges")
 
 	edges = edges + "] }"
 
@@ -163,8 +163,8 @@ def affichage_graphique_de_triplet(triplets, seuil):
 		
 
 def enregistrer_les_datas(data, nom):
-	fichier_data = open("/var/www/revendication/static/revendication/{}.json".format(nom), "w")
-	#fichier_data = open("revendication/static/revendication/{}.json".format(nom), "w")
+	#fichier_data = open("/var/www/revendication/static/revendication/{}.json".format(nom), "w")
+	fichier_data = open("revendication/static/revendication/{}.json".format(nom), "w")
 	fichier_data.write(data)
 	fichier_data.close()
 
@@ -205,7 +205,7 @@ def data_propositions_proches (proposition):
 		if triplet[0]== proposition.ennonce:
 			if triplet[2] > 0:
 				selection.append(triplet)
-	print ("selection : " ,selection)
+	#print ("selection : " ,selection)
 	return selection
 
 

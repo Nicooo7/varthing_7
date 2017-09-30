@@ -84,11 +84,6 @@
                             </div>  
                               {% endblock%}
 
-      
-
-
-                                 <div class="col s12"> 
-                                        <div class="container">
                                             
 
 
@@ -117,13 +112,10 @@
                                                   </div>
                                           {% endblock %}
 
-                                                  {% block contenu_central%}
 
+            {% block contenu_central%}
 
-
-
-
-                                                  CONTENU DU CENTRE
+                                              CONTENU DU CENTRE
                                                   <p> 1 </p>
                                                   <p> 2 </p>
                                                   <p> 3 </p>
@@ -133,7 +125,11 @@
                                         </div>
                                 </div>
                                 </div>
-                        {% endblock%}
+
+
+
+                                                  
+            {% endblock%}
   
                           
                </div>
@@ -208,6 +204,7 @@ $( document ).ready(function() {
             <script>$(document).ready(function() {
     $('select').material_select();
     $('.parallax').parallax();
+    $('.carousel').carousel();
    
   });
             </script>

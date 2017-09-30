@@ -19,15 +19,15 @@
                       {% endblock %}
                 </li>
                 
-                <li>{% block option2 %}<a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_petition'">add</i></a> PETITION {% endblock %} </li>
+                <li>{% block option2 %}<a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_petition'?ennonce={{data_proposition.proposition.ennonce}}">add</i></a> PETITION {% endblock %} </li>
                 <li class="divider"></li>
 
 
-                <li>{% block option3 %}<a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_evenement'">add</i></a> EVENEMENT {% endblock %} </li>
+                <li>{% block option3 %}<a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_evenement'?ennonce={{data_proposition.proposition.ennonce}}">add</i></a> EVENEMENT {% endblock %} </li>
 
                
 
-                <li>{% block option4 %}<a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_organisation'">add</i></a>COMPETENCE  {% endblock %} </li>
+                <li>{% block option4 %}<a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_competence'?ennonce={{data_proposition.proposition.ennonce}}">add</i></a>COMPETENCE  {% endblock %} </li>
                
                 
                 {% block option5 %}{% endblock %}
@@ -154,7 +154,7 @@
         <div class="col s12">
           <div class="card teal darken-1">
             <div class="card-content white-text">
-              <span class="card-title">Compétences:</span>
+              <span class="card-title"> Demandes de compétences:</span>
               {% for competence in data_proposition.competence %}
               <p>{{competence}}</p>
               {% endfor %}
