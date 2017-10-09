@@ -77,7 +77,7 @@ def page_revendication(request):
 	print ("s", s)
 
 
-	graph_revendication(proposition)	
+	graph = graph_revendication(proposition)	
 	data_p= []
 	for triplet in data_propositions_proches(proposition):
 		data_p.append (triplet[1])
@@ -85,9 +85,9 @@ def page_revendication(request):
 
 
 	if s == "soutenue" :
-		return render (request, 'revendications/page_revendication.html', {"propositions_proches": data_p, "data_proposition":data_proposition, "s":s})
+		return render (request, 'revendications/page_revendication.html', {"propositions_proches": data_p, "data_proposition":data_proposition, "s":s, "graph":graph})
 	else:
-		return render (request, 'revendications/page_revendication.html', {"propositions_proches": data_p, "data_proposition":data_proposition})	
+		return render (request, 'revendications/page_revendication.html', {"propositions_proches": data_p, "data_proposition":data_proposition, "graph":graph})	
 
 
 

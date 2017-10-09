@@ -22,6 +22,9 @@ from bs4 import BeautifulSoup
 from random import *
 from datetime import datetime
 from datetime import timedelta
+from unidecode import unidecode
+
+
 
 
 #print ("DEMARRAGE DE LA CREATION D'UN NOUVEAU GRAPH")
@@ -53,15 +56,10 @@ def creer_les_triplets(): #(selon_mes_propositions_selon_les_utilisateurs)
 					#on compare ces propositions
 					liste_des_soutiens_communs = []
 					for soutien in liste_soutiens1:
-						"""print ("proposition1:{}".format(proposition1))
-						print ("proposition2: {}".format(proposition2))
-						print ("soutien1: {}".format(soutien))
-						print ("soutiens2: {}".format(liste_soutiens2))"""
 						if soutien in liste_soutiens2:
 							liste_des_soutiens_communs.append(soutien)
-							print ("liste des soutiens communs : {}".format(liste_des_soutiens_communs))
 					proximite = len(liste_des_soutiens_communs)/(len (liste_soutiens1) + len(liste_soutiens2))
-					#print ("calcul:", len(liste_des_soutiens_communs),len(liste_soutiens1), len(liste_soutiens2), proximite)	
+						
 					triplet = (proposition1.ennonce, proposition2.ennonce, proximite)
 					#print (triplet)
 					if triplet not in liste:
@@ -101,57 +99,47 @@ def affichage_graphique_de_triplet(triplets, seuil):
 	pos = nx.spring_layout(G)
 	#print (pos)
 
-	liste_noeud = []
-
 
 	#ecriture des noeuds:
-	noeuds = "{" + ' "nodes" : ' + "["
-	i = "premier"
+	noeuds = ""				
 	for cle, valeur in pos.items():
-		
-		if i == "premier":
-			noeud = "{"  + '"id" : ' + '"' + "{}".format(str(cle)) + '"' + "," + ' "label"  : ' + '"' + "{}".format(cle) + '"' + ","  + '"x" :' + "{}".format(valeur[0]) +  "," + ' "y" : ' + "{}".format (valeur[1]) + ","  + ' "size"  : 3 ' +  "}" 
-			noeuds = noeuds + "\n" + noeud
-			i = "plus_premier"
-		else :
-			noeud = "{"  + '"id" : ' + '"' + "{}".format(str(cle)) + '"' + "," + ' "label"  : ' + '"' + "{}".format(cle) + '"' + ","  + '"x" :' + "{}".format(valeur[0]) +  "," + ' "y" : ' + "{}".format (valeur[1]) + ","  + ' "size"  : 3 ' + "}" 
-			noeuds = noeuds + "\n" + "," + noeud
 
-	noeuds = noeuds + "],"
+		ennonce = str(cle)
+		proposition = Proposition.objects.filter(ennonce = ennonce)
+		nbsoutien = Proposition.nb_soutien(proposition)
+		size = str(nbsoutien * 5)
+		noeud = str(cle) + "/" + str(cle)  + "/" + str(valeur[0]) + "/" + str(valeur[1]) + "/" + str(size) 
+		noeuds = noeuds + "//" + noeud
+
+
+	
 
 
 
 
 	#ecriture des edges:
-	edges = '"edges":'  + "["
-	i = "premier"
 	a = 0
+	edges = ""
 	for triplet in triplets:
 		try:
 			if triplet[2]>seuil:
-				if i == "premier":
-					edge = "{"  +  ' "id" : ' + '"' + "{}".format(str(a)) + '"' + ","  + ' "source"  : ' + '"' + "{}".format(triplet[0]) + '"' + ","  + ' "target"  :'  + '"' + "{}".format(triplet[1]) + '"'  + "}" 
-					edges = edges + "\n" +  edge
-					i= "plus_premier"
-					a = a+1
+				
+				edge = str(a) + "/" + str(triplet[0]) + "/" + str(triplet [1]) 
 
-				else:
-					#print (triplet[2])
-					edge = "{"  +  ' "id" : ' + '"' + "{}".format(str(a)) + '"' + ","  + ' "source"  : ' + '"' + "{}".format(triplet[0]) + '"' + ","  + ' "target"  :'  + '"' + "{}".format(triplet[1]) + '"' + "}" 
-					#print(edge)
-					edges = edges + "\n" + "," + edge
-					a = a+1
+				edges = edges + "//" + edge
+				a = a+1
+		
 		except:
 			print("objet vide pour les edges")
 
-	edges = edges + "] }"
+	
 
 	
 
 
 
 	#ecriture des data
-	graph= noeuds + "\n" + "\n" + edges
+	graph= noeuds + '///' + edges
 
 
 
@@ -159,14 +147,17 @@ def affichage_graphique_de_triplet(triplets, seuil):
 	#path = "/Users/nicolasvinurel/Desktop/graph/graph"
 	#plt.savefig(path + ".png")
 	#nx.write_gexf(G, path + ".gexf")
+	#graph = graph.replace('"',"/").replace ('{', 'aaa').replace ('}','bbb').replace ('[', 'ccc').replace (']','ddd')
+	#print ("°_°_°_°_°_°_°_°_°_°_°_°_°_°_°_°_°_°_°_° graph:", graph)
+	graph = unidecode(graph)
 	return graph
 		
 
-def enregistrer_les_datas(data, nom):
+"""def enregistrer_les_datas(data, nom):
 	#fichier_data = open("/var/www/revendication/static/revendication/{}.json".format(nom), "w")
 	fichier_data = open("revendication/static/revendication/{}.json".format(nom), "w")
 	fichier_data.write(data)
-	fichier_data.close()
+	fichier_data.close()"""
 
 
 
@@ -209,25 +200,85 @@ def data_propositions_proches (proposition):
 	return selection
 
 
+
+def les_revendications_les_plus_populaires():
+
+		
+	
+
+		propositions = Proposition.objects.all()
+		liste = []
+		for p in propositions:
+			soutiens = Soutien.objects.filter(propositions = p, lien = 'SO')
+			i= 0
+			for s in soutiens:
+				i += 1
+			liste.append((p,i))
+		liste = sorted(liste, key=lambda x: x[1])
+		liste.reverse()
+
+		#print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ selection",selection)
+		selection = []
+		for e in liste:
+			selection.append(e[0])
+		selection = selection[0:4]
+		print ("+++++++++++++++++++++++++++++selection", selection)
+		return selection
+
+
+
+
+def data_populaires():
+	liste_proximites = creer_les_triplets()	
+	
+	
+	#recuperer les ennonces des propositions populaires
+	liste_des_propositions_populaires = les_revendications_les_plus_populaires()
+	liste_ennonces= []
+	for proposition in liste_des_propositions_populaires:
+		p=proposition.ennonce
+		liste_ennonces.append(p)
+
+	#selectionner les triplets qui commencent par les ennonces des revendications populaires	
+	selection = []
+	for triplet in liste_proximites:
+		proposition1 = triplet[0]
+		if proposition1 in liste_ennonces:
+			selection.append(triplet)
+
+	print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$selection" , selection)
+	return selection	
+
+
+
 #_______________________________________________________________
 
 
 
 def graph_accueil():
 	triplets = creer_les_triplets()
-	data = affichage_graphique_de_triplet(triplets, 0)
-	enregistrer_les_datas(data, "graph")
+	data = affichage_graphique_de_triplet(triplets, 0.1)
+	#enregistrer_les_datas(data = data, nom ="graph")
+	return data
 
 
 def graph_utilisateur(utilisateur):
 	data_propositions_proches = data_propositions_proches_des_miennes(utilisateur)
-	graph = affichage_graphique_de_triplet(triplets= data_propositions_proches, seuil=0)
-	enregistrer_les_datas(data = graph, nom = "graph")
+	graph = affichage_graphique_de_triplet(triplets= data_propositions_proches, seuil=0.1)
+	#enregistrer_les_datas(data = graph, nom = "graph")
+	return graph
 
 
 def graph_revendication(proposition):
 	data = affichage_graphique_de_triplet(triplets= data_propositions_proches(proposition), seuil=0)
-	enregistrer_les_datas(data = data, nom = "graph")
+
+	#enregistrer_les_datas(data = data, nom = "graph")
+	return data
+
+def graph_populaire():
+	data = affichage_graphique_de_triplet(triplets= data_populaires(), seuil=0.1)
+	#enregistrer_les_datas(data = data, nom = "graph")
+	return data
 
 
 

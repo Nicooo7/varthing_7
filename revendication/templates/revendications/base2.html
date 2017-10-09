@@ -16,15 +16,10 @@
 
 
     {% block styles %}{% endblock %}
-  </head>
-  <body>
+
     {% block content %}{% endblock %}
     
-    {% block bowercomponents %}
-    <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}" ></script>
-    <script src="{% static 'bower_components/materialize/dist/js/materialize.min.js' %}" ></script>
-    {% endblock %}
+
   
-    {% block scripts %}{% endblock %}
   </body>
 </html>

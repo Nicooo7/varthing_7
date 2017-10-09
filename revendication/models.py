@@ -26,6 +26,13 @@ class Proposition(models.Model):
     def __str__(self):
         return self.ennonce
 
+    def nb_soutien(self):    
+        soutiens = Soutien.objects.filter(propositions = self, lien = 'SO')
+        i= 0
+        for s in soutiens:
+            i += 1
+        return i
+
 
 class Lieu (models.Model):
     pays = models.CharField(max_length=200)

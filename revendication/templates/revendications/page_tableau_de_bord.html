@@ -1,33 +1,29 @@
-{% extends 'revendications/page_accueil.html' %}
+
+{% extends 'revendications/page_type.html' %}
+
 {% load static %}
 
 
 {% block titre_central%}
-TABLEAU DE BORD
+  TABLEAU DE BORD
 {% endblock %}
 
 
-{% block menu_gauche %}
- {% endblock %}
+{% block milieu %}
 
 
- {% block image_parallax %}
-{% endblock %}
+  {% block creer_revendication %}
+                  <div class="col s12">        
+                      <a class="btn tooltipped" data-position="bottom" data-delay="0" data-tooltip="creer une revendication"> 
+                        <i class="material-icons left">
+                          add 
+                        </i> 
+                      </a>
+                  </div>
+  {% endblock creer_revendication %}
 
 
-{% block bowercomponents %}
-<!--<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}" ></script> -->
-<script src="{% static 'bower_components/materialize/dist/js/materialize.min.js' %}" ></script>
-
-
-{% endblock %}
-
-
-{% block centre%}
-
-
-
-<div class= "section"> </div>
+  <div class= "section"> </div>
   <div class= "section"> </div>
   <div class= "section"> </div>
 
@@ -36,7 +32,10 @@ TABLEAU DE BORD
 
        <div class="row">
 
- <!--Zone de gauche-->       
+  <!--Zone de gauche-->  
+
+                 
+
                   <div class="col s3" >
                             <div class="card teal darken-1" style= "height: 300px">
                               <div class="card-content white-text">
@@ -74,50 +73,73 @@ TABLEAU DE BORD
 
 
 
-<!--Zone de gauche-->
+  <!--Zone de gauche-->
 
-<!--ZONE DU MILIEU-->
+  <!--ZONE DU MILIEU-->
+                  
 
+                <div class="col s6"> 
+                    <div class="row">
+                        
+                    <!--filtres--> 
 
-
-                  <div class="col s6"> 
-                        <div class = "container"  style= 
-                            "
-                            height : 100%;
-                            width : 100%;
-                          
-                            " 
-                            id = "container">
-
-                           
-                          </div> 
-
-                            <div class= "section"> </div>
-                            <div class= "section"> </div>
-                            <div class= "section"> </div>
-                
-
-                            <div class="row">
-                              <div class="col s10">          
-                                  <nav>
-                                    <div class="nav-wrapper">
-                                      <form>
-                                        <div class="input-field">
-                                          <input type="search" id="recherche">recherche
-                                          <label class="label-icon" for="search" ><i class="material-icons" >search</i> </label>
-                                          <i class="material-icons">close</i>
-                                        </div>
-                                      </form>
-                                    </div>
-                                  </nav>
-                              </div>
+                        <div class="col s6"> 
+                          <nav>
+                            <div class="nav-wrapper">
+                              <ul class="left hide-on-med-and-down">
+                                <li><a href="page_tableau_de_bord.html?choix=tout">tout</a></li>
+                                <li><a href="page_tableau_de_bord.html?choix=utilisateur">ma galaxy</a></li>
+                                <li><a href="page_tableau_de_bord.html?choix=populaire">populaires</a></li>
                                 
-                                <div class="col s2"> 
-                                  <a class="waves-effect waves-light btn" id="lien"> <i class="material-icons right">  arrow_forward </i> button</a> 
-                                </div>
+                              </ul>
                             </div>
-              
+                          </nav>
+                           <div class= "section"> </div>
+                           <div class= "section"> </div>
+                         </div> 
 
+
+
+                    <!--graph-->        
+
+                          <div class="col s12"> 
+                                <div class = "container"  style= 
+                                    "
+                                    height : 100%;
+                                    width : 100%;
+                                  
+                                    " 
+                                    id = "container">
+
+                                   
+                                  </div> 
+
+                                    <div class= "section"> </div>
+                                    <div class= "section"> </div>
+                                    <div class= "section"> </div>
+                        
+
+                                    <div class="row">
+                                      <div class="col s10">          
+                                          <nav>
+                                            <div class="nav-wrapper">
+                                              <form>
+                                                <div class="input-field">
+                                                  <input type="search" id="recherche">recherche
+                                                  <label class="label-icon" for="search" ><i class="material-icons" >search</i> </label>
+                                                  <i class="material-icons">close</i>
+                                                </div>
+                                              </form>
+                                            </div>
+                                          </nav>
+                                      </div>
+                                        
+                                        <div class="col s2"> 
+                                          <a class="waves-effect waves-light btn" id="lien"> <i class="material-icons right">  arrow_forward </i> button</a> 
+                                        </div>
+                                    </div>
+               
+                            </div       
                 
 
                             <div class= "section"> </div>
@@ -162,10 +184,10 @@ TABLEAU DE BORD
                           </div>     
                      </div>  
 
-<!--FIN ZONE DU MILIEU-->
+  <!--FIN ZONE DU MILIEU-->
 
 
-<!--Zone de droite-->
+  <!--Zone de droite-->
 
 
                    <div class="col s3">
@@ -192,92 +214,5 @@ TABLEAU DE BORD
                   </div>
         </div>
 
-<!--Fin zone de droite-->	
-
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-
-
-
-<script src="{% static 'revendication/fullcalendar-3.5.1/lib/jquery.min2.js' %}"></script>
-<script src="{% static 'revendication/fullcalendar-3.5.1/lib/moment.min.js' %}"></script>
-<script src="{% static 'revendication/fullcalendar-3.5.1/fullcalendar.js' %}"></script>
-
-
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-
-
-
-<script>
-   
-                
-                var completion = "{{datas.autocompletion}}".split("&#39;").join("\'");
-                var reg=new RegExp("_", "g");
-                var tableau=completion.split(reg);
-                $('#recherche').autocomplete({source: tableau });
-                $('#recherche').trigger('autoresize');
-
-                var lien = document.getElementById('lien');
-                var recherche = document.getElementById('recherche');
-                lien.onclick = function() {
-                document.location.href = "page_revendications.html?ennonce=" + recherche.value
-                 };
-        
-              
-</script>    
-
-
-<script>
-   $(document).ready(function() {
-
-    // page is now ready, initialize the calendar...
-
-    var evenements = "{{datas.calendrier}}".split("ggg");
-    var liste_evenement = new Array();
-    for(var i= 0; i < evenements.length; i++)
-{    
-     evenement = evenements[i] ;
-     evenement = evenement.split("/");
-     var evenement =  {title: evenement[0], start: evenement[1]};
-     liste_evenement.push(evenement);
-}
-    
-
-  
-
-        $('#calendar').fullCalendar({
-
-            eventSources: [{
-                                  events: liste_evenement,
-                                  color: 'black',     // an option!
-                                  textColor: 'yellow' // an option!
-                              
-                            }],
-
-            defaultView: "listMonth",
-            eventClick: function(calEvent, jsEvent, view) {
-
-                alert('Event: ' + calEvent.title);
-
-                // change the border color just for fun
-                $(this).css('border-color', 'red');
-
-            }
-
-
-
-
-        });
-
-
-});
-
-
-</script>
-
-{% endblock %}
-
-
-
-
-
+  <!--Fin zone de droite--> 
+{% endblock milieu %}

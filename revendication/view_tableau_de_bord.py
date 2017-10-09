@@ -22,6 +22,7 @@ from bs4 import BeautifulSoup
 from random import *
 from .creation_graph import *
 from unidecode import unidecode
+from django.utils.safestring import mark_safe
 
 
 
@@ -87,7 +88,7 @@ def tableau_de_bord(request):
 
 
 
-		print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ selection",selection)
+		#print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ selection",selection)
 		return selection
 
 
@@ -139,6 +140,8 @@ def tableau_de_bord(request):
 			
 
 
+
+
 	def creer_les_datas(utilisateur):
 
 		class Datas:
@@ -148,7 +151,7 @@ def tableau_de_bord(request):
 				#self.documents = Documents.objects.filter(soutien__user = utilisateur)
 				self.competence = Competence.objects.filter(soutien__user = utilisateur)
 				self.petition = Petition.objects.filter(soutien__user = utilisateur)
-				self.revendications = Proposition.objects.filter(soutien__user = utilisateur)
+				self.revendications = Proposition.objects.filter(soutien__user = utilisateur, soutien__lien = 'SO')
 				self.suggestions = les_x_revendications_les_plus_proches_des_miennes(4)
 				if self.suggestions == []:
 					self.suggestions = les_revendications_les_plus_populaires()[0:5]
@@ -159,19 +162,37 @@ def tableau_de_bord(request):
 		return datas
 
 
-	def mes_revendications(utilisateur):
-		mes_propositions = Proposition.objects.all(soutien__user = utilisateur, soutien__lien = 'SO')
 
 
 
  
 
+	def creer_graph():
+		if request.GET:
+			choix = request.GET['choix']
+		else:
+			choix = "defaut"
 
-	datas = creer_les_datas(utilisateur)		
-	graph_utilisateur(utilisateur)
+		if choix == "utilisateur":
+			graph=graph_utilisateur(utilisateur)
+		elif choix == "tout":
+			graph=graph_accueil()
+		elif choix == "defaut":
+			graph=graph_accueil()
+		elif choix == "populaire":
+			graph =graph_populaire()
+
+		
+		print ("_________________graph:", graph)
+		return graph
+
+	datas = creer_les_datas(utilisateur)
+	graph = creer_graph()
+
+	
 
 
-	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas})
+	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas, "graph":mark_safe(graph)})
 
 
 
