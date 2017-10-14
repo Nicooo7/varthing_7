@@ -33,6 +33,10 @@ class Proposition(models.Model):
             i += 1
         return i
 
+    
+
+
+
 
 class Lieu (models.Model):
     pays = models.CharField(max_length=200)

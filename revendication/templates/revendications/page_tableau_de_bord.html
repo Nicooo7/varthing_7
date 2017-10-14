@@ -1,26 +1,52 @@
 
-{% extends 'revendications/page_type.html' %}
-
+{% extends 'revendications/page_type.html' %}a
 {% load static %}
 
 
+
+
 {% block titre_central%}
-  TABLEAU DE BORD
+   <div class="row">
+                               <div class="col s12">  
+                                  TABLEAU DE BORD
+                                  <div class= "section"> </div>
+                                  <div class= "section"> </div>
+                               </div>
+
+                            <div class="col s3">
+                                      <a class="btn-floating btn-large waves-effect waves-light red">
+                                     <i class="material-icons tooltipped" data-position="bottom" data-delay="0" data-tooltip="mes documents" >card_travel</i>
+                                      </a>
+                              </div> 
+
+                              <div class="col s3">
+                                      <a class="btn-floating btn-large waves-effect waves-light red">
+                                     <i class=" material-icons tooltipped" data-position="bottom" data-delay="0" data-tooltip="les news" >fiber_new</i>
+                                      </a>
+                              </div> 
+                
+                              <div class="col s3">
+                                    <a class="btn-floating btn-large waves-effect waves-light red">
+                                    <i class="material-icons tooltipped" data-position="bottom" data-delay="0" data-tooltip="les demandes de compétences"  >fitness_center</i>
+                                  </a>
+                              </div>             
+                                   
+                            <div class="col s3">        
+                              <a class="btn-floating btn-large waves-effect waves-light red tooltipped" data-position="bottom" data-delay="0" data-tooltip="creer une revendication"> 
+                                <i class="material-icons left">
+                                  add 
+                                </i> 
+                              </a>
+                            </div>
+
+                           
 {% endblock %}
 
 
 {% block milieu %}
 
 
-  {% block creer_revendication %}
-                  <div class="col s12">        
-                      <a class="btn tooltipped" data-position="bottom" data-delay="0" data-tooltip="creer une revendication"> 
-                        <i class="material-icons left">
-                          add 
-                        </i> 
-                      </a>
-                  </div>
-  {% endblock creer_revendication %}
+ 
 
 
   <div class= "section"> </div>
@@ -37,13 +63,13 @@
                  
 
                   <div class="col s3" >
-                            <div class="card teal darken-1" style= "height: 300px">
-                              <div class="card-content white-text">
+                            <div class="card grey lighten-2" style= "height: 300px">
+                              <div class="card-content black-text">
                                 <span class="card-title" > suggestions: </span>
                                  <div class="carousel">
                                     {% for proposition in datas.suggestions %}
                                       <a class="carousel-item" style="height: 400px" href="page_revendication.html?ennonce={{proposition}}">
-                                        <div class="card red darken-1" >
+                                        <div class="card red lighten-2" >
                                           <div class="card-content white-text">
                                            <h5>{{proposition}} </h5>
                                           </div>
@@ -55,20 +81,41 @@
                             </div>
 
 
-                            <div class="card teal darken-1" style= "height: 700px">
-                              <div class="card-content white-text">
+                            <div class="card grey lighten-2" style= "height: 350px">
+                              <div class="card-content black-text">
+                                      <a class="btn-floating btn-large waves-effect waves-light red tooltipped right"       data-position="bottom" data-delay="0" data-tooltip="creer une revendication"> 
+                                            <i class="material-icons right">
+                                              add 
+                                            </i> 
+                                      </a>
                                 <span class="card-title center">mes revendications</span>
-                                 <ul>
+                                
                                     {% for proposition in datas.revendications %}
-                                        <li> 
-                                          <a href="page_revendication.html?ennonce={{proposition}}">
-                                            <p style="color: white"> {{proposition}} </p>
-                                          </a> 
-                                        </li>
+                              
+                                             <li>{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></li>
+                                         
                                      {% endfor %}
+                                 
+                                </div>
+                              </div>
+
+
+                              <div class="card grey lighten-2" style= "height: 350px">
+                              <div class="card-content black-text">
+                                        <a class="btn-floating btn-large waves-effect waves-light red tooltipped right"     data-position="bottom" data-delay="0" data-tooltip="creer une pétition"> 
+                                          <i class="material-icons right">
+                                            add 
+                                          </i> 
+                                      </a>
+                                <span class="card-title center">mes pétitions</span>
+                                 <ul>
+                                    {% for petition in datas.petition %}
+                                    <li>{{petition.titre}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></li>
+                                    {% endfor %}
                                   </ul>
                                 </div>
                               </div>
+
                   </div>
 
 
@@ -87,9 +134,9 @@
                           <nav>
                             <div class="nav-wrapper">
                               <ul class="left hide-on-med-and-down">
-                                <li><a href="page_tableau_de_bord.html?choix=tout">tout</a></li>
-                                <li><a href="page_tableau_de_bord.html?choix=utilisateur">ma galaxy</a></li>
-                                <li><a href="page_tableau_de_bord.html?choix=populaire">populaires</a></li>
+                                <li> <a id="acceuil"> tout </a> </li>
+                                <li> <a id="populaire"> populaire </a> </li>
+                                <li> <a id="utilisateur"> utilisateur </a> </li> 
                                 
                               </ul>
                             </div>
@@ -135,7 +182,12 @@
                                       </div>
                                         
                                         <div class="col s2"> 
-                                          <a class="waves-effect waves-light btn" id="lien"> <i class="material-icons right">  arrow_forward </i> button</a> 
+                                          <a  id="lien" class="btn-floating btn-large waves-effect waves-light red tooltipped right"     data-position="bottom" data-delay="0" data-tooltip="go !"> 
+                                            <i class="material-icons right">
+                                              arrow_forward 
+                                            </i> 
+                                          </a>
+                                       
                                         </div>
                                     </div>
                
@@ -149,39 +201,7 @@
                                 <div class= "section"> </div>
                   
 
-                            <div class="row">
-
-                                <div class="col s4">
-                                    <ul id="dropdown3" class="dropdown-content">
-                                      {% for proposition in propositions_populaires %}
-                                      <li><a href="page_revendication.html?ennonce={{proposition}}"><span class="badge"><p class="flow-text">{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p></span></a></li>
-                                      {% endfor %}
-                                    </ul>
-                                    <a class="btn dropdown-button" style="height: 200px" href="#!" data-activates="dropdown3">Mes documents <div class= "section"> </div> <div class= "section"> </div> <i class="large material-icons" style ="font-size: 100px" >card_travel</i></a>
-                              </div> 
-
-
-                               <div class="col s4">
-                                    <ul id="dropdown3" class="dropdown-content">
-                                      {% for proposition in propositions_populaires %}
-                                      <li><a href="page_revendication.html?ennonce={{proposition}}"><span class="badge"><p class="flow-text">{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p></span></a></li>
-                                      {% endfor %}
-                                    </ul>
-                                    <a class="btn dropdown-button" style="height: 200px" href="#!" data-activates="dropdown3"> Les actualités  <div class= "section"> </div> <div class= "section"> </div> <i class="large material-icons" style ="font-size: 100px" >fiber_new</i></a>
-                              </div> 
-                   
-
-
-
-                               <div class="col s4">
-                                    <ul id="dropdown4" class="dropdown-content">
-                                      {% for proposition in proposition_en_acceleration %}
-                                      <li><a href="page_revendication.html?ennonce={{proposition}}"><span class="badge"><p class="flow-text">{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"> <div class= "section"> </div><i class="material-icons">  &nbsp pageview</i></a></p></span></a></li>
-                                      {% endfor %}
-                                    </ul>
-                                    <a class="btn dropdown-button" style="height: 200px" href="#!" data-activates="dropdown4">Les demandes de competences <div class= "section"> </div> <i class="large material-icons" style ="font-size: 100px" >fitness_center</i></a>
-                              </div>             
-                          </div>     
+                            
                      </div>  
 
   <!--FIN ZONE DU MILIEU-->
@@ -191,23 +211,27 @@
 
 
                    <div class="col s3">
-                            <div class="card teal darken-1" style="height: 500px">
-                                  <div class="card-content white-text">
+                            <div class="card grey lighten-2" style="height: 500px">
+                                  <div class="card-content black-text">
                                     <div id="calendar"></div>
                                   </div>               
                             </div>
 
                               
-                            <div class="card teal darken-1" style="height: 500px">
-                                <div class="card-content white-text">
-                                    <span class="card-title">mes évenements et petitions
-                                  </span>
-                                   {% for evenement in datas.evenement %}
-                                    <p>{{evenement.titre}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
+                            <div class="card grey lighten-2" style="height: 500px">
+                                <div class="card-content black-text">
+                                     <a class="btn-floating btn-large waves-effect waves-light red tooltipped right" data-position="bottom" data-delay="0" data-tooltip="creer un évènement"> 
+                                        <i class="material-icons right">
+                                          add 
+                                        </i> 
+                                      </a>
+                                    <span class="card-title">mes évenements 
+                                    </span>
+                                   
+                                   {% for evenement in datas.evenements %}
+                                    <li>{{evenement.titre}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></li>
                                     {% endfor %}
-                                     {% for petition in datas.petition %}
-                                    <p>{{petition.titre}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-                                    {% endfor %}
+                                     
                                 </div> 
                             </div>
                          
@@ -215,4 +239,7 @@
         </div>
 
   <!--Fin zone de droite--> 
+
+
 {% endblock milieu %}
+

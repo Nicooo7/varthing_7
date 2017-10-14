@@ -69,6 +69,10 @@ def deconnexion (request):
 
 
 
+
+
+
+
 def creer_utilisateur (request):
 	if request.method == 'POST':
 		form = UtilisateurForm(request.POST)

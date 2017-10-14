@@ -1,6 +1,12 @@
 // script gerant l'affichage du graphique                  
- 
 
+
+
+
+function affichage_graphique(graph) 
+            {
+
+                 
 
                   bleu_ciel = '#0099FF'
                   rouge = '#ec5148'
@@ -13,16 +19,12 @@
                   orange = '#EC5117'
 
                    
-                    
-
                   var graph = graph.split('///')
                   var noeuds = graph[0].split('//')
                   var edges = graph[1].split('//')
 
-
-
                   var s = new sigma('container');
-
+                  
                   //creation des noeuds
                   for(var i= 1; i < noeuds.length; i++)
                             {    
@@ -121,3 +123,8 @@
                           // update effective.
                         s.refresh();
                         });
+              }
+
+
+              
+

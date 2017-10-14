@@ -31,6 +31,7 @@ jQuery(document).ready(function()
 
 //_____________________________________________icalendar_______________________________________
 
+
            
               var evenements = evenements.split("ggg");
               var liste_evenement = new Array();
@@ -52,7 +53,7 @@ jQuery(document).ready(function()
                                               
                                 }],
 
-                            defaultView: "listMonth",
+                            //defaultView: "listMonth",
                             eventClick: function(calEvent, jsEvent, view) 
                                 {
 

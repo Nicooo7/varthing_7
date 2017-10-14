@@ -107,7 +107,7 @@ def affichage_graphique_de_triplet(triplets, seuil):
 		ennonce = str(cle)
 		proposition = Proposition.objects.filter(ennonce = ennonce)
 		nbsoutien = Proposition.nb_soutien(proposition)
-		size = str(nbsoutien * 5)
+		size = str(nbsoutien)
 		noeud = str(cle) + "/" + str(cle)  + "/" + str(valeur[0]) + "/" + str(valeur[1]) + "/" + str(size) 
 		noeuds = noeuds + "//" + noeud
 
@@ -202,9 +202,6 @@ def data_propositions_proches (proposition):
 
 
 def les_revendications_les_plus_populaires():
-
-		
-	
 
 		propositions = Proposition.objects.all()
 		liste = []

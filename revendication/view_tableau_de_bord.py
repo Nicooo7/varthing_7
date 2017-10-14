@@ -163,36 +163,15 @@ def tableau_de_bord(request):
 
 
 
-
-
- 
-
-	def creer_graph():
-		if request.GET:
-			choix = request.GET['choix']
-		else:
-			choix = "defaut"
-
-		if choix == "utilisateur":
-			graph=graph_utilisateur(utilisateur)
-		elif choix == "tout":
-			graph=graph_accueil()
-		elif choix == "defaut":
-			graph=graph_accueil()
-		elif choix == "populaire":
-			graph =graph_populaire()
-
-		
-		print ("_________________graph:", graph)
-		return graph
-
 	datas = creer_les_datas(utilisateur)
-	graph = creer_graph()
-
 	
+	graph_u = graph_utilisateur(utilisateur)
+	graph_a =  graph_accueil()
+	graph_p = graph_populaire()
 
+	print ("______________________________", datas.evenements)
 
-	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas, "graph":mark_safe(graph)})
+	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas, "graph_utilisateur":mark_safe(graph_u),"graph_accueil":mark_safe(graph_a),"graph_populaire":mark_safe(graph_p)})
 
 
 
