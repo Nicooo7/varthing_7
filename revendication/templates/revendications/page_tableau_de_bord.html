@@ -7,233 +7,471 @@
 
 {% block titre_central%}
    <div class="row">
-                               <div class="col s12">  
-                                  TABLEAU DE BORD
-                                  <div class= "section"> </div>
-                                  <div class= "section"> </div>
-                               </div>
+                             
 
-                            <div class="col s3">
-                                      <a class="btn-floating btn-large waves-effect waves-light red">
-                                     <i class="material-icons tooltipped" data-position="bottom" data-delay="0" data-tooltip="mes documents" >card_travel</i>
-                                      </a>
+                            <div class="col s2">
+                                    <img src="/static/revendication/images/reseau.png" class= "tooltipped" id="bouton_container" data-position="bottom" data-delay="0" data-tooltip="graphique des propositions" style= "font-size:80px">   
                               </div> 
 
-                              <div class="col s3">
-                                      <a class="btn-floating btn-large waves-effect waves-light red">
-                                     <i class=" material-icons tooltipped" data-position="bottom" data-delay="0" data-tooltip="les news" >fiber_new</i>
-                                      </a>
+
+                              <!--barre recherche -->
+
+                        
+                          <div class="col s8">          
+                              <nav>
+                                <div class="nav-wrapper white">
+                                  <form>
+                                    <div class="input-field">
+                                      <input type="search" id="recherche">
+                                      <label class="label-icon" for="search" ><i class="material-icons" style="color:black" >search</i> </label>
+                                      <i class="material-icons">close</i>
+                                    </div>
+                                  </form>
+                                </div>
+                              </nav>
+                              <div class= "section"> </div>
+                                      
+                          </div>
+                        
+                        
+                        <!--fin barre recherche -->
+
+                              <div class="col s2">
+                                       
+                                       <img src="/static/revendication/images/cercle.png" class= "tooltipped" id="bouton_liste" data-position="bottom" data-delay="0" data-tooltip="suggestions" style= "font-size:80px"> 
+                                      
                               </div> 
-                
-                              <div class="col s3">
-                                    <a class="btn-floating btn-large waves-effect waves-light red">
-                                    <i class="material-icons tooltipped" data-position="bottom" data-delay="0" data-tooltip="les demandes de compétences"  >fitness_center</i>
-                                  </a>
-                              </div>             
+            
                                    
-                            <div class="col s3">        
-                              <a class="btn-floating btn-large waves-effect waves-light red tooltipped" data-position="bottom" data-delay="0" data-tooltip="creer une revendication"> 
-                                <i class="material-icons left">
-                                  add 
-                                </i> 
-                              </a>
-                            </div>
-
-                           
+                                                    
 {% endblock %}
 
 
 {% block milieu %}
 
 
- 
-
-
-  <div class= "section"> </div>
-  <div class= "section"> </div>
-  <div class= "section"> </div>
 
 
 
 
        <div class="row">
 
-  <!--Zone de gauche-->  
+                  
+                  <!--Zone de gauche-->  
+                  <div class="col s2" >
+                               <div class= "section"> </div>
+                               <div class= "section"> </div>
+                               <div class= "section"> </div>
+                               <div class= "section"> </div>
+                               
+
+                              <div class="col s12">
+                                      <a class="btn-floating btn-large waves-effect waves-light orange" nom="coincoin">
+                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="revendications" id="bouton_revendications" >record_voice_over</i>
+                                     
+                                      </a>
+                                        <div class= "section"> </div>
+                                       <div class= "section"> </div>
+                              </div> 
+                                <div class="col s12">
+                                      <a class="btn-floating btn-large waves-effect waves-light green">
+                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="pétitions" id="bouton_petitions" >format_align_center</i>
+                                
+                                      </a>
+                                      <div class= "section"> </div>
+                                      <div class= "section"> </div>
+                              </div> 
+                                
+                                
+                                <div class="col s12">
+                                      <a class="btn-floating btn-large waves-effect waves-light purple" >
+                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="évènements" id="bouton_evenements" >event</i>
+                                
+                                      </a>
+                                      <div class= "section"> </div>
+                                      <div class= "section"> </div>
+                              </div> 
+
+                          </div>     
+                             
+                   <!--Zone de gauche-->
+                            
+     
+                 <!--ZONE DU MILIEU-->  
+                <div class="col s8"> 
+                    <div class="row">    
+                    
 
                  
 
-                  <div class="col s3" >
-                            <div class="card grey lighten-2" style= "height: 300px">
-                              <div class="card-content black-text">
-                                <span class="card-title" > suggestions: </span>
-                                 <div class="carousel">
-                                    {% for proposition in datas.suggestions %}
-                                      <a class="carousel-item" style="height: 400px" href="page_revendication.html?ennonce={{proposition}}">
-                                        <div class="card red lighten-2" >
-                                          <div class="card-content white-text">
-                                           <h5>{{proposition}} </h5>
-                                          </div>
-                                        </div>
-                                      </a> 
-                                     {% endfor %}
-                                </div>
-                              </div>
-                            </div>
-
-
-                            <div class="card grey lighten-2" style= "height: 350px">
-                              <div class="card-content black-text">
-                                      <a class="btn-floating btn-large waves-effect waves-light red tooltipped right"       data-position="bottom" data-delay="0" data-tooltip="creer une revendication"> 
-                                            <i class="material-icons right">
-                                              add 
-                                            </i> 
-                                      </a>
-                                <span class="card-title center">mes revendications</span>
-                                
-                                    {% for proposition in datas.revendications %}
-                              
-                                             <li>{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></li>
-                                         
-                                     {% endfor %}
-                                 
-                                </div>
-                              </div>
-
-
-                              <div class="card grey lighten-2" style= "height: 350px">
-                              <div class="card-content black-text">
-                                        <a class="btn-floating btn-large waves-effect waves-light red tooltipped right"     data-position="bottom" data-delay="0" data-tooltip="creer une pétition"> 
-                                          <i class="material-icons right">
-                                            add 
-                                          </i> 
-                                      </a>
-                                <span class="card-title center">mes pétitions</span>
-                                 <ul>
-                                    {% for petition in datas.petition %}
-                                    <li>{{petition.titre}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></li>
-                                    {% endfor %}
-                                  </ul>
-                                </div>
-                              </div>
-
-                  </div>
-
-
-
-  <!--Zone de gauche-->
-
-  <!--ZONE DU MILIEU-->
-                  
-
-                <div class="col s6"> 
-                    <div class="row">
-                        
                     <!--filtres--> 
 
-                        <div class="col s6"> 
-                          <nav>
-                            <div class="nav-wrapper">
-                              <ul class="left hide-on-med-and-down">
-                                <li> <a id="acceuil"> tout </a> </li>
-                                <li> <a id="populaire"> populaire </a> </li>
-                                <li> <a id="utilisateur"> utilisateur </a> </li> 
-                                
+                        <div class="col s12"> 
+                          <nav id="filtres_galaxie">
+                            <div class="nav-wrapper white" >
+                              <ul class="right hide-on-med-and-down blue">
+                                <li> <a id="acceuil" style="color:black"> tout </a> </li>
+                                <li> <a id="populaire" style="color:black"> populaire </a> </li>
+                                <li> <a id="utilisateur" style="color:black"> utilisateur </a> </li> 
+                              </ul>
+                            </div>
+                            
+                          </nav>
+                         </div> 
+
+                         <div class="col s12"> 
+                          <nav id="filtres_liste">
+                            <div class="nav-wrapper white" >
+                              <ul class="right hide-on-med-and-down white">
+                                <li> <a id="date" style="color:black"> date </a> </li> 
+                                <li> <a id="popularite" style="color:black"> popularite </a> </li> 
                               </ul>
                             </div>
                           </nav>
-                           <div class= "section"> </div>
-                           <div class= "section"> </div>
                          </div> 
 
+                        
 
+
+                         
+                   
 
                     <!--graph-->        
 
-                          <div class="col s12"> 
-                                <div class = "container"  style= 
+                          <div class="col s12" id="conteneur"> 
+                          
+                          
+
+                              <div class = "container"  style= 
                                     "
                                     height : 100%;
                                     width : 100%;
-                                  
+                                    border:2px solid black;
+                                    -moz-border-radius:7px;
+                                    -webkit-border-radius:7px;
+                                    border-radius:7px;
                                     " 
                                     id = "container">
+                               </div>  
+                          </div>    
 
-                                   
-                                  </div> 
 
-                                    <div class= "section"> </div>
-                                    <div class= "section"> </div>
-                                    <div class= "section"> </div>
-                        
-
-                                    <div class="row">
-                                      <div class="col s10">          
-                                          <nav>
-                                            <div class="nav-wrapper">
-                                              <form>
-                                                <div class="input-field">
-                                                  <input type="search" id="recherche">recherche
-                                                  <label class="label-icon" for="search" ><i class="material-icons" >search</i> </label>
-                                                  <i class="material-icons">close</i>
-                                                </div>
-                                              </form>
-                                            </div>
-                                          </nav>
-                                      </div>
-                                        
-                                        <div class="col s2"> 
-                                          <a  id="lien" class="btn-floating btn-large waves-effect waves-light red tooltipped right"     data-position="bottom" data-delay="0" data-tooltip="go !"> 
-                                            <i class="material-icons right">
-                                              arrow_forward 
-                                            </i> 
+                      <!--cartes centrales-->   
+                          <div class="col s12">
+                                      <div class="card white lighten-2" style= "height: 550px" id="revendications">
+                                        <div class="card-content black-text">
+                                          <a href="page_creer_revendication.html" class="btn-floating btn-large waves-effect waves-light orange tooltipped right"  data-position="bottom" data-delay="0" data-tooltip="creer une revendication"> 
+                                                <i class="material-icons right">
+                                                  add 
+                                                </i> 
                                           </a>
-                                       
+                                          <span class="card-title center">revendications</span>
+                                          <div class= "section"> </div>
+                                          <div class= "section"> </div>
+                                        {% for proposition in datas.revendications %}
+                                                <div class="collection">
+                                                 <a href="page_revendication.html?ennonce={{proposition}}" class="collection-item orange" style="color: white">{{proposition}}</a>
+                                                </div> 
+                                                {% endfor %}
                                         </div>
-                                    </div>
-               
-                            </div       
-                
-
-                            <div class= "section"> </div>
-                             <div class= "section"> </div>
-                              <div class= "section"> </div>
-                               <div class= "section"> </div>
-                                <div class= "section"> </div>
-                  
-
-                            
-                     </div>  
-
-  <!--FIN ZONE DU MILIEU-->
-
-
-  <!--Zone de droite-->
-
-
-                   <div class="col s3">
-                            <div class="card grey lighten-2" style="height: 500px">
-                                  <div class="card-content black-text">
-                                    <div id="calendar"></div>
-                                  </div>               
+                                      </div>
                             </div>
 
                               
-                            <div class="card grey lighten-2" style="height: 500px">
-                                <div class="card-content black-text">
-                                     <a class="btn-floating btn-large waves-effect waves-light red tooltipped right" data-position="bottom" data-delay="0" data-tooltip="creer un évènement"> 
-                                        <i class="material-icons right">
-                                          add 
-                                        </i> 
-                                      </a>
-                                    <span class="card-title">mes évenements 
-                                    </span>
-                                   
-                                   {% for evenement in datas.evenements %}
-                                    <li>{{evenement.titre}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></li>
-                                    {% endfor %}
+
+
+                                <div class="col s12">       
+                                        <div class="card white lighten-2" style= "height: 550px" id="petitions">
+                                            <div class="card-content black-text">
+                                                  <a class="btn-floating btn-large waves-effect waves-light green tooltipped right"     data-position="bottom" data-delay="0" data-tooltip="creer une pétition" > 
+                                                    <i class="material-icons right">
+                                                      add 
+                                                    </i> 
+                                                  </a>
+                                                  <span class="card-title center">mes pétitions</span>
+                                                      <div class="collection">
+                                                        {% for petition in datas.petition %}
+                                                          <a href="page_revendication.html?ennonce={{proposition}}" class="collection-item green" style="color: white"> {{petition.titre}}
+                                                           </a> 
+                                                          <div class= "section"> </div>  
+                                                        {% endfor %}
+                                                      </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                
+
+
+                                <div class="col s12"> 
+                                    <div class="card white lighten-2" style= "height: 550px" id="carte_popularite">
+                                            <div class="card-content black-text">
+                                                Ca pourrait vous interesser...
+                                                  {% for e in datas.populaire %}
+                                                  <div class="collection">
+                                                    {% if e.ennonce %}
+                                                  <a id="item_populaire" href="page_revendication.html?ennonce={{e}}" class="collection-item orange" style="color: white"> {{e.ennonce}}<p style="float:right" >{{e.nb_supporter}}</p></a>
+                                                    {% endif %}
+                                                    {% if e.date %}
+                                                  <a id="item_populaire" href="page_revendication.html?ennonce={{e}}" class="collection-item purple" style="color: white"> {{e.titre}}</a>
+                                                    {% endif %}
+                                                    {% if e.signataires %}
+                                                  <a id="item_populaire" href="page_revendication.html?ennonce={{e}}" class="collection-item green" style="color: white"> {{e.titre}}</a>
+                                                    {% endif %}
+                                                   </div>
+                                                  {% endfor %}
+                                                
+                                              </div>
+                                          </div>
+                                </div>  
+
+                                         
+                                <div class="col s12"> 
+                                    <div class="row" id="carte_evenements">
+                                      <div class="col s6">       
+                                           <div class="card white lighten-2" style="height: 550px" >
+                                              <div class="card-content black-text">
+                                                     <a href="page_creer_evenement.html" class="btn-floating btn-large waves-effect waves-light purple tooltipped right" data-position="bottom" data-delay="0" data-tooltip="creer un évènement"> 
+                                                        <i class="material-icons right">
+                                                          add 
+                                                        </i> 
+                                                      </a>
+                                                    <span class="card-title center">mes évenements </span>
+                                                    <div class= "section"> </div>
+                                                    <div class= "section"> </div>
+                                                    <div class="collection">        
+                                                      {% for evenement in datas.evenements %}
+                                                          <a href="#" class="collection-item purple tooltipped" data-position="bottom" data-delay="600" data-tooltip="{{evenement.description}}
+                                                          -----[{{evenement.date}}]-----" style="color : white">{{evenement.titre}} 
+                                                    </div>  
+                                                      {% endfor %}
+                                                  </div>
+                                                </div>
+                                        </div>
+                                                
+                                        <div class="col s6"> 
+                                              <div class="card purple lighten-4" style="height: 550px">
+                                                <div class="card-content black-text">
+                                                  <div id="calendar"></div>
+                                                </div>              
+                                              </div>   
+                                        </div> 
+                                    </div> 
+                                               
+                             <!--fin cartes centrales-->
+
+                                </div>
+                              </div>
+                            </div>      
+                            <!--FIN ZONE DU MILIEU-->  
+    
+
+
+                      <!--zone de droite--> 
+                            <div class="col s2">
+
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+
+                              <div class="col s12">
+                                      <a class="btn-floating right btn-large waves-effect waves-light pink lighten-1">
+                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="coups de mains" id="bouton_coups_de_main" >pan_tool</i>
                                      
-                                </div> 
-                            </div>
+                                      </a>
+                                        
+                              </div> 
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+                             
+                              <div class="col s12">
+                                      <a class="btn-floating right btn-large waves-effect waves-light indigo darken-2">
+                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="documents" id="bouton_documents" >card_travel</i>
+                                      
+                                      </a>
+                                      
+                              </div> 
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+                              <div class= "section"> </div>
+
+                                <div class="col s12">
+                                      <a class="btn-floating right btn-large waves-effect waves-light  teal darken-2">
+                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="organisations" id="bouton_organisations" >group</i>
+                                <div class= "section"> </div>
+                                      <div class= "section"> </div>
+                                      </a>
+                                      
+                              </div> 
+
+                            </div>  
+                       <!--fin zone de droite--> 
+
+                        
+
+
+                  <script>
+                  bouton_revendications = jQuery('#bouton_revendications')
+                  bouton_suggestions = jQuery('#bouton_suggestions')
+                  bouton_petitions = jQuery('#bouton_petitions')
+                  bouton_container = jQuery('#bouton_container')
+                  bouton_evenements = jQuery('#bouton_evenements')
+                  bouton_liste = jQuery('#bouton_liste')
+                  filtre_popularite = jQuery('#popularite')
+                  carte_popularite = jQuery('#carte_popularite')
+                  revendications = jQuery('#revendications')
+                  suggestions = jQuery('#suggestions')
+                  petitions = jQuery('#petitions')
+                  conteneur = jQuery('#conteneur')
+                  carte_evenements = jQuery('#carte_evenements')
+                  filtres_galaxie = jQuery('#filtres_galaxie')
+                  filtres_liste = jQuery('#filtres_liste')
+
+
+                  revendications.hide()
+                  suggestions.hide()
+                  petitions.hide()
+                  carte_evenements.hide()
+                  conteneur.hide()
+                  filtres_galaxie.hide()
+                  carte_popularite.hide()
+
+                  
+                   filtre_popularite.click(function() {
+                                jQuery('[class*="btn-floa"]').css("border", "0px")
+                                jQuery(this).parent().css("border", "solid black 1px")
+                                 jQuery('img').css("border", "0px")
+                                filtres_galaxie.hide()
+                                filtres_liste.show()
+                                revendications.hide()  
+                                petitions.hide()
+                                conteneur.hide()
+                                carte_evenements.hide() 
+                                carte_popularite.show()
+                                suggestions.hide()                                                     
+                                          });
+
+                  bouton_revendications.click(function() {
+                                jQuery('[class*="btn-floa"]').css("border", "0px")
+                                jQuery(this).parent().css("border", "solid black 1px")
+                                jQuery('img').css("border", "0px") 
+                                revendications.toggle()
+                                filtres_liste.show()
+                                filtres_galaxie.hide()
+                                suggestions.hide()
+                                petitions.hide()
+                                 conteneur.hide()
+                                 carte_popularite.hide()
+                                carte_evenements.hide() 
+
+
+                                          });
+                  bouton_suggestions.click(function() {
+                                jQuery('[class*="btn-floa"]').css("border", "0px")
+                                jQuery(this).parent().css("border", "solid black 1px")
+                                 jQuery('img').css("border", "0px")
+                                filtres_galaxie.hide()
+                                filtres_liste.show()
+                                revendications.hide()  
+                                petitions.hide()
+                                conteneur.hide()
+                                carte_evenements.hide() 
+                                carte_popularite.hide()
+                                suggestions.toggle()                                                     
+                                          });
+                  bouton_petitions.click(function() {
+                                jQuery('[class*="btn-floa"]').css("border", "0px")
+                                jQuery(this).parent().css("border", "solid black 1px")
+                                 jQuery('img').css("border", "0px")
+                                filtres_galaxie.hide()
+                                filtres_liste.show()
+                                revendications.hide()
+                                petitions.show()
+                                 conteneur.hide()
+                                 carte_popularite.hide()
+                                carte_evenements.hide()                                                      
+                                          });
+                   bouton_container.click(function() {
+                                jQuery('[class*="btn-floa"]').css("border", "0px")
+                                bouton_liste.css("border", "0px")
+                                jQuery(this).css("border", "solid black 1px")
+                                filtres_galaxie.show()
+                                filtres_liste.hide()
+                                conteneur.show() 
+                                revendications.hide()
+                                suggestions.hide()
+                                carte_popularite.hide()
+                                petitions.hide()
+                               
+                                carte_evenements.hide()                                                      
+                                          });
+                   bouton_evenements.click(function() {
+                                jQuery('[class*="btn-floa"]').css("border", "0px")
+                                jQuery('img').css("border", "0px")
+                                jQuery(this).parent().css("border", "solid black 1px")
+                                filtres_liste.show()
+                                filtres_galaxie.hide()
+                                carte_evenements.toggle()
+                                revendications.hide()
+                                suggestions.hide()
+                                petitions.hide()
+                                carte_popularite.hide()
+                                 conteneur.hide()
+                                 
+                                                                                    
+                                          });
+                   bouton_liste.click(function() {
+                                jQuery('[class*="btn-floa"]').css("border", "0px")
+                                bouton_container.css("border", "0px")
+                                jQuery(this).css("border", "solid black 1px")
+                                carte_popularite.hide()
+                                filtres_galaxie.hide()
+                                filtres_liste.show()
+                                carte_evenements.hide()
+                                revendications.hide()
+                                suggestions.hide()
+                                petitions.hide()
+                                carte_popularite.hide()
+                                 conteneur.hide()
+                                 
+                                                                                    
+                                          });
+                  
+                  </script>
+            
+                  {% for evenement in datas.evenements %}
+                  <script>
+                  jQuery( function() {
+                                jQuery( '#ouvrir{{evenement.id}}' ).on( "click", function(){
+                                                
+                                                        jQuery( '#{{evenement.id}}' ).dialog
+                                                             ({
+                                                                autoOpen: true,
+                                                                width: 600,
+                                                                height: 500, 
+                                                                opacity: 1,
+
+                                                                show: {
+                                                                  effect: "blind",
+                                                                  duration: 100
+                                                                },
+                                                                hide: {
+                                                                  effect: "explode",
+                                                                  duration: 600
+                                                                }
+                                                              });
+                                                          });
+                    });
+                  </script>
+                  {% endfor %}
+                                     
+                               
                          
                   </div>
         </div>

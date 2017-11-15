@@ -25,9 +25,12 @@ from unidecode import unidecode
 
 def retourner_la_proposition(request):
 	app_name = 'revendication'
-	ennonce = request.GET["ennonce"]
-	proposition = Proposition.objects.get(ennonce)	
-	return proposition
+	if request.GET:
+		ennonce = request.GET["ennonce"]
+		proposition = Proposition.objects.get(ennonce)	
+		return proposition
+	else:
+		return "vide"
 
 
 
@@ -67,11 +70,11 @@ def creer_revendication(request):
 
 		
 
-
+		propositions = Proposition.objects.all()
 
 		titre = "creer une revendication"
 		form = RevendicationForm
-		return render(request, 'revendications/page_creer_une_revendication.html', {"liste" : liste, "form": form, "titre": titre})
+		return render(request, 'revendications/page_creer.html', {"liste" : liste, "form": form, "titre": titre, "propositions": propositions})
 
 
 def creer_petition(request):
@@ -151,7 +154,7 @@ def creer_petition(request):
 
 def creer_evenement(request):
 
-	proposition =retourner_la_proposition(request)
+	#proposition =retourner_la_proposition(request)
 	print ("___________creation evenement_")
 
 	utilisateur= request.user
@@ -199,7 +202,7 @@ def creer_evenement(request):
 
 	else:
 		#
-		print ("Pas de formulaire reçu...")
+		#print ("Pas de formulaire reçu...")
 		#
 
 		form = EvenementForm()

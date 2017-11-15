@@ -23,13 +23,15 @@ jQuery(document).ready(function()
             jQuery('select').material_select();
             jQuery('.parallax').parallax();
             jQuery('.carousel').carousel(); 
+            jQuery(".button-collapse").sideNav();
+            
     
           });
  
                   
 
 
-//_____________________________________________icalendar_______________________________________
+//_____________________________________________fullcalendar_______________________________________
 
 
            
@@ -39,7 +41,7 @@ jQuery(document).ready(function()
                   {    
                        evenement = evenements[i] ;
                        evenement = evenement.split("/");
-                       var evenement =  {title: evenement[0], start: evenement[1]};
+                       var evenement =  {title: evenement[0], start: evenement[1], id: evenement[2], description: evenement[3]};
                        liste_evenement.push(evenement);
                   }
 
@@ -48,19 +50,38 @@ jQuery(document).ready(function()
                             eventSources: 
                                 [{
                                     events: liste_evenement,
-                                    color: 'black',     // an option!
-                                    textColor: 'yellow' // an option!
+                                    color: 'white',     // an option!
+                                    textColor: 'red', // an option!
+                                    
                                               
                                 }],
 
+
+                        eventRender: function(event, element) {
+                                  //element.qtip({
+                                     // content: event.description
+                                  //});
+                              
+                               element.tooltip({delay: 50, html:true, tooltip:  "<p><h4>" + event.title + "</h4></p>" + event.description}); 
+
+
+
+                              },
+                                                             
+
+
                             //defaultView: "listMonth",
-                            eventClick: function(calEvent, jsEvent, view) 
-                                {
-
-                                    alert('Event: ' + calEvent.title);
-
-                                    // change the border color just for fun
-                                    jQuery(this).css('border-color', 'red');
+                            eventMouseover: function(calEvent, jsEvent, view) 
+                                {    
+                                    jQuery( function() {
+                                                        var evenement = jQuery('#' + calEvent.id);
+                                                        //alert(evenement.innerHTML)
+                                                       
+                                                        //evenement.show()
+                                                  
+                                                             
+                                                          });
+                  
                                 }
 
                         });  
@@ -74,6 +95,8 @@ jQuery(document).ready(function()
                 var tableau=completion.split(reg);
                 jQuery('#recherche').autocomplete({source: tableau });
                 jQuery('#recherche').trigger('autoresize');
+                jQuery('#id_intitule').autocomplete({source: tableau });
+                jQuery('#id_intitule').trigger('autoresize');
 
                 var lien = document.getElementById('lien');
                 var recherche = document.getElementById('recherche');
@@ -82,5 +105,7 @@ jQuery(document).ready(function()
                         document.location.href = "page_revendications.html?ennonce=" + recherche.value
                     }; 
 
-                        
+    
+
+
                          

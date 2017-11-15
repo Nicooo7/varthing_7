@@ -38,7 +38,8 @@ class OrganisationForm(forms.Form):
 	description =  forms.CharField(max_length=10000)
 
 class EvenementForm(forms.Form):
-	titre = forms.CharField (max_length = 100)
+
+	titre = forms.CharField (widget= forms.Textarea(attrs={'rows': 100,'title': 'le titre de votre revendiation !'}), max_length = 100)
 	date = forms.DateField (widget = forms.SelectDateWidget())
 	description = forms.CharField(widget=forms.Textarea, max_length = 10000)
 

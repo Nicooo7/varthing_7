@@ -6,6 +6,7 @@
   <head>
         <meta charset="utf-8">
         <meta name="description" content="Varthing - Le réseau social qui vous permet d'agir">
+
         <title>
           {% block title %}Varthing{% endblock %}
         </title>
@@ -15,6 +16,7 @@
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
           <link type="text/css" rel="stylesheet" href="{% static 'bower_components/materialize/dist/css/materialize.min.css' %}"  media="screen,projection"/>
           <link rel='stylesheet' href="{% static 'revendication/fullcalendar-3.5.1/fullcalendar.min.css' %}"/>
+          <link rel="stylesheet" href="{% static 'revendication/js/vectormap.css' %}" type="text/css" media="screen"/>
 
         {% endblock %}
 
@@ -26,6 +28,10 @@
              <script src="{% static 'bower_components/materialize/dist/js/materialize.min.js' %}" ></script>
             <script src="{% static 'revendication/js/sigma.min.js' %}"></script> 
             <script src="{% static 'revendication/js/sigma.parsers.json.min.js' %}"></script>
+           <script src="{% static 'revendication/js/vectormap.min.js' %}"></script> 
+           <script src="{% static 'revendication/js/departements.min.js' %}"></script> 
+
+
         {% endblock imports_librairies %}
 
   </head>    
@@ -33,13 +39,13 @@
         {% block content %}
 
                 {% block navigation %}
-                  <nav class="grey" role="navigation">
+                  <nav class="white" role="navigation">
                         <div class="nav-wrapper container">
                             <ul class="left hide-on-med-and-down">
                                 <a href="" class="brand-logo center"><img class="materialboxed" width="100" src="{%  static 'revendication/images/logo_varthing.png' %}" /> </a>
-                                <li><a href="{% url 'page_accueil' %}">accueil</a></li>
+                                <li><a href="{% url 'page_accueil' %}" style="color: black">accueil</a></li>
                                 {% if user.is_authenticated %}
-                                <li><a href="{% url 'page_tableau_de_bord' %}">tableau de bord</a></li>
+                                <li><a href="{% url 'page_tableau_de_bord' %}" style="color: black">tableau de bord</a></li>
                                 {% endif  %}
                                 <li class="active"><a href="collapsible.html"></a></li>
                                 
@@ -50,10 +56,10 @@
                               <li><a href="#">A propos</a></li>
 
                               {% if user.is_authenticated %}
-                              <li><a href="{% url 'page_deconnexion' %}">se déconnecter</a></li>
+                              <li><a href="{% url 'page_deconnexion' %}" style="color: black">se déconnecter</a></li>
                               {% else %}
-                              <li><a href="{% url 'page_authentification' %}">Connexion</a></li>
-                              <li><a href="{% url 'page_creer_utilisateur' %}">Inscription</a></li>
+                              <li><a href="{% url 'page_authentification' %}" style="color: black">Connexion</a></li>
+                              <li><a href="{% url 'page_creer_utilisateur' %}" style="color: black">Inscription</a></li>
                               {% endif %}
                             </ul>
 
@@ -117,6 +123,7 @@
                   <script>  
                          jQuery(function() {
                                   jQuery('#acceuil').click(function() {
+                                                  jQuery ('#acceuil').attr('class', 'active')
                                                   jQuery('#container').empty()                                              
                                                   var graph = "{{graph_accueil}}"; 
                                                   affichage_graphique(graph);
@@ -134,6 +141,8 @@
                                             } );                       
                   </script>               
                 {% endblock script_graphique %}
+
+
 
 
                 {% block script %}

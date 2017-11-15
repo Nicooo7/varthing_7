@@ -67,14 +67,14 @@ function affichage_graphique(graph)
                               defaultNodeColor: orange,
                               DefaultNodeBorderColor: teal,
                               defaultLabelColor: noir,
-                              defaultLabelSize : 15,
+                              defaultLabelSize : 10,
                               cloner : true,
                               labelThreshold : 1,
                               zoomingRatio : 1.0,
                               doubleClickZoomingRatio: 1.5,
                               ZoomMax: 1.0,
                               ZoomMin: 1.0,
-                              SideMargin: 50,
+                              sideMargin: 0.2,
                               scalingMode: "inside",
                               
                               });         

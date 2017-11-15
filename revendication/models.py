@@ -33,6 +33,12 @@ class Proposition(models.Model):
             i += 1
         return i
 
+    def __nb_supporter(self):
+        return Soutien.objects.filter(propositions=self).count()
+    nb_supporter = property(__nb_supporter)    
+
+
+
     
 
 
