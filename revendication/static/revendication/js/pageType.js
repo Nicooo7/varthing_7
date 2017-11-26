@@ -24,8 +24,9 @@ jQuery(document).ready(function()
             jQuery('.parallax').parallax();
             jQuery('.carousel').carousel(); 
             jQuery(".button-collapse").sideNav();
-            
-    
+            jQuery("#tableau_mes_revendications").DataTable();
+            jQuery('.tap-target').tapTarget('open');
+
           });
  
                   
@@ -105,7 +106,8 @@ jQuery(document).ready(function()
                         document.location.href = "page_revendications.html?ennonce=" + recherche.value
                     }; 
 
-    
 
+                 src="{% static 'bower_components/jquery-ui/jquery-ui.min.js' %}" 
 
-                         
+                
+

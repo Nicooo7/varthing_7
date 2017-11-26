@@ -8,7 +8,7 @@ from .models import *
 
 class RevendicationForm(forms.Form):	
 
-	intitule = forms.CharField(label="Intitule", max_length=200)
+	intitule = forms.CharField(label="Intitule", max_length=200 )
 	tags = forms.CharField(max_length=300, required=False, widget=forms.HiddenInput)
 	
 

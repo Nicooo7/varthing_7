@@ -24,6 +24,7 @@ function affichage_graphique(graph)
                   var edges = graph[1].split('//')
 
                   var s = new sigma('container');
+
                   
                   //creation des noeuds
                   for(var i= 1; i < noeuds.length; i++)
@@ -75,7 +76,7 @@ function affichage_graphique(graph)
                               ZoomMax: 1.0,
                               ZoomMin: 1.0,
                               sideMargin: 0.2,
-                              scalingMode: "inside",
+                              //scalingMode: "inside",
                               
                               });         
 

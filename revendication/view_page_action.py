@@ -56,38 +56,39 @@ def soutenir_une_revendication (request):
 		proposition = Proposition.objects.get(ennonce = ennonce)
 	except Proposition.DoesNotExist:
 		raise Http404
+	return redirect ('page_tableau_de_bord.html')
 
 
 
-	def data_proposition(proposition):
-		# Vérification identifiant valide ? si non, 404
-		id_proposition = proposition.id
+def data_proposition(proposition):
+	# Vérification identifiant valide ? si non, 404
+	id_proposition = proposition.id
 
-		class Data:
-			def __init__ (self):	
-				self.proposition = proposition
-				self.soutiens= Soutien.objects.filter(propositions__id = id_proposition).filter(lien ='SO')
-				self.createur= Soutien.objects.filter(propositions__id = id_proposition).filter(lien = 'CR')
-				if len(self.createur)<1:
-					self.createur = "inconnu"
-				self.evenement = Evenement.objects.filter(proposition_id = id_proposition)
-				self.petitions = proposition.petition_set.all()
-				self.competences = proposition.competence_set.all()
-				self.organisations = Evenement.objects.filter(proposition_id = id_proposition)
-				#self.documents = proposition.document_set.all()
-
-
-		data = Data()		
-		return (data)
+	class Data:
+		def __init__ (self):	
+			self.proposition = proposition
+			self.soutiens= Soutien.objects.filter(propositions__id = id_proposition).filter(lien ='SO')
+			self.createur= Soutien.objects.filter(propositions__id = id_proposition).filter(lien = 'CR')
+			if len(self.createur)<1:
+				self.createur = "inconnu"
+			self.evenement = Evenement.objects.filter(proposition_id = id_proposition)
+			self.petitions = proposition.petition_set.all()
+			self.competences = proposition.competence_set.all()
+			self.organisations = Evenement.objects.filter(proposition_id = id_proposition)
+			#self.documents = proposition.document_set.all()
 
 
-	def est_ce_que_je_soutiens(proposition):
-		utilisateur = request.user
-		supporters = Soutien.objects.filter(propositions = proposition, lien = 'SO')
-		for supporter in supporters:
-			print ("supporter" , supporter)
-			if utilisateur == supporter.user:
-				return "soutenue"
+	data = Data()		
+	return (data)
+
+
+def est_ce_que_je_soutiens(proposition):
+	utilisateur = request.user
+	supporters = Soutien.objects.filter(propositions = proposition, lien = 'SO')
+	for supporter in supporters:
+		print ("supporter" , supporter)
+		if utilisateur == supporter.user:
+			return "soutenue"
 
 	s = est_ce_que_je_soutiens(proposition)	
 	print ("s", s)
@@ -108,7 +109,7 @@ def soutenir_une_revendication (request):
 
 
 
-	return render(request, 'revendications/page_revendication.html')
+
 
 
 

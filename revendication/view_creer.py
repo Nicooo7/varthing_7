@@ -36,7 +36,6 @@ def retourner_la_proposition(request):
 
 def creer_revendication(request):
 
-
 	#proposition =retourner_la_proposition(request)
 	utilisateur= request.user
 
@@ -54,27 +53,8 @@ def creer_revendication(request):
 			print ("soutien ajouté:{0} ".format(la_proposition.supporter))
 
 			#on retourne à la page accueil
-			return render (request, 'revendications/page_accueil.html')		
+			return redirect ('page_tableau_de_bord.html')	
 			
-	else:
-		liste = u""
-		propositions = Proposition.objects.all()
-		for proposition in propositions:
-			ennonce = proposition.ennonce
-			liste = liste + ennonce + u"_"
-
-
-		
-		liste = unidecode(liste)
-		liste = liste.encode("utf-8")
-
-		
-
-		propositions = Proposition.objects.all()
-
-		titre = "creer une revendication"
-		form = RevendicationForm
-		return render(request, 'revendications/page_creer.html', {"liste" : liste, "form": form, "titre": titre, "propositions": propositions})
 
 
 def creer_petition(request):
@@ -135,7 +115,7 @@ def creer_petition(request):
 			soutien = Soutien.objects.create(petition = petition, user = user, lien = 'CR')
 
 			#on retourne à la page accueil
-			return render (request, 'revendications/page_accueil.html')	
+			return redirect ('page_tableau_de_bord.html')	
 
 
 	else:
@@ -208,8 +188,7 @@ def creer_evenement(request):
 		form = EvenementForm()
 		revendications_soutenues = Proposition.objects.filter(soutien__user = user)
 		titre = u"creer un evenement"
-		return render(request, 'revendications/page_creer.html', {'form': form, 'id_proposition':id_proposition, 'revendications_soutenues':revendications_soutenues, "titre": titre})
-
+		return redirect ('page_tableau_de_bord.html')
 
 def creer_competence(request):
 
@@ -266,7 +245,7 @@ def creer_competence(request):
 
 			# Création de la relation de soutient (CR) entre l'user et la competence
 			soutien = Soutien.objects.create(competence = competence, user = user, lien = 'CR')
-			return render (request, 'revendications/page_accueil.html')	
+			return redirect ('page_tableau_de_bord.html')	
 
 			
 	else:

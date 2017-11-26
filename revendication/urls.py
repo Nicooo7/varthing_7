@@ -12,6 +12,7 @@ from . import view_page_organisation
 from . import view_creer
 from . import view_page_utilisateur
 from . import view_page_action
+from . import view_supprimer
 
 page =[]
 liste_des_elements_de_page = []
@@ -35,6 +36,7 @@ urlpatterns = [
     url(r'^page_creer_utilisateur', view_page_utilisateur.creer_utilisateur, name = 'page_creer_utilisateur'),
     url(r'^page_deconnexion', view_page_utilisateur.deconnexion, name = 'page_deconnexion'),
     url(r'^page_soutenir_revendication', view_page_action.soutenir_une_revendication, name = 'page_soutenir_revendication'),
+    url(r'^page_supprimer_soutien_revendication', view_supprimer.supprimer_soutien_revendication, name = 'page_supprime_soutien_revendication'),
     ]
 
 

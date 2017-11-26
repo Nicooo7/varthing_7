@@ -13,6 +13,7 @@ from django.contrib.auth.models import*
 from django.contrib.auth import *
 from bs4 import BeautifulSoup
 from django.template.response import *
+from datetime import *
 import bs4
 import re
 import pickle
@@ -59,112 +60,29 @@ def tableau_de_bord(request):
 		#print ("************************** fichier_evenement", fichier_evenement)
 		return fichier_evenement
 
+#REVENDICATIONS____________________
 
 
-	def les_revendications_les_plus_populaires():
-		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+	def revendications():
 		propositions = Proposition.objects.all()
-		liste = []
+		mes_propositions = Proposition.objects.filter(soutien__user = utilisateur, soutien__lien = "SO")
+		date_M1 = datetime.now()-timedelta(30)
+		liste= []
+		#est ce que je soutiens?
 		for p in propositions:
-			soutiens = Soutien.objects.filter(propositions = p, lien = 'SO')
-			i= 0
-			for s in soutiens:
-				i += 1
-			liste.append((p,i))
-		liste = sorted(liste, key=lambda x: x[1])
-		liste.reverse()
-		#print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ liste",liste)
-		selection = []
-		for element in liste:
-			if element[0] not in liste_de_mes_propositions:
-				selection.append(element[0])
-		#print ("les revendications les plus populaires",selection)
-		return selection
+			if p in mes_propositions:
+				p.mienne = "oui"
+			else:
+				p.mienne = "non"
+        #progression?
+			soutiens_M1 = Soutien.objects.filter(date__lte = date_M1, propositions = p)
+			nb_soutiens = len(soutiens_M1)
+			p.progression = nb_soutiens
+			liste.append(p)
+		return liste 		
 
 
-
-	def les_evenements_les_plus_populaires():
-		liste_de_mes_evenements = Evenement.objects.filter(soutien__user = utilisateur)
-		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
-		evenements = Evenement.objects.all()
-		l_evenements = []
-		for ev in evenements:
-			if ev.proposition in liste_de_mes_propositions:
-				l_evenements.append(ev)
-		#print("la liste d'evenement", l_evenements)
-		liste = []
-		for e in l_evenements:
-			soutiens = Soutien.objects.filter(evenement = e, lien = 'SO')
-			i= 0
-			for s in soutiens:
-				i += 1
-			liste.append((e,i))
-		liste = sorted(liste, key=lambda x: x[1])
-		liste.reverse()
-		#print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ liste",liste)
-		selection = []
-		for element in liste:
-			if element[0] not in liste_de_mes_evenements:
-				selection.append(element[0])
-		#print("les evenements les plus populaires:", selection)
-		return selection
-
-
-	def les_petitions_les_plus_populaires():
-		liste_de_mes_petitions = Petition.objects.filter(soutien__user = utilisateur)
-		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
-		petitions = Petition.objects.all()
-		l_petitions = []
-		for p in petitions:
-			if p.propositions in liste_de_mes_propositions:
-				l_petitions.append(p)
-		print("la liste des pétitions", l_petitions)
-		liste = []
-		for e in petitions:
-			soutiens = Soutien.objects.filter(petition = e, lien = 'SO')
-			i= 0
-			for s in soutiens:
-				i += 1
-			liste.append((e,i))
-		liste = sorted(liste, key=lambda x: x[1])
-		liste.reverse()
-		#print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ liste",liste)
-		selection = []
-		for element in liste:
-			if element[0] not in liste_de_mes_petitions:
-				selection.append(element[0])
-		print("les petitions les plus populaires:", selection)
-		return selection
-
-
-
-	def onglet_populaire(x):
-		evenements = les_evenements_les_plus_populaires()[0:x]
-		#print("evenements", evenements)	
-		propositions = les_revendications_les_plus_populaires()[0:x]
-		#print("propositions", propositions)
-		petitions = les_petitions_les_plus_populaires()[0:x]
-		evenements.extend(propositions)
-		evenements.extend(petitions)
-
-		print("liste_onglet populaire :",evenements)
-		return(evenements)
-
-
-	def liste_autocompletion():
-		liste = u""
-		propositions = Proposition.objects.all()
-		for proposition in propositions:
-			ennonce = proposition.ennonce
-			liste = liste + ennonce + u"_"
-		liste = unidecode(liste)
-		liste = liste.encode("utf-8")
-		return liste
-
-
-
-	def les_x_revendications_les_plus_proches_des_miennes(n):
-
+	def revendications_suggestion(n):
 		selection = data_propositions_proches_des_miennes(utilisateur)
 		selection = sorted(selection, key=lambda x: x[2])
 		selection.reverse()
@@ -187,8 +105,77 @@ def tableau_de_bord(request):
 					selection2.append(triplet[1])
 		
 
-		#print ("______________", selection2)
+		print ("______________", selection2)
 		return selection2[0:n]	
+
+
+
+	def revendications_mes_revendications():
+		mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		return mes_propositions
+
+
+	def evenements():
+		liste_de_mes_evenements = Evenement.objects.filter(soutien__user = utilisateur)
+		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		evenements = Evenement.objects.all()
+		liste = []
+		for ev in evenements:
+			if ev.proposition in liste_de_mes_propositions:
+				if ev in liste_de_mes_evenements:
+					ev.mienne = "oui"
+				else:
+					ev.mienne = "non"
+				liste.append(ev)
+		return liste
+
+
+	def petitions():
+		liste_de_mes_petitions = Petition.objects.filter(soutien__user = utilisateur)
+		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		petitions = Petition.objects.all()
+		liste = []
+		for p in petitions:
+			print("la valeur de P est: ", p)
+			propositions = p.propositions.all()
+			for prop in propositions:
+				print("******************************proposition", prop)
+				if prop in liste_de_mes_propositions:
+					if p in liste_de_mes_petitions : 
+						p.mienne = "oui"
+					else:
+						p.mienne = "non"
+					liste.append(p)
+		return liste
+
+
+
+	def retirer_soutien(x):
+		soutien = Soutien.objects.get(proposition__id=x, utilisateur = request.user)
+		soutien.delete()
+			
+
+
+	def liste_autocompletion():
+		liste = u""
+		propositions = Proposition.objects.all()
+		for proposition in propositions:
+			ennonce = proposition.ennonce
+			liste = liste + ennonce + u"_"
+		liste = unidecode(liste)
+		liste = liste.encode("utf-8")
+		return liste
+
+
+
+	
+	class formulaire:
+		def __init__ (self):
+			self.revendication = RevendicationForm
+			self.petition =PetitionForm
+			self.evenement= EvenementForm
+		
+	
 
 
 
@@ -204,25 +191,42 @@ def tableau_de_bord(request):
 
 		class Datas:
 			def __init__ (self):
-				self.evenements = Evenement.objects.filter(soutien__user = utilisateur, soutien__lien = 'SO')
+				self.mes_evenements = Evenement.objects.filter(soutien__user = utilisateur, soutien__lien = 'SO')
+				self.evenements = evenements()
 				self.organisations = Organisation.objects.filter(soutien__user = utilisateur)
 				#self.documents = Documents.objects.filter(soutien__user = utilisateur)
-				self.competence = Competence.objects.filter(soutien__user = utilisateur)
-				self.petition = Petition.objects.filter(soutien__user = utilisateur)
-				self.revendications = Proposition.objects.filter(soutien__user = utilisateur, soutien__lien = 'SO')
-				self.suggestions = les_x_revendications_les_plus_proches_des_miennes(4)
-				if self.suggestions == []:
-					self.suggestions = les_revendications_les_plus_populaires()[0:5]
+				self.competences = Competence.objects.filter(soutien__user = utilisateur)
+				self.petitions = petitions()
+				self.revendications = revendications()
+				#self.suggestions = les_x_revendications_les_plus_proches_des_miennes(4)
+				#if self.suggestions == []:
+				#	self.suggestions = les_revendications_les_plus_populaires()
 				self.autocompletion = liste_autocompletion()
 				self.calendrier = creer_les_evenements_du_calendriers()
-				self.populaire = onglet_populaire(2)
-		
+				#revendications
+				self.revendications_mes_revendications = revendications_mes_revendications()
+				#evenements
+			
+				#petitions
+
+				#formulaires:
+				class formulaire:
+					def __init__ (self):
+						self.revendication = RevendicationForm
+						self.petition =PetitionForm
+						self.evenement= EvenementForm
+				self.formulaires = formulaire()
+				
+
+
 		datas = Datas()
 		return datas
 
 
 
 	datas = creer_les_datas(utilisateur)
+
+	
 	
 	graph_u = graph_utilisateur(utilisateur)
 	graph_a =  graph_accueil()

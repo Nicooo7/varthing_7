@@ -201,10 +201,10 @@ class Soutien(models.Model):
     date = models.DateField("Date création soutien", auto_now=True)
 
     # Elément soutenu
-    evenement = models.ForeignKey(Evenement, null = True)
-    organisation = models.ForeignKey(Organisation, null = True)
-    petition = models.ForeignKey(Petition, null = True)
-    competence = models.ForeignKey(Competence, null = True)
+    evenement = models.ForeignKey(Evenement, null = True, blank=True)
+    organisation = models.ForeignKey(Organisation, null = True, blank=True)
+    petition = models.ForeignKey(Petition, null = True, blank=True)
+    competence = models.ForeignKey(Competence, null = True, blank=True)
 
     def __str__(self):
         return self.user.username

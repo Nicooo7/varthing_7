@@ -17,12 +17,16 @@
           <link type="text/css" rel="stylesheet" href="{% static 'bower_components/materialize/dist/css/materialize.min.css' %}"  media="screen,projection"/>
           <link rel='stylesheet' href="{% static 'revendication/fullcalendar-3.5.1/fullcalendar.min.css' %}"/>
           <link rel="stylesheet" href="{% static 'revendication/js/vectormap.css' %}" type="text/css" media="screen"/>
+          <link rel="stylesheet" href="{% static 'bower_components/DataTables/media/css/jquery.dataTables.min.css'%}">
+          <link rel="stylesheet" href="{% static 'bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css'%}">
+
 
         {% endblock %}
 
         {% block imports_librairies %}
             <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
             <script src="{% static 'bower_components/moment/min/moment.min.js' %}" ></script>
+           <script src="{% static 'bower_components/DataTables/media/js/jquery.dataTables.min.js'%}"></script>
             <script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.js' %}" ></script>
             <script src="{% static 'bower_components/jquery-ui/jquery-ui.min.js' %}" ></script>
              <script src="{% static 'bower_components/materialize/dist/js/materialize.min.js' %}" ></script>
@@ -30,6 +34,10 @@
             <script src="{% static 'revendication/js/sigma.parsers.json.min.js' %}"></script>
            <script src="{% static 'revendication/js/vectormap.min.js' %}"></script> 
            <script src="{% static 'revendication/js/departements.min.js' %}"></script> 
+         
+    
+        
+    
 
 
         {% endblock imports_librairies %}
@@ -116,31 +124,6 @@
                         </div>
                       {% endblock bas%}
                 {% endblock centre %}
-
-                {% block script_graphique %}
-                  <script> var graph = "{{graph_accueil}}"; </script>
-                  <script src="{% static "revendication/js/affichageGraphique.js" %}"></script> 
-                  <script>  
-                         jQuery(function() {
-                                  jQuery('#acceuil').click(function() {
-                                                  jQuery ('#acceuil').attr('class', 'active')
-                                                  jQuery('#container').empty()                                              
-                                                  var graph = "{{graph_accueil}}"; 
-                                                  affichage_graphique(graph);
-                                                      });
-                                  jQuery('#populaire').click(function(){
-                                                    jQuery('#container').empty() 
-                                                            var graph = "{{graph_populaire}}"; 
-                                                            affichage_graphique(graph);
-                                                          });
-                                  jQuery('#utilisateur').click(function() {
-                                                          jQuery('#container').empty()
-                                                            var graph = "{{graph_utilisateur}}"; 
-                                                            affichage_graphique(graph);
-                                                          });    
-                                            } );                       
-                  </script>               
-                {% endblock script_graphique %}
 
 
 

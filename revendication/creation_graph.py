@@ -58,8 +58,10 @@ def creer_les_triplets(): #(selon_mes_propositions_selon_les_utilisateurs)
 					for soutien in liste_soutiens1:
 						if soutien in liste_soutiens2:
 							liste_des_soutiens_communs.append(soutien)
-					proximite = len(liste_des_soutiens_communs)/(len (liste_soutiens1) + len(liste_soutiens2))
-						
+					if (len (liste_soutiens1) + len(liste_soutiens2))!= 0:		
+						proximite = len(liste_des_soutiens_communs)/(len (liste_soutiens1) + len(liste_soutiens2))
+					else:
+					    proximite = 0	
 					triplet = (proposition1.ennonce, proposition2.ennonce, proximite)
 					#print (triplet)
 					if triplet not in liste:
