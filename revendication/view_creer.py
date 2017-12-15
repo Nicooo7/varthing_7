@@ -59,7 +59,6 @@ def creer_revendication(request):
 
 def creer_petition(request):
 
-	proposition =retourner_la_proposition(request)
 	utilisateur= request.user
 
 	if request.user.is_authenticated:
@@ -69,10 +68,8 @@ def creer_petition(request):
 
 
 	# Récups des infos GET si transmises
-	"""if 'id_proposition' in request.GET:
-		id_proposition = request.GET['id_proposition']
-	else:
-		id_proposition = ''"""
+	id_proposition = request.GET['id_proposition']
+	
 
 
 	if request.method == 'POST':
@@ -92,44 +89,38 @@ def creer_petition(request):
 
 			#propositions = form.cleaned_data['propositions']
 
-			#proposition = Proposition.objects.get(id = id_proposition)	
+			proposition = Proposition.objects.get(id = id_proposition)	
 
 			# Récupération des propositions cochées
 			# erreur si liste vide
-			try:
+			"""try:
 				propositions = request.POST.getlist('propositions')
 			except:
-				raise Http404
+				raise Http404"""
 
 			
 			# Création de la pétition puis association à la proposition source
 			petition = Petition.objects.create(titre=titre, description=description, date_echeance=date_echeance, objectif_de_signataires=objectif_de_signataires)
 
-			for i in propositions:
-				petition.propositions.add(i)
+	
 			
 			#petition.propositions.add(proposition)
 			petition.save()
+
+			petition.propositions.add(proposition)
 
 			# Création de la relation de soutient (CR) entre l'user et la pétition
 			soutien = Soutien.objects.create(petition = petition, user = user, lien = 'CR')
 
 			#on retourne à la page accueil
-			return redirect ('page_tableau_de_bord.html')	
 
+			if request.GET ['page'] == "revendication":
+				return redirect ('page_revendication.html?proposition_id='+ str(proposition.id))
+			else:	
+				return redirect ('page_tableau_de_bord.html')
 
-	else:
-		#
-		# Pas de formulaire reçu...
-		#
+				
 
-		form = PetitionForm()
-		revendications_soutenues = Proposition.objects.filter(soutien__user = user)
-		titre = u"creer une petition"
-	
-		return render(request, 'revendications/page_creer.html', {'form': form, 'id_proposition':id_proposition, 'revendications_soutenues':revendications_soutenues , "titre": titre})
-
-		
 
 
 def creer_evenement(request):

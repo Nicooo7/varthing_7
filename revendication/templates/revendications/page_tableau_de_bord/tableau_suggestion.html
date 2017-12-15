@@ -1,0 +1,64 @@
+{% load static %}
+
+<div class="card white lighten-2" id="carte_suggestions">
+                                      <div class="card-content black-text">
+                                        <h3> Ca pourrait vous interesser ... </h3>
+                                        <table class="striped lighten-4 display centered" id="tableau_suggestions">
+                                        <thead>
+                                          <tr class="">
+                                              <th>Nom</th>
+                                              <th>Date</th>
+                                              <th>Nombre de supporters</th>
+                                              <th>Force de suggestion</th>
+                                              
+                                              
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                      {% for e in datas.suggestions %}
+                                          {% if e.ennonce %}
+                                          <tr class="orange lighten-3 ">
+                                            <td > {{e.ennonce}}</td>
+                                            <td >{{e.date_creation}}</td>
+                                            <td > {{e.nb_soutien}}</td>
+                                            <td > {{e.force_suggestion}}</td>
+                                           </tr> 
+                                           {% endif %}
+                                           {% if e.nb_participant %}
+                                            {% if e.mienne == "non" %}
+                                          <tr class="purple lighten-3">
+                                            <td > {{e.titre}}</td>
+                                            <td >{{e.date}}</td>
+                                            <td >X</td>
+                                            <td >X</td>
+                                           </tr> 
+                                           {% endif %}
+                                           {% endif %}
+                                           {% if e.nb_signataires %}
+                                           {% if e.mienne == "non" %}
+                                          <tr class="green lighten-3">
+                                            <td > {{e.titre}}</td>
+                                            <td >{{e.date_creation}}</td>
+                                            <td >X</td>
+                                            <td >X</td>
+                                           </tr> 
+                                           {% endif %}
+                                           {% endif %}
+                                      {% endfor %}  
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>  
+
+                                  <script>
+                                  
+                                  carte_suggestions = jQuery('#carte_suggestions')
+                                  
+                                  jQuery("#tableau_suggestions").DataTable({
+                            dom: 'lftrip',
+                            language: {url: "{% static 'bower_components/DataTables/media/french.json' %}"} 
+                      });
+                               
+                                  
+                                  </script>      
+

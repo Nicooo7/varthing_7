@@ -1,656 +1,109 @@
 
-{% extends 'revendications/page_type.html' %}a
+{% extends 'revendications/page_type.html' %}
 {% load static %}
 
 
 
 
+
+
+
+
 {% block titre_central%}
-   <div class="row">
-                             
+{% endblock titre_central%}
 
-                            <div class="col s2">
-                                    <img src="/static/revendication/images/reseau.png" class= "tooltipped" id="badge_container" data-position="bottom" data-delay="0" data-tooltip="graphique des propositions" style= "font-size:80px">   
-                              </div> 
+{% block rubrique_titre %}
+{% endblock rubrique_titre %}
 
-
-                              <!--barre recherche -->
-
-                        
-                          <div class="col s8">          
-                              <nav>
-                                <div class="nav-wrapper white">
-                                  <form>
-                                    <div class="input-field">
-                                      <input type="search" id="recherche">
-                                      <label class="label-icon" for="search" ><i class="material-icons" style="color:black" >search</i> </label>
-                                      <i class="material-icons">close</i>
-                                    </div>
-                                  </form>
-                                </div>
-                              </nav>
-                              <div class= "section"> </div>
-                                      
-                          </div>
-                        
-                        
-                        <!--fin barre recherche -->
-
-                              <div class="col s2">
-                                       
-                                       <img src="/static/revendication/images/cercle.png" class= "tooltipped" id="badge_liste" data-position="bottom" data-delay="0" data-tooltip="suggestions" style= "font-size:80px"> 
-                                      
-                              </div> 
+{% block zone_centrale%}
             
-                                   
-                                                    
-{% endblock %}
+        <!-- barre de navigation--> 
+        {% block haut %}  
+            {% include "revendications/page_tableau_de_bord/barre_navigation.html" with datas=datas %}
+        {% endblock haut %}                                       
 
 
-{% block milieu %}
-
-
-
-
-
-
-       <div class="row">
-
-                  
-                  <!--Zone de gauche-->  
-                  <div class="col s2" >
-                               <div class= "section"> </div>
-                               <div class= "section"> </div>
-                               <div class= "section"> </div>
-                               <div class= "section"> </div>
-                               
-                                <div class="col s12">
-                                      <a class="btn-floating btn-large waves-effect waves-light orange" nom="bouton_revendications">
-                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="revendications" id="bouton_revendications" >record_voice_over</i>
-                                     
-                                      </a>
-                                        <div class= "section"> </div>
-                                       <div class= "section"> </div>
-                              </div> 
-
-                            
-                                <div class="col s12">
-                                      <a class="btn-floating btn-large waves-effect waves-light green">
-                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="pétitions" id="bouton_petitions" >format_align_center</i>
-                                
-                                      </a>
-                                      <div class= "section"> </div>
-                                      <div class= "section"> </div>
-                              </div> 
-                                
-                                
-                                <div class="col s12">
-                                      <a class="btn-floating btn-large waves-effect waves-light purple" >
-                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="évènements" id="bouton_evenements" >event</i>
-                                
-                                      </a>
-                                      <div class= "section"> </div>
-                                      <div class= "section"> </div>
-                              </div> 
-
-                          </div>     
-                             
-                   <!--Zone de gauche-->
-                            
-     
-                 <!--ZONE DU MILIEU-->  
-                <div class="col s8"> 
-                    <div class="row">    
-                    
-
-                 
-
-                    <!--filtres--> 
-
-                        <div class="col s12"> 
-                          <nav id="filtres_galaxie">
-                            <div class="nav-wrapper white" >
-                              <ul class="right hide-on-med-and-down blue">
-                                <li> <a id="acceuil" style="color:black"> tout </a> </li>
-                                <li> <a id="populaire" style="color:black"> populaire </a> </li>
-                                <li> <a id="utilisateur" style="color:black"> utilisateur </a> </li> 
-                              </ul>
-                            </div>
-                            
-                          </nav>
-                         </div> 
-
-                         <div class="col s12"> 
-                          <nav id="filtres_liste">
-                            <div class="nav-wrapper white" >
-                              <ul class="right hide-on-med-and-down white">
-                                <li> <a id="date" style="color:black"> date </a> </li> 
-                                <li> <a id="popularite" style="color:black"> popularite </a> </li> 
-                              </ul>
-                            </div>
-                          </nav>
-                         </div> 
-
-                       
-                        
-
-
-                         
-                   
-
-                    <!--graph-->        
-
-                          <div class="col s12" id="conteneur"> 
+        <!--zone centrale -->
+               <div class="row">
+         
                           
-                              <div class = "container"  style= 
-                                    "
-                                    height : 100%;
-                                    width : 100%;
-                                    border : 1px solid;
-                                    -moz-border-radius:7px;
-                                    -webkit-border-radius:7px;
-                                    border-radius:7px;
-                                    " 
-                                    id = "container">
-                               </div>  
-                          </div>    
+                          <!--ZONE DE GAUCHE-->  
+                          <div class="col s2" >
+                              {% block gauche %} 
+                                  <!--Boutons de gauche--> 
+                                  {% include "revendications/page_tableau_de_bord/boutons_de_gauche.html" with datas=datas %}
+                              {% endblock gauche %} 
+                          </div>     
+                                  
+                          
 
+                         <!--ZONE DU MILIEU-->  
+                        <div class="col s8"> 
+                        {% block milieu %}
 
-                      <!--cartes centrales--> 
+                            <div class="row">    
+                            
+                                    <!--graph--> 
+                                    <div id="graphique">       
+                                      {% include "revendications/page_tableau_de_bord/conteneur_graphique.html" with datas=datas %}
+                                    </div>
 
-
-
-
-
-                  
-                           <!--tableau revendications--> 
-                                    <div class="card white lighten-2" id="carte_revendications">
-                                      <div class="card-content black-text">
-                                        <div class="row">
-                                          <div class="col s5">
-                                            <a id = "bouton_mes_revendications" class="waves-effect waves-light btn orange">Mes revendications</a>
-                                          </div>
-                                          <div class="col s2">
-                                            <a href= "#" id = "ajouter_revendications" class="btn-floating btn-large waves-effect waves-light orange tooltipped " data-position="bottom" data-delay="0" data-tooltip="ajouter une revendication"><i class="material-icons">add</i> </a>
-                                          </div>
-                                          <div class="col s5">
-                                            <a id = "bouton_toutes_les_revendications" class="waves-effect waves-light btn orange">Toutes les revendications</a>
-                                          </div>
-                                        </div>
-                                        <table class=" orange striped lighten-4 display centered" id="tableau_revendications">
-                                        <thead>
-                                          <tr class="orange ">
-                                              <th>Nom</th>
-                                              <th>Date</th>
-                                              <th>Nombre de supporters</th>
-                                              <th>Progression</th>
-                                              <th>Action</th>
-                                              
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                      {% for proposition in datas.revendications%}
-                                          <tr class="orange lighten-3 {{proposition.mienne}}">
-                                            <td > {{proposition.ennonce}}</td>
-                                            <td >{{proposition.date_creation}}</td>
-                                            <td > {{proposition.nb_soutien}}</td>
-                                            <td > {{proposition.progression}}</td>
-                                            {% if proposition.mienne == "oui" %}
-                                            <td><a href= "page_supprimer_soutien_revendication.html?ennonce={{proposition.ennonce}}" id = "supprimer_soutien_revendication" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus soutenir"><i class="material-icons red">thumb_down</i> </a>
+                                    <!--autres_cartes--> 
+                                      {% block autres_cartes %}
+                                      {% endblock autres_cartes %}
+                          
+                                   <!--tableau revendication--> 
+                                   <div id="Tableau_revendication">
+                                        {% include "revendications/page_tableau_de_bord/tableau_revendication.html" with datas=datas %}
+                                  </div>
                                         
-                                            {% else %}
-                                            <td> 
-                                              <a href= "page_soutenir_revendication.html?ennonce={{proposition.ennonce}}" id = "supprimer_soutien_revendication" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="soutenir"><i class="material-icons green"> thumb_up</i></a>
-                                            
-                                            
-
-                                            {% endif %}
-                                            
-                                      {% endfor %}  
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  </div>  
-
-                                  <script>
-                                  
-                                  jQuery("#tableau_revendications").DataTable({
-                            dom: 'lftrip',
-                            language: {url: "{% static 'bower_components/DataTables/media/french.json' %}"} 
-                      });
-                               
-                                  
-                                  </script>
-
-      
-
-                                <!--tableau petitions_-->
-                                
-                                <div class="card white lighten-2" id="carte_petitions">
-                                      <div class="card-content black-text">
-                                        <div class="row">
-                                          <div class="col s4">
-                                            <a id = "bouton_mes_petitions" class="waves-effect waves-light btn green">Mes pétitions</a>
-                                          </div>
-                                          <div class="col s2">
-                                            <a href= "page_creer_petition.html" id = "ajouter_revendications" class="btn-floating btn-large waves-effect waves-light green tooltipped" data-position="bottom" data-delay="0" data-tooltip="ajouter une petition"><i class="material-icons">add</i> </a>
-                                          </div>
-                                          <div class="col s4">
-                                            <a id = "bouton_toutes_les_petitions" class="waves-effect waves-light btn green">Toutes les pétitions</a>
-                                          </div>
-                                        </div>
-                                        <table class=" orange striped lighten-4 display centered" id="tableau_petitions">
-                                        <thead>
-                                          <tr class="green ">
-                                              <th>Titre</th>
-                                              <th>Date de création</th>
-                                              <th>Echeance</th>
-                                              <th>Objectif de signataires</th>
-                                              <th>Nombre de signataires</th>
-                                              <th>Soutenue?</th>
-
-
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                      {% for petition in datas.petitions %}
-                                          <tr class="green lighten-3 {{petition.mienne}}">
-                                            <td > {{petition.titre}}</td>
-                                            <td >{{petition.date_creation}}</td>
-                                            <td > {{petition.date_echeance}}</td>
-                                            <td > {{petition.objectif_de_signataires}}</td>
-                                            <td > {{petition.nb_signataires}}</td>
-                                            <td > {{petition.mienne}}</td>
-                                          </tr>
-                                      {% endfor %}  
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  </div>  
-
-                                  <script>
-                                  
-                                 dt = jQuery("#tableau_petitions").DataTable({
-                            dom: 'lftrip',
-                            language: {url: "{% static 'bower_components/DataTables/media/french.json' %}"} 
-                      });
-                                  //dt.column(5).visible(false);
-                                  
-                                  </script>
-
-
-                                <!--tableau evenements-->      
-                                
-                             <div class="card white lighten-2" id="carte_evenements">
-                                      <div class="card-content black-text">
-                                        <div class="row">
-                                          <div class="col s4">
-                                            <a id = "bouton_mes_evenements" class="waves-effect waves-light btn purple">Mes evenements</a>
-                                          </div>
-                                          <div class="col s2">
-                                            <a href= "page_creer_evenement.html" id = "ajouter_evenement" class="btn-floating btn-large waves-effect waves-light purple tooltipped" data-position="bottom" data-delay="0" data-tooltip="ajouter un évenement"><i class="material-icons">add</i> </a>
-                                          </div>
-                                          <div class="col s4">
-                                            <a id = "bouton_tous_les_evenements" class="waves-effect waves-light btn purple">Tous les evenements</a>
-                                          </div>
-                                        </div>
-                                        <table class=" purple striped lighten-4 display centered" id="tableau_evenements">
-                                        <thead>
-                                          <tr class="purple ">
-                                              <th>Titre</th>
-                                              <th>Lieu</th>
-                                              <th>Date</th>
-                                              <th>Description</th>
-                                              <th>proposition</th>
-                                              <th>nombre de participants</th>
-                                              <th>j'y participe</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                      {% for evenement in datas.evenements %}
-                                          <tr class="purple lighten-3 {{evenement.mienne}}">
-                                            <td > {{evenement.titre}}</td>
-                                            <td >{{evenement.lieu}}</td>
-                                            <td > {{evenement.date}}</td>
-                                            <td > {{evenement.description}}</td>
-                                            <td > {{evenement.proposition}}</td>
-                                            <td > {{evenement.nb_participant}}</td>
-                                            <td > {{evenement.mienne}}</td>
-                                          </tr>
-                                      {% endfor %}  
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  </div>  
-                                  <script>
-                                  
-                                 dt = jQuery("#tableau_evenements").DataTable({
-                            dom: 'lftrip',
-                            language: {url: "{% static 'bower_components/DataTables/media/french.json' %}"} 
-                      });
-                                  //dt.column(5).visible(false);
-                                  
-                                  </script>    
-
-
-
-
-                                               
-                             <!--fin cartes centrales-->
-
-                                </div>
+                                    <!--tableau petition-->
+                                    <div id="Tableau_petition">
+                                        {% include "revendications/page_tableau_de_bord/tableau_petition.html" with datas=datas %}
+                                    </div>    
+                                    <!--tableau evenement--> 
+                                    <div id="Tableau_evenement">     
+                                        {% include "revendications/page_tableau_de_bord/tableau_evenement.html" with datas=datas %}
+                                    </div>    
+                                     <!--tableau suggestion--> 
+                                     <div id="Tableau_suggestion">
+                                         {% include "revendications/page_tableau_de_bord/tableau_suggestion.html" with datas=datas %} 
+                                      </div>                              
+                          
                               </div>
+                        {% endblock milieu %}            
+                        </div>
+                                 
                                   
-                            <!--FIN ZONE DU MILIEU-->  
-    
-
-
-                      <!--zone de droite--> 
-                            <div class="col s2">
-
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-
-                              <div class="col s12">
-                                      <a class="btn-floating right btn-large waves-effect waves-light pink lighten-1">
-                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="coups de mains" id="bouton_coups_de_main" >pan_tool</i>
-                                     
-                                      </a>
-                                        
-                              </div> 
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-                             
-                              <div class="col s12">
-                                      <a class="btn-floating right btn-large waves-effect waves-light indigo darken-2">
-                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="documents" id="bouton_documents" >card_travel</i>
-                                      
-                                      </a>
-                                      
-                              </div> 
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-                              <div class= "section"> </div>
-
-                                <div class="col s12">
-                                      <a class="btn-floating right btn-large waves-effect waves-light  teal darken-2">
-                                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="organisations" id="bouton_organisations" >group</i>
-                                <div class= "section"> </div>
-                                      <div class= "section"> </div>
-                                      </a>
-                                      
-                              </div> 
-
-                            </div>  
-                       <!--fin zone de droite--> 
-
-
-
-                       <!--Autres elements--> 
-
-                    <div id="dialog_formulaire_revendication" title="creation d'une nouvelle revendication">
-                                       
-                                        <form  id= "formulaire_revendication" action="page_creer_revendication.html" method="post">
-                                            {% csrf_token %}
-                                            {{datas.formulaires.revendication}}
-                                            <ul>
-                                            {% comment %}
-                                            {% endcomment %}  
-                                            <input id="form_validation" type="submit" tabindex="-1" style="position:absolute; top:-1000px" >
-                                        </form>     
                                     
-                    </div>
- 
-
-                    <!--Scripts d'affichage du graphique-->        
-
-                   {% block script_graphique %}
-                  <script> var graph = "{{graph_accueil}}"; </script>
-                  <script src="{% static "revendication/js/affichageGraphique.js" %}"></script> 
-                  <script>  
-                        jQuery('#container').empty()
-                        var graph = "{{graph_accueil}}"; 
-                        affichage_graphique(graph); 
-                                                                                
-
-                         
-                  </script>               
-                {% endblock script_graphique %}    
+                              <!--ZONE DE DROITE--> 
+                            <div class="col s2 ">
+                                    {% block droite %} 
+                                      {% include "revendications/page_tableau_de_bord/boutons_de_droite.html" with datas=datas %}
+                                    {% endblock droite %}    
+                            </div> 
+                                   
 
 
-
-                  <script>
-
-   //DEFINITION DES ELEMENTS JQUERY****************************************************               
-
-                  //_____________________boutons__________________
-                  bouton_revendications = jQuery('#bouton_revendications')
-                  bouton_suggestions = jQuery('#bouton_suggestions')
-                  bouton_petitions = jQuery('#bouton_petitions')
-                  bouton_container = jQuery('#bouton_container')
-                  bouton_evenements = jQuery('#bouton_evenements')
-                  bouton_liste = jQuery('#bouton_liste')
-                  bouton_mes_revendications = jQuery('#bouton_mes_revendications')
-                  bouton_mes_evenements = jQuery('#bouton_mes_evenements')
-                  bouton_mes_petitions = jQuery('#bouton_mes_petitions')
-                  bouton_toutes_les_revendications = jQuery('#bouton_toutes_les_revendications')
-                  bouton_toutes_les_petitions = jQuery('#bouton_toutes_les_petitions')
-                  bouton_tous_les_evenements = jQuery('#bouton_tous_les_evenements')
-                  
-                  //_____________________conteneur______________
-                  conteneur = jQuery('#conteneur')
-
-
-
-                  //____________________cartes___________________
-                 //global:
-                 carte_global = jQuery('[id*="carte"]')
-                 filtre_global = jQuery('[id*="filtre"]')
-                 bouton_global = jQuery('[id*="bouton"]')
-                 badge_global = jQuery('[id*="badge"]')
-
-                 //evenements
-                  carte_evenements = jQuery('#carte_evenements')
-                  
-                  //revendications
-                  carte_revendications = jQuery('#carte_revendications')
-                  ajouter_revendications = jQuery('#ajouter_revendications')
-                  
-                  //petitions
-                  carte_petitions = jQuery('#carte_petitions')
-
-                  //popularite
-                  carte_popularite = jQuery('#carte_popularite')
-
-
-                  
-
-          
-//DEFINITION DES FONCTIONS **************************************************
-                  
-
-
-                  // FORMULAIRES
-
-                      
-                  function masquer(){
-                                carte_global.hide()
-                                filtre_global.hide()
-                                conteneur.hide()  
-                                                             
-                  }
-                  masquer();
-                  carte_revendications.show()
-
-
-
-                  function bouton_actif(x){
-                          bouton_global.css("border", "solid black 0px")
-                          bouton_global.parent().css("border", "solid black 0px")
-                          badge_global.css("width","100px")
-                          x.css("border", "solid black 2px")
-
-
-                  }
-
-                  // REVENDICATIONS
-
-                  bouton_revendications.click(function() {
-                                masquer()
-                                bouton_actif(jQuery(this).parent())
-                                carte_revendications.show()
-                                          });
-
-
-                  bouton_mes_revendications.click(function() {
-                               
-                                bouton_actif(jQuery(this))
-                                jQuery(".non").hide();
-                                          });
-
-                  bouton_toutes_les_revendications.click(function() {
-                              
-                              bouton_actif(jQuery(this))
-                              jQuery(".non").show();
-                                        });
-
-                  function validation(){
-                                      formulaire = jQuery("#formulaire_revendication")
-                                      alert("revendication créee")
-                                      formulaire.submit()
-                                      }
-
-
-                  ajouter_revendications.click(function() {
-                                  jQuery("#id_intitule").css("font-size" , "30px").css("color", "black")
-                                  jQuery("#dialog_formulaire_revendication").dialog({
-                                                                draggable: true,
-                                                                autoOpen: true,
-                                                                show: {
-                                                                      effect: "blind",
-                                                                      duration: 500
-                                                                    },
-                                                                height: 600,
-                                                                width: 500,
-                                                                modal: true,
-                                                                buttons: {
-                                                                  "creation de la revendication": validation,
-                                                                  
-                                                                  Cancel: function() {
-                                                                    dialog.dialog( "close" );
-                                                                  },
-                                                                    close: function() {
-                                                                    }
-                                                                }});
-                                                      
-                                                             });
-          
-
-                  // PETITIONS
-
-                  bouton_petitions.click(function() {
-                                masquer()
-                                bouton_actif(jQuery(this).parent())
-                                carte_petitions.show()
-                                          });
-                    
-                    bouton_mes_petitions.click(function() {
-                               
-                                bouton_actif(jQuery(this))
-                                jQuery(".non").hide();
-                                          });
-
-                  bouton_toutes_les_petitions.click(function() {
-                              
-                              bouton_actif(jQuery(this))
-                              jQuery(".non").show();
-                                        });
-
-                     
-
-                  //EVENEMENTS
-                    bouton_evenements.click(function() {
-                                masquer()
-                                bouton_actif(jQuery(this).parent())
-                                carte_evenements.show()
-                                          });
-                    
-                    bouton_mes_evenements.click(function() {
-                               
-                                bouton_actif(jQuery(this))
-                                jQuery(".non").hide();
-                                          });
-
-                  bouton_tous_les_evenements.click(function() {
-                              
-                             bouton_actif(jQuery(this))
-                              jQuery(".non").show();
-                                        });
-
-
-                  //SUGGESTIONS
-
-                  bouton_suggestions.click(function() {
-                                masquer()
-                                bouton_actif(jQuery(this))
-                                carte_suggestions.show()
-                                          });                                                    
-                                         
-                  //GRAPHIQUE
-                  
-                   jQuery('#badge_container').click(function() {
-                                                  masquer()
-                                                  badge_global.css("width","100px")
-                                                  jQuery(this).css("width","150px")
-                                                  conteneur.show()
-                                                  jQuery('#container').empty()
-                                                  var graph = "{{graph_accueil}}"; 
-                                                  affichage_graphique(graph);
-                                                      });                                   
-                                        
-                    
-                    jQuery('#badge_container').click(function() {
-                                                  bouton_global.css("border", "solid black 0px")
-                                                  bouton_global.parent().css("border", "solid black 0px")
-                                                  masquer()
-                                                  badge_global.css("width","100px")
-                                                  jQuery(this).css("width","150px")
-                                                  conteneur.show()
-                                                  jQuery('#container').empty()
-                                                  var graph = "{{graph_accueil}}"; 
-                                                  affichage_graphique(graph);
-                                                      });             
-                    
-                    jQuery('#badge_liste').click(function() {
-                                                  bouton_global.parent().css("border", "solid black 0px")
-                                                  bouton_global.css("border", "solid black 0px")
-                                                  masquer()
-                                                  badge_global.css("width","100px")
-                                                  jQuery(this).css("width","150px")
-                                                      }); 
-
-
-               
-                  
-        
-
-                  </script>
-                                     
-                               
-                         
-                  </div>
-        </div>
+        <!--formulaire--> 
+        {% include "revendications/formulaires/formulaire_creation_revendication.html" with datas=datas %}
 
 
 
 
-{% endblock milieu %}
+        {% block autres_scripts %}  
+            <script src="{% static "revendication/js/affichageGraphique.js" %}"> </script>                              
+             <script src="{% static "revendication/js/pageTableauDeBord.js" %}"> </script>
+        {% endblock autres_scripts %}
+
+              
+
+
+{% endblock zone_centrale %}
+
+</div>
+</div>
+
+
+
 

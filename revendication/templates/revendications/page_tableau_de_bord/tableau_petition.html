@@ -1,0 +1,90 @@
+ 
+{% load static %}
+
+                                      <div class="row" id="choix_petitions">
+                                          <div class="col s4">
+                                            <a id = "b_mes_petitions" class="waves-effect waves-light btn green">Mes pétitions</a>
+                                          </div>
+                                          <div class="col s2">
+                                            <a href= "page_creer_petition.html" id = "ajouter_petition" class="btn-floating btn-large waves-effect waves-light green tooltipped" data-position="bottom" data-delay="0" data-tooltip="ajouter une petition"><i class="material-icons">add</i> </a>
+                                          </div>
+                                          <div class="col s4">
+                                            <a id = "b_toutes_les_petitions" class="waves-effect waves-light btn green">Suggestions</a>
+                                          </div>
+                                        </div>
+
+
+
+                                <div class="card white lighten-2" id="carte_petitions">
+                                      <div class="card-content black-text" >
+                                        
+                                        <table class=" orange striped lighten-4 display centered" id="tableau_petitions">
+                                        <thead>
+                                          <tr class="green" style="font-size: 25px; color: black;">
+                                              <th>Titre</th>
+                                              <th>Date de création</th>
+                                              <th>Echeance</th>
+                                              <th>Objectif de signataires</th>
+                                              <th>Nombre de signataires</th>
+                                              <th>action</th>
+                                              <th>mienne</th>
+
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                      {% for petition in datas.petitions %}
+                                          <tr class="green lighten-3 {{petition.mienne}}">
+                                            <td >{{petition.titre}}</td>
+                                            <td >{{petition.date_creation}}</td>
+                                            <td > {{petition.date_echeance}}</td>
+                                            <td > {{petition.objectif_de_signataires}}</td>
+                                            <td > {{petition.nb_signataires}}</td>
+                                          
+                                  
+
+                                          {% if petition.mienne == "oui" %}
+                                            <td><a href= "page_supprimer_soutien_petition.html?petition_id={{petition.id}}" id = "supprimer_soutien_petition" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus soutenir"><i class="material-icons green">thumb_down</i> </a>
+                                            </td>
+                                            {% else %}
+                                            <td> 
+                                              <a href= "page_soutenir_petition.html?petition_id={{petition.id}}" id = "supprimer_soutien_petition" class="btn-floating waves-effect waves-light orange tooltipped " data-position="right" data-delay="0" data-tooltip="soutenir"><i class="material-icons green"> thumb_up</i></a>
+                                            </td>
+                                            {% endif %} 
+                                            <td > {{petition.mienne}}</td>  
+                                            </tr>  
+                                      {% endfor %}  
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>  
+
+                                  <script>
+
+                                  carte_petitions = jQuery('#carte_petitions')
+                                  ajouter_petition = jQuery('#ajouter_petition')
+                                  b_toutes_les_petitions = jQuery('#b_toutes_les_petitions')
+                                  b_mes_petitions = jQuery('#b_mes_petitions')
+
+
+
+                                   b_mes_petitions.click(function() {
+                                      
+                                     
+                                      jQuery(".oui").show();
+                                      jQuery(".non").hide();
+                                                });
+
+                                    b_toutes_les_petitions.click(function() {
+                                               
+                                               
+                                                jQuery(".non").show();
+                                                jQuery(".oui").hide();
+                                                          });
+
+                                 dt = jQuery("#tableau_petitions").DataTable({
+                            dom: 'lftrip',
+                            language: {url: "{% static 'bower_components/DataTables/media/french.json' %}"} 
+                      });
+                                  //dt.column(5).visible(false);
+                                  
+                                  </script>

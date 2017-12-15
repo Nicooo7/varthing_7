@@ -1,0 +1,27 @@
+{% load static %}
+
+                    <div class="col s12" id="conteneur"> 
+                          
+                              <div class = "container"  style= 
+                                    "
+                                    height : 100%;
+                                    width : 100%;
+                                    border : 1px solid;
+                                    -moz-border-radius:7px;
+                                    -webkit-border-radius:7px;
+                                    border-radius:7px;
+                                    " 
+                                    id = "container">
+                               </div>  
+                          </div>    
+
+
+
+                  <script> var graph = "{{graph_accueil}}"; </script>
+                  <script src="{% static "revendication/js/affichageGraphique.js" %}"></script> 
+                  <script>  
+                        conteneur = jQuery('#conteneur')
+                        jQuery('#container').empty()
+                        var graph = "{{graph_accueil}}"; 
+                        affichage_graphique(graph); 
+                  </script> 

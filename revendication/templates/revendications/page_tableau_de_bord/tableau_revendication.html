@@ -1,0 +1,145 @@
+{% load static %}
+                                      <div class="row" id="choix_revendications">
+                                          <div class="col s5">
+                                            <a id = "b_mes_revendications" class="waves-effect waves-light btn orange" >Mes revendications</a>
+                                          </div>
+                                          <div class="col s2">
+                                            <a href= "#" id = "ajouter_revendications" class="btn-floating btn-large waves-effect waves-light orange tooltipped " data-position="bottom" data-delay="0" data-tooltip="ajouter une revendication"><i class="material-icons">add</i> </a>
+                                          </div>
+                                          <div class="col s5">
+                                            <a id = "b_toutes_les_revendications" class="waves-effect waves-light btn orange" >Suggestions</a>
+                                          </div>
+                                      </div>
+
+
+
+                                    <div class="card white lighten-2" id="carte_revendications">
+                                      <div class="card-content black-text">
+                                      
+                                        <table class=" orange striped lighten-4 display centered" id="tableau_revendications">
+                                        <thead>
+                                          <tr class="orange " style="font-size: 25px; color: black;">
+                                              <th>Nom</th>
+                                              <th>Date</th>
+                                              <th>Nombre de supporters</th>
+                                              <th>Progression</th>
+                                              <th>Action</th>
+                                              
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                      {% for proposition in datas.suggestions%}
+                                          {% if proposition.ennonce %}
+                                                  <tr class="orange lighten-3 {{proposition.mienne}}" >
+                                                    <td > <a href="page_revendication.html?proposition_id={{proposition.id}}" style=" color: black;" >{{proposition.ennonce}}</td>
+                                                    <td >{{proposition.date_creation}}</td>
+                                                    <td > {{proposition.nb_soutien}}</td>
+                                                    <td > {{proposition.progression}}</td>
+                                                    {% if proposition.mienne == "oui" %}
+                                                        <td><a href= "page_supprimer_soutien_revendication.html?proposition_id={{proposition.id}}&page=tableau_de_bord" id = "supprimer_soutien_revendication" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus soutenir"><i class="material-icons orange">thumb_down</i> </a>
+                                                    {% else %}
+                                                      <td> 
+                                                        <a href= "page_soutenir_revendication.html?proposition_id={{proposition.id}}&page=tableau_de_bord" id = "supprimer_soutien_revendication" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="soutenir"><i class="material-icons orange"> thumb_up</i></a>
+                                                      </td>
+                                                    {% endif %}
+                                                
+                                           {% endif %}
+
+                                              </tr> 
+
+                                              {% endfor %}  
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>  
+
+                                  <script>
+                                  
+                                  jQuery("#tableau_revendications").DataTable({
+                            dom: 'lftrip',
+                            language: {url: "{% static 'bower_components/DataTables/media/french.json' %}"} 
+                      });
+
+                                   jQuery()
+
+                                   jQuery("#ref_ennonce").click(function() {
+                                var id = jQuery(this).val()
+                                jQuery("#id").show()
+                                alert(id)
+                                          }); 
+                                  
+                                  </script>
+
+      
+
+
+
+                                  <!--tableau mes_revendications--> 
+                                    <div class="card white lighten-2" id="carte_mes_revendications">
+                                      <div class="card-content black-text">
+                                        
+                                        <table class=" orange striped lighten-4 display centered" id="tableau_mes_revendications">
+                                        <thead>
+                                          <tr class="orange " style="font-size: 25px; color: black;">
+                                              <th>Nom</th>
+                                              <th>Date</th>
+                                              <th>Nombre de supporters</th>
+                                              <th>Progression</th>
+                                              <th>Action</th>
+                                              
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                      {% for proposition in datas.mes_revendications%}
+                                          
+                                                  <tr class="orange lighten-3 {{proposition.mienne}}" >
+                                                    <td > <a href="page_revendication.html?proposition_id={{proposition.id}}" style=" color: black;" >{{proposition.ennonce}}</td>
+                                                    <td >{{proposition.date_creation}}</td>
+                                                    <td > {{proposition.nb_soutien}}</td>
+                                                    <td > {{proposition.progression}}</td>
+                                                    <td><a href= "page_supprimer_soutien_revendication.html?proposition_id={{proposition.id}}&page=tableau_de_bord" id = "supprimer_soutien_revendication" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus soutenir"><i class="material-icons orange">thumb_down</i> </a> 
+                                                    </td>
+                                              </tr> 
+
+                                              {% endfor %}  
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>  
+
+                                  <script>
+                                  b_mes_revendications = jQuery('#b_mes_revendications')
+                                  b_toutes_les_revendications = jQuery('#b_toutes_les_revendications')
+                                  carte_revendications = jQuery('#carte_revendications')
+                                  carte_mes_revendications = jQuery('#carte_mes_revendications')
+                                  ajouter_revendications = jQuery('#ajouter_revendications')
+
+
+
+                                    jQuery("#tableau_mes_revendications").DataTable({
+                                                dom: 'lftrip',
+                                                language: {url: "{% static 'bower_components/DataTables/media/french.json' %}"} 
+                                          });
+
+                                    
+
+
+                                    b_mes_revendications.click(function() {
+                                                  carte_revendications.hide()
+                                                  carte_mes_revendications.show();
+                                                  jQuery("#choix_revendications").show() 
+                                                            });
+
+                                    b_toutes_les_revendications.click(function() {
+                                                carte_mes_revendications.hide()
+                                                carte_revendications.show();
+                                                jQuery("#choix_revendications").show() 
+                                                          });
+
+                                   jQuery("#ref_ennonce").click(function() {
+                                            var id = jQuery(this).val()
+                                            jQuery("#id").show()
+                                            alert(id)
+                                                      }); 
+                                  
+                                  </script>

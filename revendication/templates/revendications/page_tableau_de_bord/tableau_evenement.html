@@ -1,0 +1,90 @@
+{% load static %}
+
+                                    <div class="row" id="choix_evenements">
+                                          <div class="col s4">
+                                            <a id = "bouton_mes_evenements" class="waves-effect waves-light btn purple">Mes evenements</a>
+                                          </div>
+                                          
+                                          <div class="col s4">
+                                            <a id = "bouton_tous_les_evenements" class="waves-effect waves-light btn purple">Suggestions</a>
+                                          </div>
+                                        </div>
+
+
+                             <div class="card white lighten-2" id="carte_evenements">
+                                      <div class="card-content black-text" >
+                                        
+                                        <table class=" purple striped lighten-4 display centered" id="tableau_evenements">
+                                        <thead>
+                                          <tr class="purple "  style="font-size: 25px; color: black;">
+                                              <th>Titre</th>
+                                              <th>Lieu</th>
+                                              <th>Date</th>
+                                              <th>Description</th>
+                                              <th>proposition</th>
+                                              <th>nombre de participants</th>
+                                              <th>action</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                      {% for evenement in datas.evenements %}
+                                          <tr class="purple lighten-3 {{evenement.mienne}}">
+                                            <td > <a  style="color: black" href="page_evenement.html?evenement_id={{evenement.id}}">{{evenement.titre}}</a> </td>
+                                            <td >{{evenement.lieu}}</td>
+                                            <td > {{evenement.date}}</td>
+                                            <td > {{evenement.description}}</td>
+                                            <td > {{evenement.proposition}}</td>
+                                            <td > {{evenement.nb_participant}}</td>
+                                            
+
+
+
+
+                                            {% if evenement.mienne == "oui" %}
+                                            <td><a href="page_supprimer_soutien_evenement.html?evenement_id={{evenement.id}}&proposition_id={{evenement.proposition.id}}" id = "supprimer_soutien_evenement" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus participer"><i class="material-icons purple">thumb_down</i> </a>
+                                        
+                                            {% else %}
+                                            <td> 
+                                              <a href="page_soutenir_evenement.html?evenement_id={{evenement.id}}&proposition_id={{evenement.proposition.id}}" id = "soutenir_evenement" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="participer"><i class="material-icons purple"> thumb_up</i></a>
+                                            </td>
+                                            {% endif %}
+
+                                          </tr>
+                                      {% endfor %}  
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>  
+                                  <script>
+
+                                  bouton_mes_evenements = jQuery('#bouton_mes_evenements');
+                                  bouton_tous_les_evenements = jQuery('#bouton_tous_les_evenements')
+                                  carte_evenements = jQuery('#carte_evenements')
+                                  ajouter_evenement = jQuery('#ajouter_evenement')
+                                
+
+                    
+                                bouton_mes_evenements.click(function() {
+                                              bouton_actif(jQuery(this))
+                                              jQuery(".non").hide();
+                                                        });
+
+                                bouton_tous_les_evenements.click(function() {
+                                            
+                                           bouton_actif(jQuery(this))
+                                            jQuery(".non").show();
+                                                      });
+
+
+
+
+                                 dt = jQuery("#tableau_evenements").DataTable({
+                            dom: 'lftrip',
+                            language: {url: "{% static 'bower_components/DataTables/media/french.json' %}"} 
+                      });
+                                  //dt.column(5).visible(false);
+                                  
+                                  </script>    
+
+
+

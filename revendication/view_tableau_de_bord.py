@@ -82,37 +82,53 @@ def tableau_de_bord(request):
 		return liste 		
 
 
-	def revendications_suggestion(n):
-		selection = data_propositions_proches_des_miennes(utilisateur)
-		selection = sorted(selection, key=lambda x: x[2])
-		selection.reverse()
-		selection2= []
-		liste_p = []
-		#print ("******************************************selection:",selection)
+	def suggestions():
+		#les utilisateurs proches de moi
+		utilisateurs = User.objects.all()
+		mes_propositions = Proposition.objects.filter(soutien__user=utilisateur, soutien__lien="SO") 
+		liste_des_propositions_communes = []
+		liste_des_proximites =[]
+		liste = []
 
-		#eliminer les propositions dont je suis déjà supporter
-		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
-		for p in liste_de_mes_propositions:
-			liste_p.append(p.ennonce)
+		for u in utilisateurs:
+			propositions_u = Proposition.objects.filter(soutien__user=u, soutien__lien="SO")
+			for p in propositions_u:
+				if p in mes_propositions:
+					if p not in liste_des_propositions_communes:
+						liste_des_propositions_communes.append(p)
+			nb_propositions_communes = len(liste_des_propositions_communes)
+			proximite = nb_propositions_communes/(len(mes_propositions)+len(propositions_u))
+			for p in propositions_u:
+				if p not in mes_propositions:
+					p.force_suggestion = proximite
+					if p not in liste:
+						liste.append(p)		
 
-		#print ("selection:", selection)
-		for triplet in selection:
-			if triplet[1] in liste_p:
-				#print ("le triplet contenant", triplet[1] , "va être enlevé.")
-				selection.remove(triplet)
-			else:
-				if triplet[2] > 0:
-					selection2.append(triplet[1])
-		
+		liste_evenement = evenements()
+		liste_petitions = petitions()				
 
-		print ("______________", selection2)
-		return selection2[0:n]	
+		liste.extend(liste_evenement)
+		liste.extend(liste_petitions)
+
+		return liste			
 
 
 
-	def revendications_mes_revendications():
-		mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
-		return mes_propositions
+
+	def mes_revendications():
+		propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		date_M1 = datetime.now()-timedelta(30)
+		liste= []
+        #progression?
+		for p in propositions:
+			soutiens_M1 = Soutien.objects.filter(date__lte = date_M1, propositions = p)
+			nb_soutiens = len(soutiens_M1)
+			p.progression = nb_soutiens
+			if p not in liste:
+				liste.append(p)	
+				
+		return liste 	
+
 
 
 	def evenements():
@@ -126,7 +142,7 @@ def tableau_de_bord(request):
 					ev.mienne = "oui"
 				else:
 					ev.mienne = "non"
-				liste.append(ev)
+			liste.append(ev)
 		return liste
 
 
@@ -136,7 +152,7 @@ def tableau_de_bord(request):
 		petitions = Petition.objects.all()
 		liste = []
 		for p in petitions:
-			print("la valeur de P est: ", p)
+			#print("la valeur de P est: ", p)
 			propositions = p.propositions.all()
 			for prop in propositions:
 				print("******************************proposition", prop)
@@ -197,14 +213,12 @@ def tableau_de_bord(request):
 				#self.documents = Documents.objects.filter(soutien__user = utilisateur)
 				self.competences = Competence.objects.filter(soutien__user = utilisateur)
 				self.petitions = petitions()
-				self.revendications = revendications()
-				#self.suggestions = les_x_revendications_les_plus_proches_des_miennes(4)
-				#if self.suggestions == []:
-				#	self.suggestions = les_revendications_les_plus_populaires()
+				self.mes_revendications = mes_revendications()
+				self.suggestions = suggestions()
 				self.autocompletion = liste_autocompletion()
 				self.calendrier = creer_les_evenements_du_calendriers()
 				#revendications
-				self.revendications_mes_revendications = revendications_mes_revendications()
+				self.mes_revendications = mes_revendications()
 				#evenements
 			
 				#petitions
@@ -226,14 +240,17 @@ def tableau_de_bord(request):
 
 	datas = creer_les_datas(utilisateur)
 
-	
-	
+	try:
+		onglet = request.session["onglet"]
+	except:
+		onglet = "vide"
+
 	graph_u = graph_utilisateur(utilisateur)
 	graph_a =  graph_accueil()
 	graph_p = graph_populaire()
 
 
-	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas, "graph_utilisateur":mark_safe(graph_u),"graph_accueil":mark_safe(graph_a),"graph_populaire":mark_safe(graph_p)})
+	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas, "graph_utilisateur":mark_safe(graph_u),"graph_accueil":mark_safe(graph_a),"graph_populaire":mark_safe(graph_p),"onglet": onglet})
 
 
 

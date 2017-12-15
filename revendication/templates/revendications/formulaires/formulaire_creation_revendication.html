@@ -1,0 +1,48 @@
+<div id="dialog_formulaire_revendication" title="creation d'une nouvelle revendication">
+
+                                        <form  id= "formulaire_revendication" action="page_creer_revendication.html" method="post">
+
+                                
+                                            {% csrf_token %}
+                                            {{datas.formulaires.revendication}}
+                                            <ul>
+                                            {% comment %}
+                                            {% endcomment %}  
+                                            <input id="form_validation" type="submit" tabindex="-1" style="position:absolute; top:-1000px" >
+                                        </form>     
+                                    
+</div>
+
+<script>
+				function validation_r(){
+                                      formulaire = jQuery("#formulaire_revendication")
+                                      alert("revendication créee")
+                                      formulaire.submit()
+                                      }
+
+                                  
+
+                  ajouter_revendications.click(function() {
+                                  jQuery("#id_titre").css("font-size" , "30px").css("color", "black")
+                                  jQuery("#dialog_formulaire_revendication").dialog({
+                                                                draggable: true,
+                                                                autoOpen: true,
+                                                                show: {
+                                                                      effect: "blind",
+                                                                      duration: 500
+                                                                    },
+                                                                height: 600,
+                                                                width: 500,
+                                                                modal: true,
+                                                                buttons: {
+                                                                  "creation de la revendication": validation_r,
+                                                                  
+                                                                  Cancel: function() {
+                                                                    dialog.dialog( "close" );
+                                                                  },
+                                                                    close: function() {
+                                                                    }
+                                                                }});
+                                                      
+                                                             });
+</script>

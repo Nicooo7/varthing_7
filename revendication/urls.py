@@ -13,6 +13,7 @@ from . import view_creer
 from . import view_page_utilisateur
 from . import view_page_action
 from . import view_supprimer
+from . import view_page_evenement
 
 page =[]
 liste_des_elements_de_page = []
@@ -25,9 +26,11 @@ urlpatterns = [
     #nouvelles_vues:
     url(r'^varthing', view_accueil.varthing, name = 'varthing'),
     url(r'^page_revendication', view_page_revendication.page_revendication, name = 'page_revendication'),
+    url(r'^page_evenement', view_page_evenement.page_evenement, name = 'page_evenement'),
     url(r'^page_accueil', view_accueil.accueil, name = 'page_accueil'),
     url(r'^page_tableau_de_bord', view_tableau_de_bord.tableau_de_bord, name = 'page_tableau_de_bord'),
     url(r'^page_organisations', view_page_organisation.page_organisation, name = 'page_organisation'),
+    url(r'^page_creer_revendication', view_creer.creer_revendication, name = 'page_creer_revendication'),
     url(r'^page_creer_revendication', view_creer.creer_revendication, name = 'page_creer_revendication'),
     url(r'^page_creer_petition', view_creer.creer_petition, name = 'page_creer_petition'),
     url(r'^page_creer_evenement', view_creer.creer_evenement, name = 'page_creer_evenement'),
@@ -37,6 +40,10 @@ urlpatterns = [
     url(r'^page_deconnexion', view_page_utilisateur.deconnexion, name = 'page_deconnexion'),
     url(r'^page_soutenir_revendication', view_page_action.soutenir_une_revendication, name = 'page_soutenir_revendication'),
     url(r'^page_supprimer_soutien_revendication', view_supprimer.supprimer_soutien_revendication, name = 'page_supprime_soutien_revendication'),
+    url(r'^page_soutenir_petition', view_page_action.soutenir_une_petition, name = 'page_soutenir_petition'),
+    url(r'^page_supprimer_soutien_petition', view_supprimer.supprimer_soutien_petition, name = 'page_supprime_soutien_petition'),
+    url(r'^page_soutenir_evenement', view_page_action.soutenir_un_evenement, name = 'page_soutenir_evenement'),
+    url(r'^page_supprimer_soutien_evenement', view_supprimer.supprimer_soutien_evenement, name = 'page_supprime_soutien_evenement'),
     ]
 
 

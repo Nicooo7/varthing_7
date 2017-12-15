@@ -194,11 +194,11 @@ def data_propositions_proches (proposition):
 	#selectionner ce qui concerne cette proposition:
 	selection = []
 	for triplet in liste_proximites:
-		print (triplet)
+		#print (triplet)
 		if triplet[0]== proposition.ennonce:
 			if triplet[2] > 0:
 				selection.append(triplet)
-	#print ("selection : " ,selection)
+	print ("_________________________________________________________selection : " ,selection)
 	return selection
 
 
@@ -269,8 +269,10 @@ def graph_utilisateur(utilisateur):
 
 
 def graph_revendication(proposition):
-	data = affichage_graphique_de_triplet(triplets= data_propositions_proches(proposition), seuil=0)
-
+	triplets = data_propositions_proches(proposition)
+	print("££££*******£££££££££***********£££££££££££", triplets)
+	data = affichage_graphique_de_triplet(triplets, seuil=0.1)
+	print("********************************************£££££££££££££££££££££££££££££", data)
 	#enregistrer_les_datas(data = data, nom = "graph")
 	return data
 

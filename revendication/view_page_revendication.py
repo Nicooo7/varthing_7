@@ -6,7 +6,7 @@ from django.http import HttpResponse, Http404
 from django.template import loader
 #from django.core.exceptions import ObjectDoesNotExist
 
-
+from django.utils.safestring import mark_safe
 from .forms import *
 from .models import *
 from django.contrib.auth.models import* 
@@ -30,64 +30,81 @@ app_name = 'revendication'
 
 
 
-    	
+   	
 
 def page_revendication(request):
+	
 
-	ennonce = unidecode(request.GET ['ennonce']).encode("utf-8")
-	print (ennonce)
+	p_id = request.GET["proposition_id"]
 	try:
-		proposition = Proposition.objects.get(ennonce = ennonce)
-	except Proposition.DoesNotExist:
-		raise Http404
+		proposition = Proposition.objects.get(id= p_id)
+	except:
+		proposition= Proposition.objects.get(ennonce= p_id)
 
 
 
-	def data_proposition(proposition):
+
+	def revendications(proposition):
+		triplets = data_propositions_proches(proposition)
+		liste = []
+		for triplet in triplets:
+			proposition = Proposition.objects.get(ennonce = triplet[1])
+			proposition.score = triplet[2]
+			liste.append(proposition)
+		return liste
+			
+
+
+	def creer_les_datas(proposition):
 		# Vérification identifiant valide ? si non, 404
 		id_proposition = proposition.id
+		utilisateur = request.user
 
 		class Data:
 			def __init__ (self):	
 				self.proposition = proposition
+				self.suggestions = revendications(proposition)
 				self.soutiens= Soutien.objects.filter(propositions__id = id_proposition).filter(lien ='SO')
-				self.createur= Soutien.objects.filter(propositions__id = id_proposition).filter(lien = 'CR')
-				if len(self.createur)<1:
+				try:
+					self.createur= str(Soutien.objects.filter(propositions__id = id_proposition).filter(lien = 'CR')[0])
+				#print("jjjqsdfqmsldkfjqmslkdfjqmlskdjfqsjdfmlqskdjflqskjdflqskjdflqksjdflqkjdf createur", self.createur)
+				except:
 					self.createur = "inconnu"
-				self.evenement = Evenement.objects.filter(proposition_id = id_proposition)
+				self.evenements = Evenement.objects.filter(proposition_id = id_proposition)
 				self.petitions = proposition.petition_set.all()
 				self.competences = proposition.competence_set.all()
 				self.organisations = Evenement.objects.filter(proposition_id = id_proposition)
 				#self.documents = proposition.document_set.all()
+				mes_propositions = Proposition.objects.filter(soutien__user = utilisateur, soutien__lien = "SO")
+				if proposition in mes_propositions:
+					self.soutenue = "oui"
+				else:
+					self.soutenue = "non"
+
+				#formulaires:
+				class formulaire:
+					def __init__ (self):
+						self.revendication = RevendicationForm
+						self.petition =PetitionForm
+						self.evenement= EvenementForm
+				self.formulaires = formulaire()
 
 
 		data = Data()		
 		return (data)
 
 
-	def est_ce_que_je_soutiens(proposition):
-		utilisateur = request.user
-		supporters = Soutien.objects.filter(propositions = proposition, lien = 'SO')
-		for supporter in supporters:
-			print ("supporter" , supporter)
-			if utilisateur == supporter.user:
-				return "soutenue"
-
-	s = est_ce_que_je_soutiens(proposition)	
-	print ("s", s)
+	
+	
+	#print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", proposition)
+	graph = graph_revendication(proposition)
+	print("****************************************************, graph",graph)	
+	graph = mark_safe(graph)
+	datas = creer_les_datas(proposition)
 
 
-	graph = graph_revendication(proposition)	
-	data_p= []
-	for triplet in data_propositions_proches(proposition):
-		data_p.append (triplet[1])
-	data_proposition = data_proposition (proposition)
 
-
-	if s == "soutenue" :
-		return render (request, 'revendications/page_revendication.html', {"propositions_proches": data_p, "data_proposition":data_proposition, "s":s, "graph":graph})
-	else:
-		return render (request, 'revendications/page_revendication.html', {"propositions_proches": data_p, "data_proposition":data_proposition, "graph":graph})	
+	return render (request, 'revendications/page_revendication.html', {"datas":datas, "graph":graph})	
 
 
 

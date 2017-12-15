@@ -35,9 +35,9 @@ app_name = 'revendication'
 def soutenir_une_revendication (request):
 	# Vérification identifiant valide ? si non, 404
 	
-
+	proposition_id = request.GET["proposition_id"]
 	try:
-		proposition = Proposition.objects.get(ennonce = request.GET["ennonce"])
+		proposition = Proposition.objects.get(id = request.GET["proposition_id"])
 	except Proposition.DoesNotExist:
 		raise Http404
 
@@ -48,15 +48,70 @@ def soutenir_une_revendication (request):
 	soutien[0].save()
 	
 	#request.path ="revendications/consult_revendications.html"
+	request.session["onglet"]="revendication"
 	
+	if request.GET ['page'] == "revendication":
+		return redirect ('page_revendication.html?proposition_id='+ proposition_id )
+	else:	
+		return redirect ('page_tableau_de_bord.html')
 
-	ennonce = unidecode(request.GET ['ennonce'])
-	print (ennonce)
+
+def soutenir_une_petition (request):
+	# Vérification identifiant valide ? si non, 404
+
+	petition_id = request.GET["petition_id"]
 	try:
-		proposition = Proposition.objects.get(ennonce = ennonce)
+		petition = Petition.objects.get(id = request.GET["petition_id"])
 	except Proposition.DoesNotExist:
 		raise Http404
-	return redirect ('page_tableau_de_bord.html')
+
+	utilisateur = request.user
+
+	soutien = Soutien.objects.get_or_create(petition = petition, user= utilisateur, lien='SO')
+	print ("soutien", soutien)
+	soutien[0].save()
+	
+	#request.path ="revendications/consult_revendications.html"
+	request.session["onglet"]="petition"
+
+
+	try:
+		proposition = request.GET["proposition_id"]
+		if request.GET ['page'] == "revendication":
+			return redirect ('page_revendication.html?proposition_id='+ proposition_id)
+		else:	
+			return redirect ('page_tableau_de_bord.html')
+	except:
+		return redirect ('page_tableau_de_bord.html')
+
+
+
+def soutenir_un_evenement (request):
+	# Vérification identifiant valide ? si non, 404
+	
+	evenement_id = request.GET["evenement_id"]
+	try:
+		evenement = Evenement.objects.get(id = request.GET["evenement_id"])
+	except Evenement.DoesNotExist:
+		raise Http404
+
+	utilisateur = request.user
+
+	soutien = Soutien.objects.get_or_create(evenement = evenement, user= utilisateur, lien='SO')
+	print ("soutien", soutien)
+	soutien[0].save()
+	
+	#request.path ="revendications/consult_revendications.html"
+	request.session["onglet"]="evenement"
+	try:
+		if request.GET ['page'] == "revendication":
+			return redirect ('page_revendication.html?proposition_id='+ request.GET["proposition_id"])
+		else:	
+			return redirect ('page_tableau_de_bord.html')
+	except:	
+		return redirect ('page_tableau_de_bord.html')		
+
+	
 
 
 

@@ -38,19 +38,22 @@ class OrganisationForm(forms.Form):
 	description =  forms.CharField(max_length=10000)
 
 class EvenementForm(forms.Form):
-
+	
 	titre = forms.CharField (widget= forms.Textarea(attrs={'rows': 100,'title': 'le titre de votre revendiation !'}), max_length = 100)
+	description = forms.CharField(widget=forms.Textarea(attrs={'rows': 100,'title': 'le titre de votre revendiation !', 'label':'description'}), max_length = 1000)
 	date = forms.DateField (widget = forms.SelectDateWidget())
-	description = forms.CharField(widget=forms.Textarea, max_length = 10000)
+	
 
 class PetitionForm(forms.Form):
 	"""
 	"""
 	titre = forms.CharField(max_length = 100)
+	objectif_de_signataires = forms.IntegerField(required = False, min_value = 0)
 	description = forms.CharField(widget = forms.Textarea)
 	#propositions = forms.CharField(widget = )
 	date_echeance = forms.DateField(widget = forms.SelectDateWidget())
-	objectif_de_signataires = forms.IntegerField(required = False, min_value = 0)
+	
+
 	"""
 	class Meta:
 		model = Petition

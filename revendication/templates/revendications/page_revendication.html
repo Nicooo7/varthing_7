@@ -1,198 +1,292 @@
 {% extends 'revendications/page_tableau_de_bord.html' %}
 {% load static %}
 
+{% block rubrique_titre %}
+{% endblock rubrique_titre %}
 
-{% block titre_central%}
-{{data_proposition.proposition.ennonce}}
+
+{% block haut %}
+  <!-- Boutons creation formulaires-->
+  <div class="section"></div>
+  <nav>
+    <div class="nav-wrapper grey lighten-3">
+         <ul class= "left">      
+                
+                     <li> <a class="btn-floating  waves-effect waves-light orange" id="B_revendications">
+                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="revendications en lien" id="B_I_revendications" >record_voice_over</i>
+                      </a> </li>
+               
+               
+                     <li> <a class="btn-floating  waves-effect waves-light green" id="B_petitions">
+                        <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="pétitions en lien" id="B_I_petitions" >format_align_center</i>
+                      </a>  </li>
+                
+               
+                       <li><a class="btn-floating  waves-effect waves-light purple" id="B_evenements" >
+                           <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="évènements en lien" id="B_I_evenements" >event</i>
+                      </a>  </li> 
+                 
+                
+                   <li><a class="btn-floating  waves-effect waves-light pink lighten-1" id="B_coups_de_mains">
+                      <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="coups de mains en lien" id="B_I_coups_de_main" >pan_tool</i>
+                    </a> </li>
+               
+                  
+                         <li> <a class="btn-floating   waves-effect waves-light indigo darken-2" id="B_documents">
+                         <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="documents en lien" id="B_I_documents" >card_travel</i>
+                          </a> </li>
+                
+                 
+                      <li><a class="btn-floating waves-effect waves-light  teal darken-2" id="B_organisations">
+                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="organisations en lien" id="B_I_organisations" >group</i>
+                      </a>
+                    </li>
+
+
+                     <li><a class="btn-floating waves-effect waves-light  white" id="B_statistiques">
+                     <i class="material-icons tooltipped large blue" data-position="bottom" data-delay="0" data-tooltip="satistiques" id="B_I_statistiques" >timeline</i>
+                      </a>
+                    </li>
+              </ul>
+
+   
+            
+              
+
+      <ul class="right ">
+        {% if datas.soutenue == "oui" %} 
+             <li> <a href= "#" class="btn  btn-large waves-effect waves-light blue"> Vous soutenez </a>
+            {% endif %}  </li> 
+        {% if datas.soutenue == "oui" %} 
+        <li><a href= "page_supprimer_soutien_revendication.html?proposition_id={{datas.proposition.id}}&page=revendication" id = "supprimer_soutien_revendication" class="btn   waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus soutenir"><i class="large material-icons orange"> thumb_down</i></a></li>
+        <li><a href= "#" id = "ajouter_evenement" class="btn  waves-effect waves-light purple tooltipped" data-position="bottom" data-delay="0" data-tooltip="ajouter un évenement"><i class="material-icons">add</i><i class="material-icons right">cloud</i></a></li>
+        <li><a href= "#" id = "ajouter_petition" class="btn  waves-effect waves-light green tooltipped" data-position="bottom" data-delay="0" data-tooltip="ajouter une petition"><i class="material-icons">add</i> </a></li>
+        {% else %}
+        <li>
+          <a href= "page_soutenir_revendication.html?proposition_id={{datas.proposition.id}}&page=revendication" id = "supprimer_soutien_revendication" class="btn waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="soutenir"><i class="large material-icons orange"> thumb_up</i></a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>  
+  </nav>   
+  <div class="section"> </div>   
+{% endblock haut %}
+
+{% block milieu_haut %}
+{% endblock milieu_haut %}
+
+{% block gauche %}
+{% endblock gauche %}
+
+
+    {% block autres_cartes %}
+        <div class="card white lighten-2" id="la_revendication">
+          <div class="card-content black-text">
+
+
+
+     
+     
+
+
+
+            <span class="card-title center"><h3 style="color:orange">{{datas.proposition.ennonce}}</h3></span> 
+            <div class="row">
+              <div class="col s12">
+               <h5> proposé par {{datas.createur}} </h5> 
+              </div>
+              
+
+              
+              
+              </div>
+            </div>
+        </div>
+
+      <div clas="row">
+          <div class="col s6" style="heigth: 500px">
+           <div class="card white lighten-2" id="statistiques">
+              <div class="card-content black-text">
+                <span class="card-title">Statistiques</span>
+                 <p>soutiens: {{datas.proposition.nb_supporter}}</p>
+                 <p>organisations: {{datas.organisations|length}}</p>
+                 <p>evenements: {{datas.evenements|length}}</p>
+                 <p>petitions: {{datas.petitions|length}}</p>
+                 <p>documents: {{datas.documents|length}}</p>
+              </div>
+            </div>
+          </div>
+        <div class="col s6"> 
+                  <div class="card white lighten-2" id="graph" style="height : 500px">
+                      <div class = "container" id="container2" style= 
+                            "
+                            height: 100%;
+                            width: 100%;
+                            border: 0px solid;
+                            -moz-border-radius:3px;
+                            -webkit-border-radius:3px;
+                            border-radius:3px;
+                            " 
+                            >
+                       </div>  
+                   </div>
+        </div> 
+      </div>
+
+
+
+
+
+      <!--  formulaires-->
+
+      {% include "revendications/elements/formulaire_creation_evenement.html" with datas=datas %}
+      {% include "revendications/elements/formulaire_creation_petition.html" with datas=datas %}
+
+
+
+
+{% endblock autres_cartes %}
+
+
+{% block droite %}
+{% endblock droite %}
+
+
+
+{%block boutons_evenements%}
+{% endblock %}
+{%block boutons_petitions%}
 {% endblock %}
 
 
-                <li>
-                          
-                      {% block option1 %}
-                      {% if s %}
-                        Revendication soutenue
-                      {% else %}
-                      <a class="btn-floating btn-large waves-effect waves-light teal"><i class="material-icons" onclick = "document.location.href = 'page_soutenir_revendication?ennonce={{data_proposition.proposition.ennonce}}'
-                      " >add</i></a> JE SOUTIENS
-                      {% endif %}
-                      {% endblock %}
-                </li>
-                
-                <li>{% block option2 %}<a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_petition?ennonce={{data_proposition.proposition.ennonce}}">add</i></a> PETITION {% endblock %} </li>
-                <li class="divider"></li>
 
 
-                <li>{% block option3 %}<a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_evenement?ennonce={{data_proposition.proposition.ennonce}}>add</i></a> EVENEMENT {% endblock %} </li>
+{% block autres_scripts %}
 
-               
-
-                <li>{% block option4 %}<a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_competence?ennonce={{data_proposition.proposition.ennonce}}'>add</i></a>COMPETENCE  {% endblock %} </li>
-               
-                
-                {% block option5 %}{% endblock %}
+<script>
 
 
-        
+//masquer les elements indésirables
+jQuery('[id*="dialog"]').hide()
+jQuery("#choix_petition").hide()
+jQuery('[class*="gauche"]').hide()
+jQuery('[class*="droite"]').hide() 
+jQuery("#choix_evenements").hide() 
 
+
+//affichage des rubriques sans action
+jQuery("#la_revendication").show()
+jQuery('#graph').show()
+jQuery('#container2').empty()
+var graph = "{{graph}}"; 
+affichage_graphique2(graph);
+
+//actions communes quand bouton du haut cliqué
+jQuery('[id*="B_"]').click(function(){
+   jQuery("#choix_petitions").hide() 
+   jQuery("#choix_evenements").hide() 
+   jQuery('#graph').hide()
+   jQuery("#statistiques").hide()
+   jQuery('[id*="carte"]').hide()
+});
+
+//affichage des revendications
+jQuery('[id*="B_revendications"]').click(function(){
+  jQuery('#carte_revendications').show()
+
+});
+
+//affichage des statistiques
+jQuery('[id*="B_statistiques"]').click(function(){
+  jQuery('#statistiques').show()
+  jQuery('#graph').show()
+
+});
+
+//affichage des petitions
+jQuery('[id*="B_petitions"]').click(function(){
+  jQuery('#carte_petitions').show()
+});
+
+//affihage des evenements
+jQuery('[id*="B_evenements"]').click(function(){
+   jQuery('#carte_evenements').show()
+});
+
+
+//Formulaires
+
+ function validation_p(){
+                        formulaire = jQuery("#formulaire_petition")
+                        alert("petition créee")
+                        formulaire.submit()
+                        }
+  function validation_e(){
+                      formulaire = jQuery("#formulaire_evenement")
+                      alert("evenement crée")
+                      formulaire.submit()
+                      }                                                     
+                                                         
+  jQuery("#ajouter_petition").click(function() {
+
+                                  jQuery("#id_titre").css("font-size" , "30px").css("color", "black")
+                                  jQuery("#dialog_formulaire_petition").dialog({
+                                                                draggable: true,
+                                                                autoOpen: true,
+                                                                show: {
+                                                                      effect: "blind",
+                                                                      duration: 500
+                                                                    },
+                                                                height: 600,
+                                                                width: 500,
+                                                                modal: true,
+                                                                buttons: {
+                                                                  "creation de la petition": validation_p,
+                                                                  
+                                                                  Cancel: function() {
+                                                                    dialog.dialog( "close" );
+                                                                  },
+                                                                    close: function() {
+                                                                    }
+                                                                }});
+                                                      
+
+
+                                                             });
+                                  
+
+   ajouter_evenement.click(function() {
+                  jQuery("#id_titre").css("font-size" , "30px").css("color", "black")
+                  jQuery("#dialog_formulaire_evenement").dialog({
+                                                draggable: true,
+                                                autoOpen: true,
+                                                show: {
+                                                      effect: "blind",
+                                                      duration: 500
+                                                    },
+                                                height: 600,
+                                                width: 500,
+                                                modal: true,
+                                                buttons: {
+                                                  "creation de l'evenement'": validation_e,
+                                                  
+                                                  Cancel: function() {
+                                                    dialog.dialog( "close" );
+                                                  },
+                                                    close: function() {
+                                                    }
+                                                }});
+                                      
+                                             });
+
+
+</script>
+{% endblock autres_scripts %}
+
+      
 
                              
-          </div>
-
-                    
-
-
-
- {% block image_parallax %}
-{% endblock %}
-
-
-
-{% block contenu_central%}
-<div class= "section"> </div>
-<div class= "section"> </div>
-<div class= "section"> </div>
-
-
-
-
-
-
-
-       <div class="row">
-      <div class="col s12">
-<div class= "section"> </div>
-<div class= "section"> </div>
-<div class= "section"> </div>
-      	</div>
-
-
-          <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Revendications les plus proches</span>
-              {% for proposition in propositions_proches %}
-              <p>{{proposition}}<a href="page_revendication.html?ennonce={{proposition}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-              {% endfor %}
-
-            </div>
-           
-          </div>
-        </div>
-      </div>
-
-      <div class= "section"> </div>
-	<div class= "section"> </div>
-	<div class= "section"> </div>
-
-       <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Soutiens</span>
-              {% for soutien in data_proposition.soutiens %}
-              <p>{{soutien}}</p>
-              {% endfor %}
-
-            </div>
-            
-          </div>
-        </div>
-      </div>
-
-        <div class= "section"> </div>
-	<div class= "section"> </div>
-	<div class= "section"> </div>
-
-
-  <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Petitions</span>
-              {% for petition in data_proposition.petitions %}
-              <p>{{petition}}</p>
-              {% endfor %}
-
-            </div>
-            
-          </div>
-        </div>
-      </div>
-
-        <div class= "section"> </div>
-  <div class= "section"> </div>
-  <div class= "section"> </div>
-
-
-
-
-  <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Evenements:</span>
-              {% for evenement in data_proposition.evenements %}
-              <p>{{evenement}}</p>
-              {% endfor %}
-
-            </div>
-            
-          </div>
-        </div>
-      </div>
-
-        <div class= "section"> </div>
-  <div class= "section"> </div>
-  <div class= "section"> </div>
-
-
-
-
-
-  <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title"> Demandes de compétences:</span>
-              {% for competence in data_proposition.competence %}
-              <p>{{competence}}</p>
-              {% endfor %}
-
-            </div>
-            
-          </div>
-        </div>
-      </div>
-
-        <div class= "section"> </div>
-  <div class= "section"> </div>
-  <div class= "section"> </div>
-
-
-
-
-
-       <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Createur</span>
-   		
-              <p>{{data_proposition.createur}}</p>
-              
-             
-
-            </div>
-            
-          </div>
-        </div>
-      </div>
-
-
-
- {% endblock %}
-
+        
 
 
 
