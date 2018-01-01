@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'revendication.apps.RevendicationConfig',
+    #'debug_toolbar',
     #'gunicorn',
   ]
 
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'Varthing.urls'
@@ -113,7 +115,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
+
+INTERNAL_IPS = '127.0.0.1'
+
 LANGUAGE_CODE = 'en-us'
+
 
 TIME_ZONE = 'Europe/Paris'
 
@@ -131,6 +137,16 @@ USE_TZ = True
 PROJECT_DIR = os.path.dirname(__file__)
 
 STATIC_ROOT = "/var/www/revendication/static/"
+
+MEDIA_ROOT = 'revendication/media/'
+
+
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "revendication/static"),
+    )
+
+MEDIA_URL = 'media/'
 
 STATIC_URL = '/static/'
 

@@ -27,6 +27,49 @@ jQuery(document).ready(function()
             jQuery("#tableau_mes_revendications").DataTable();
             jQuery('.tap-target').tapTarget('open');
 
+
+
+             boutons = jQuery('[cible]')
+             ancien= jQuery("#Statistiques")
+                      
+                          
+
+                  function bouton_actif(x){
+                          
+                          boutons.parent().css("border", "solid black 0px")
+                          x.css("border", "solid black 2px") 
+                                          }
+
+
+                  function onglet(){
+                             var onglet = "{{onglet}}"
+                             if (onglet == "revendication"){
+                                       jQuery("#bouton_revendications").click()
+                                                        }
+                             else if (onglet == "petition"){
+                                        jQuery("#bouton_petitions").click()
+                                                          }
+                             else if (onglet == "evenement"){
+                                      jQuery("#bouton_evenements").click()
+                                                      }  
+                             else if (onglet == "vide"){jQuery("#badge_liste").get(0).click();}
+                                     }
+
+                             
+
+                
+
+                   boutons.click(function() {
+                              
+                                bouton_actif(jQuery(this).parent())
+                                var cible= "#"+ jQuery(this).attr('cible') 
+                                ancien.hide() 
+                                ancien = jQuery(cible)
+                                ancien.show()
+                                          });                  
+  
+
+
           });
  
                   

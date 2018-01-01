@@ -1,0 +1,68 @@
+<div id="dialog_formulaire_{{objet}}"  title="{{titre}}">
+                                             
+                                              <form  id="formulaire_{{objet}}" enctype="multipart/form-data" action="page_creer_{{objet}}" method="post">
+                                                  {% csrf_token %}
+                                                  
+                                                  {{formulaire}}
+                                                  
+                                                  <ul>
+                                                  {% comment %}
+                                                  {% endcomment %}  
+                                                  <input id="form_validation_{{objet}}" type="submit" tabindex="-1" style="position:absolute; top:-1000px" >
+                                              </form>     
+                                          
+</div>
+
+
+
+
+
+<script>
+//Formulaires
+
+
+//include à fournir:
+
+      //  include "revendications/page_tableau_de_bord/formulaire_generique.html" with objet="xxx" titre="creation d'une nouvelle xxx" formulaire=datas.formulaire.xxx datas=datas 
+  
+
+
+jQuery(document).ready(function()
+          { 
+
+           	 function validation(){
+                                  
+                                  alert("{{objet}} créee")
+                                  jQuery("#formulaire_{{objet}}").submit()
+                                  }    
+
+
+            jQuery("#ajouter_{{objet}}").click(function() {
+
+
+                                            jQuery("#id_titre").css("font-size" , "30px").css("color", "black")
+                                            jQuery("#dialog_formulaire_{{objet}}").dialog({
+                                                                          draggable: true,
+                                                                          autoOpen: true,
+                                                                          show: {
+                                                                                effect: "blind",
+                                                                                duration: 500
+                                                                              },
+                                                                          height: 600,
+                                                                          width: 500,
+                                                                          modal: true,
+                                                                          buttons: {
+                                                                            "creation de  {{objet}}": validation,
+
+                                                                           
+                                                                            
+                                                                            
+                                                                          }});
+                                                                
+
+
+                                                                       });
+
+        });
+  
+</script>

@@ -5,15 +5,19 @@
                                             <a id = "bouton_mes_evenements" class="waves-effect waves-light btn purple">Mes evenements</a>
                                           </div>
                                           
+                                           
+
                                           <div class="col s4">
                                             <a id = "bouton_tous_les_evenements" class="waves-effect waves-light btn purple">Suggestions</a>
                                           </div>
                                         </div>
 
 
-                             <div class="card white lighten-2" id="carte_evenements">
+                                 <div class="card white lighten-2" id="carte_evenements">
                                       <div class="card-content black-text" >
-                                        
+                                       <div class="titre_revendication"> 
+                                      {% include "revendications/page_tableau_de_bord/entete_tableau.html" with titre="Evenements" couleur="purple" nom_logo="event" objet="evenement"%}
+                                     </div>
                                         <table class=" purple striped lighten-4 display centered" id="tableau_evenements">
                                         <thead>
                                           <tr class="purple "  style="font-size: 25px; color: black;">
@@ -31,7 +35,7 @@
                                           <tr class="purple lighten-3 {{evenement.mienne}}">
                                             <td > <a  style="color: black" href="page_evenement.html?evenement_id={{evenement.id}}">{{evenement.titre}}</a> </td>
                                             <td >{{evenement.lieu}}</td>
-                                            <td > {{evenement.date}}</td>
+                                            <td > {{evenement.date|date:"Y/m/d"}}</td>
                                             <td > {{evenement.description}}</td>
                                             <td > {{evenement.proposition}}</td>
                                             <td > {{evenement.nb_participant}}</td>
@@ -65,13 +69,13 @@
 
                     
                                 bouton_mes_evenements.click(function() {
-                                              bouton_actif(jQuery(this))
+                                              
                                               jQuery(".non").hide();
                                                         });
 
                                 bouton_tous_les_evenements.click(function() {
                                             
-                                           bouton_actif(jQuery(this))
+                                           
                                             jQuery(".non").show();
                                                       });
 

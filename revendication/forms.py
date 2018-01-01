@@ -67,14 +67,40 @@ class CompetenceForm(forms.Form):
 	titre = forms.CharField(max_length = 100)
 	description = forms.CharField(widget = forms.Textarea)
 	#propositions = forms.CharField(widget = )
+	lieu = forms.CharField(max_length = 100)
 	date_echeance = forms.DateField(widget = forms.SelectDateWidget(),required = False)
+
 	"""
 	class Meta:
 		model = Petition
 		#fields = ['titre', 'description', 'propositions', 'date_echeance', 'objectif_de_signataires']
 		fields = '__all__'
 	"""
-		
+	
+
+class DocumentForm(forms.Form):
+    CHOIX_TYPE_DOCUMENT=(
+        ('texte', 'texte'),
+        ('article', 'article'),
+        ('image', 'image'),
+        ('video', 'video'),
+        ('autre', 'autre')
+        )
+
+    """CHOIX_LIEN=(
+    	('petition', 'petition'),
+    	('evenement', 'evenement'),
+    	('competence', 'competence'),
+    	('organisation', 'organisation'),
+    	)"""
+
+    nom = forms.CharField(max_length=100)
+    format= forms.CharField(widget= forms.Select(choices=CHOIX_TYPE_DOCUMENT))
+    fichier = forms.FileField()
+    
+    
+
+
 
 class AuthentificationForm(forms.Form):
 	nom = forms.CharField(max_length=100)

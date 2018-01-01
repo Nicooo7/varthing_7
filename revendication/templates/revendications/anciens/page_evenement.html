@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block rubrique_titre %}
+{% include "revendications/elements/formulaire_creation_revendication.html" with datas=datas %}
 {% endblock rubrique_titre %}
 
 
@@ -60,6 +61,7 @@
            <div class="card white lighten-2" id="statistiques">
               <div class="card-content black-text">
                 <span class="card-title">Statistiques</span>
+                {% include "revendications/elements/formulaire_creation_revendication.html" with datas=datas %}
                  <p>participants: {{datas.evenement.participants|length}}</p>
                  <p>lieu: {{datas.evenement.lieu}}</p>
                  <p>description: {{datas.evenement.description}}</p>

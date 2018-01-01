@@ -1,0 +1,74 @@
+{% load static %}
+
+                                      <div class="row" id="choix_documents">
+                                          <div class="col s4">
+                                            <a id = "bouton_mes_documents" class="waves-effect waves-light btn indigo">Mes documents</a>
+                                          </div>
+                                          
+                                          <div class="col s4">
+                                            <a id = "bouton_tous_les_documents" class="waves-effect waves-light btn indigo">Suggestions</a>
+                                          </div>
+                                        </div>
+
+
+
+                                <div class="card white lighten-2" id="carte_documents">
+                                      <div class="card-content black-text" >
+                                        <div class="titre_revendication">
+                                        {% include "revendications/page_tableau_de_bord/entete_tableau.html" with titre="documents" couleur="indigo" nom_logo="card_travel" objet="document"%}
+                                      </div>
+                                        <table class=" orange striped lighten-4 display centered" id="tableau_documents">
+                                        <thead>
+                                          <tr class="indigo" style="font-size: 25px; color: black;">
+                                              <th>nom</th>
+                                              <th>Date de création</th>
+                                              <th>En lien avec</th>
+                                              <th>Type de document</th>
+                                              <th>Consulter</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                      {% for document in datas.documents %}
+                                          <tr class="indigo lighten-3 {{document.mienne}}">
+                                            <td >{{document.nom}}</td>
+                                            <td >{{document.date_creation|date:"Y/m/d"}}</td>
+                                            <td > {{document.proposition.ennonce}}</td>
+                                            <td > {{document.format}}</td>
+                                            <td > <a id="consulter_document" href= "{{document.fichier.url}}" class="btn-floating waves-effect waves-light indigo tooltipped" data-position="right" data-delay="0" data-tooltip="consulter"><i class="material-icons indigo">drafts</i> </a> <img src="{{document.fichier.path}}"/></td>
+                                          </tr>  
+                                      {% endfor %}  
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>  
+
+                                  <script>
+
+                                  carte_documents = jQuery('#carte_documents')
+                                  ajouter_document = jQuery('#ajouter_document')
+                                  bouton_toutes_les_documents = jQuery('#bouton_toutes_les_documents')
+                                  bouton_mes_documents = jQuery('#bouton_mes_documents')
+
+
+
+                                   bouton_mes_documents.click(function() {
+                                      
+                                     
+                                      jQuery(".oui").show();
+                                      jQuery(".non").hide();
+                                                });
+
+                                    bouton_toutes_les_documents.click(function() {
+                                               
+                                               
+                                                jQuery(".non").show();
+                                                jQuery(".oui").hide();
+                                                          });
+
+                                 dt = jQuery("#tableau_documents").DataTable({
+                            dom: 'lftrip',
+                            language: {url: "{% static 'bower_components/DataTables/media/french.json' %}"} 
+                      });
+                                  //dt.column(5).visible(false);
+                                  
+                                  </script>

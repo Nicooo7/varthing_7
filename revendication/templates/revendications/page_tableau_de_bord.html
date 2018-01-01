@@ -47,26 +47,35 @@
                                     <div id="graphique">       
                                       {% include "revendications/page_tableau_de_bord/conteneur_graphique.html" with datas=datas %}
                                     </div>
+                                    <script>jQuery("#graphique").hide()</script>
 
                                     <!--autres_cartes--> 
-                                      {% block autres_cartes %}
-                                      {% endblock autres_cartes %}
+                                      {% block autre %}
+                                      {% endblock autre %}
                           
                                    <!--tableau revendication--> 
-                                   <div id="Tableau_revendication">
+                                   <div id="Tableau_revendication" style="display: none">
                                         {% include "revendications/page_tableau_de_bord/tableau_revendication.html" with datas=datas %}
                                   </div>
                                         
                                     <!--tableau petition-->
-                                    <div id="Tableau_petition">
+                                    <div id="Tableau_petition" style="display: none">
                                         {% include "revendications/page_tableau_de_bord/tableau_petition.html" with datas=datas %}
                                     </div>    
                                     <!--tableau evenement--> 
-                                    <div id="Tableau_evenement">     
+                                    <div id="Tableau_evenement" style="display: none">     
                                         {% include "revendications/page_tableau_de_bord/tableau_evenement.html" with datas=datas %}
                                     </div>    
+                                     <!--tableau competence--> 
+                                    <div id="Tableau_competence" style="display: none">     
+                                        {% include "revendications/page_tableau_de_bord/tableau_competence.html" with datas=datas %}
+                                    </div> 
+                                     <!--tableau document--> 
+                                    <div id="Tableau_document" style="display: none">     
+                                        {% include "revendications/page_tableau_de_bord/tableau_document.html" with datas=datas %}
+                                    </div>
                                      <!--tableau suggestion--> 
-                                     <div id="Tableau_suggestion">
+                                     <div id="Tableau_suggestion" style="display: none">
                                          {% include "revendications/page_tableau_de_bord/tableau_suggestion.html" with datas=datas %} 
                                       </div>                              
                           
@@ -86,8 +95,11 @@
 
 
         <!--formulaire--> 
-        {% include "revendications/formulaires/formulaire_creation_revendication.html" with datas=datas %}
-
+        {% block formulaire %}
+        <div style="display: none">
+          {% include "revendications/page_tableau_de_bord/formulaire_generique.html" with objet="revendication" titre="creation d'une nouvelle revendication" formulaire=datas.formulaires.revendication datas=datas %}
+        </div>
+        {% endblock formulaire %}
 
 
 
@@ -102,7 +114,7 @@
 {% endblock zone_centrale %}
 
 </div>
-</div>
+
 
 
 

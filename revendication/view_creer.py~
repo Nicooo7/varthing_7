@@ -121,7 +121,8 @@ def creer_petition(request):
 		# Un formulaire a été envoyé !
 		#
 		form = PetitionForm(request.POST)
-		if form.is_valid():			#
+		if form.is_valid():
+			#
 			# Traitement du formulaire valide
 			#
 			titre = unidecode(form.cleaned_data['titre']).encode('utf-8')

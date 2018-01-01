@@ -1,0 +1,41 @@
+{% load static %}
+
+<div clas="row">
+          <div class="col s6" style="heigth: 500px">
+           <div class="card blue lighten-3" id="statistiques">
+              <div class="card-content black-text">
+                <span class="card-title">Statistiques</span>
+                 <p>soutiens: {{datas.proposition.nb_supporter}}</p>
+                 <p>organisations: {{datas.organisations|length}}</p>
+                 <p>evenements: {{datas.evenements|length}}</p>
+                 <p>petitions: {{datas.petitions|length}}</p>
+                 <p>documents: {{datas.documents|length}}</p>
+              </div>
+            </div>
+          </div>
+        <div class="col s6"> 
+            <div class="card blue lighten-4" id="graph" style="height : 500px">
+                <div class = "container" id="container2" style= 
+                      "
+                      height: 100%;
+                      width: 100%;
+                      border: 0px solid;
+                      -moz-border-radius:3px;
+                      -webkit-border-radius:3px;
+                      border-radius:3px;
+                      " 
+                      >
+                 </div>  
+             </div>
+        </div> 
+</div>
+
+
+          <script> var graph = "{{graph_accueil}}"; </script>
+                  <script src="{% static "revendication/js/affichageGraphique.js" %}"></script> 
+                  <script>  
+                        conteneur = jQuery('#conteneur2')
+                        jQuery('#container').empty()
+                        var graph = "{{graph}}"; 
+                        affichage_graphique2(graph); 
+                  </script> 

@@ -66,6 +66,7 @@ class Evenement (models.Model):
     description = models.CharField(max_length = 10000, null = True)
     proposition = models.ForeignKey (Proposition, null=True)
     participants= models.ManyToManyField(User, through= "Soutien", null =True)
+    date_creation = models.DateField (default= timezone.now, null=True)
 
     def __str__(self):
         return self.titre
@@ -103,6 +104,7 @@ class Profile (models.Model):
     sexe = models.CharField(max_length = 10, null = True)
     profession = models.CharField(max_length = 10, null = True)
     interets = models.CharField (max_length = 1000, null = True)
+    date_creation = models.DateField (default= timezone.now, null=True)
 
 
     def __str__(self):
@@ -116,6 +118,7 @@ class Organisation (models.Model):
     description = models.CharField(max_length = 200, null = True)
     profile = models.ForeignKey(Profile, null=True)
     adherent =  models.ManyToManyField(User, through= "Soutien", null =True)
+    date_creation = models.DateField (default= timezone.now, null=True)
 
     def __str__(self):
         return "organisation {0}".format(self.profile)
@@ -135,6 +138,7 @@ class Petition(models.Model):
     date_echeance = models.DateField("Date d'échéance", null=True, blank=True)
     objectif_de_signataires = models.IntegerField(null=True)
     signataires = models.ManyToManyField(User, through="Soutien", null=True)
+    
 
     
     # Méthode/Propriété : "createur" : donne le username du créateur de la pétition
@@ -189,6 +193,43 @@ class Competence (models.Model):
         return self.titre
 
 
+class Document(models.Model):
+    CHOIX_TYPE_DOCUMENT=(
+        ('texte', 'texte'),
+        ('article', 'article'),
+        ('image', 'image'),
+        ('video', 'video'),
+        ('autre', 'autre')
+        )
+    nom = models.CharField(max_length=100)
+    format= models.CharField(max_length=10, choices= CHOIX_TYPE_DOCUMENT)
+    date_creation = models.DateField("Date création document", auto_now=True)
+    proposition = models.ForeignKey(Proposition, null =True)
+    evenement = models.ForeignKey(Evenement, null = True, blank=True)
+    organisation = models.ForeignKey(Organisation, null = True, blank=True)
+    petition = models.ForeignKey(Petition, null = True, blank=True)
+    competence = models.ForeignKey(Competence, null = True, blank=True)
+    fichier = models.FileField(upload_to='uploads/%Y/%m/%d/')
+    personnes= models.ManyToManyField(User, through="Soutien", null=True)
+
+    def __str__(self):
+        return self.nom
+
+    def __createur(self):
+        soutien = Soutien.objects.get(document=self, lien = 'CR')
+        return soutien.user
+    createur = property(__createur)
+
+    def __nb_de_consultation(self):
+        soutien = Soutien.objects.filter(document=self, lien = 'SO')
+        return soutien.count()
+    nb_consultations = property(__nb_de_consultation)
+
+
+
+
+
+
 class Soutien(models.Model):
 
     CHOIX_LIEN= (
@@ -205,10 +246,13 @@ class Soutien(models.Model):
     organisation = models.ForeignKey(Organisation, null = True, blank=True)
     petition = models.ForeignKey(Petition, null = True, blank=True)
     competence = models.ForeignKey(Competence, null = True, blank=True)
+    document= models.ForeignKey(Document, null = True, blank=True)
 
     def __str__(self):
         return self.user.username
         #return "lien entre {0} et {1}{2}{3} (type {4})".format(self.user, self.evenement, self.organisation, self.petition, self.lien)
+
+
 
 
 

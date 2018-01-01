@@ -36,7 +36,7 @@ def retourner_la_proposition(request):
 def retourner_la_petition(request):
 	app_name = 'revendication'
 	if request.GET:
-		petition_id = request.GET["petition.id"]
+		petition_id = request.GET["petition_id"]
 		petition = Petition.objects.get(id = petition_id)	
 		return petition
 	else:
@@ -58,44 +58,55 @@ def supprimer_soutien_revendication(request):
 	proposition =retourner_la_proposition(request)
 	utilisateur= request.user
 	liste = []
-	soutien = Soutien.objects.get(propositions = proposition, user=utilisateur, lien="SO")
-	soutien.delete()
+	try:
+		soutien = Soutien.objects.get(propositions = proposition, user=utilisateur, lien="SO")
+		soutien.delete()
+	except:
+		soutien = Soutien.objects.get(propositions = proposition, user=utilisateur, lien="CR")
+		soutien.delete()	
 	request.session["onglet"]="revendication"
-	proposition = request.GET["proposition_id"]
+	proposition_id = request.GET["proposition_id"]
 
-	if request.GET ['page'] == "revendication":
-		return redirect ('page_revendication.html?proposition_id='+ proposition_id)
+	if request.session["proposition_id"] != "toutes":
+		return redirect ('page_revendication.html?proposition_id='+ str(proposition_id))
 	else:	
 		return redirect ('page_tableau_de_bord.html')
 
 
 def supprimer_soutien_petition(request):
-	proposition_id = request.GET["proposition_id"]
 	petition =retourner_la_petition(request)
 	utilisateur= request.user
 	liste = []
-	soutien = Soutien.objects.get(petition = petition, user=utilisateur, lien="SO")
-	soutien.delete()
+	try:
+		soutien = Soutien.objects.get(petition = petition, user=utilisateur, lien="SO")
+		soutien.delete()
+	except:
+		soutien = Soutien.objects.get(petition= petition, user=utilisateur, lien="CR")
+		soutien.delete()
 	request.session["onglet"]="petition"
-	proposition = request.GET["proposition_id"]
-	if request.GET ['page'] == "revendication":
-		return redirect ('page_revendication.html?proposition_id='+ proposition_id)
+	proposition_id = request.session["proposition_id"]
+	if request.session["proposition_id"] != "toutes":
+		return redirect ('page_revendication.html?proposition_id'+ str(proposition_id))
 	else:	
 		return redirect ('page_tableau_de_bord.html')
 	
 
 def supprimer_soutien_evenement(request):
-	proposition_id = request.GET["proposition_id"]
+	
 	evenement =retourner_evenement(request)
 	utilisateur= request.user
 	liste = []
-	soutien = Soutien.objects.get(evenement= evenement, user=utilisateur, lien="SO")
-	soutien.delete()
-	request.session["onglet"]="evenement"
-	proposition = request.GET["proposition_id"]
 	try:
-		if request.GET ['page'] == "revendication":
-			return redirect ('page_revendication.html?proposition_id='+ proposition_id)
+		soutien = Soutien.objects.get(evenement= evenement, user=utilisateur, lien="SO")
+		soutien.delete()
+	except:
+		soutien = Soutien.objects.get(evenement= evenement, user=utilisateur, lien="CR")
+		soutien.delete()
+	request.session["onglet"]="evenement"
+	proposition_id = request.session["proposition_id"]
+	try:
+		if request.session["proposition_id"] != "toutes":
+			return redirect ('page_revendication.html?proposition_id='+ str(proposition_id))
 		else:	
 			return redirect ('page_tableau_de_bord.html')
 	except:

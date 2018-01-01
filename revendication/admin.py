@@ -12,19 +12,27 @@ from .models import Evenement
 from .models import Proximite
 from .models import Petition
 from .models import Competence
+from .models import Document
 
 class SoutienAdmin(admin.ModelAdmin):
-	list_display	= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition', 'competence')
-	list_filter		= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition', 'competence')
+	list_display	= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition', 'competence', 'document')
+	list_filter		= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition', 'competence', 'document')
 	date_hierarchy	= 'date'
-	ordering		= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition', 'competence')
-	search_fields	= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition', 'competence')
+	ordering		= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition', 'competence', 'document')
+	search_fields	= ('user', 'date', 'lien', 'propositions', 'evenement', 'organisation', 'petition', 'competence', 'document')
 
 class PetitionAdmin(admin.ModelAdmin):
 	list_display	= ('titre', 'date_creation', 'date_echeance', 'objectif_de_signataires')
 
 class CompetenceAdmin(admin.ModelAdmin):
 	list_display	= ('titre', 'date_creation', 'date_echeance')
+
+class EvenementAdmin(admin.ModelAdmin):
+	list_display	= ('titre', 'lieu', 'date', 'description', 'proposition', 'participants')
+
+class DocumentAdmin(admin.ModelAdmin):
+	list_display	= ('nom', 'date_creation', 'fichier', 'proposition')
+
 
 admin.site.register(Proposition)
 admin.site.register(Theme)
@@ -35,5 +43,6 @@ admin.site.register(Autre_utilisateur)
 admin.site.register(Proximite)
 admin.site.register(Organisation)
 admin.site.register(Evenement)
+admin.site.register(Document, DocumentAdmin)
 admin.site.register(Petition, PetitionAdmin)
 admin.site.register(Competence, CompetenceAdmin)

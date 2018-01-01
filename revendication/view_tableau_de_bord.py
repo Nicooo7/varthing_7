@@ -35,7 +35,6 @@ app_name = 'revendication'
 
 
 
-
 #_____________________vue_______________________#
 
 
@@ -89,6 +88,7 @@ def tableau_de_bord(request):
 		liste_des_propositions_communes = []
 		liste_des_proximites =[]
 		liste = []
+		date_M1 = datetime.now()-timedelta(30)
 
 		for u in utilisateurs:
 			propositions_u = Proposition.objects.filter(soutien__user=u, soutien__lien="SO")
@@ -102,18 +102,33 @@ def tableau_de_bord(request):
 				if p not in mes_propositions:
 					p.force_suggestion = proximite
 					if p not in liste:
+						soutiens_M1 = Soutien.objects.filter(date__lte = date_M1, propositions = p)
+						nb_soutiens = len(soutiens_M1)
+						p.progression = nb_soutiens
 						liste.append(p)		
 
 		liste_evenement = evenements()
-		liste_petitions = petitions()				
+		liste_petitions = petitions()
+		liste_documents= documents()				
 
 		liste.extend(liste_evenement)
 		liste.extend(liste_petitions)
+		liste.extend(liste_documents)
+
+		#print("°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°listelisteliste",liste)
 
 		return liste			
 
 
-
+	def documents():
+		propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		liste=[]
+		documents = Document.objects.all()
+		for d in documents:
+			if d.proposition in propositions:
+				liste.append(d)
+			
+		return liste 		
 
 	def mes_revendications():
 		propositions = Proposition.objects.filter(soutien__user = utilisateur)
@@ -142,8 +157,29 @@ def tableau_de_bord(request):
 					ev.mienne = "oui"
 				else:
 					ev.mienne = "non"
-			liste.append(ev)
+				liste.append(ev)
 		return liste
+
+
+	def competences():
+		liste_de_mes_competences = Competence.objects.filter(soutien__user = utilisateur)
+		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		competences = Competence.objects.all()
+		liste = []
+		for comp in competences:
+			#print("la valeur de P est: ", p)
+			propositions = comp.propositions.all()
+			for prop in propositions:
+				print("******************************proposition", prop)
+				if prop in liste_de_mes_propositions:
+					if comp in liste_de_mes_competences : 
+						comp.mienne = "oui"
+					else:
+						comp.mienne = "non"
+					liste.append(comp)
+		return liste
+
+		
 
 
 	def petitions():
@@ -183,6 +219,7 @@ def tableau_de_bord(request):
 		return liste
 
 
+			
 
 	
 	class formulaire:
@@ -211,7 +248,8 @@ def tableau_de_bord(request):
 				self.evenements = evenements()
 				self.organisations = Organisation.objects.filter(soutien__user = utilisateur)
 				#self.documents = Documents.objects.filter(soutien__user = utilisateur)
-				self.competences = Competence.objects.filter(soutien__user = utilisateur)
+				self.competences = competences()
+				self.documents = documents()
 				self.petitions = petitions()
 				self.mes_revendications = mes_revendications()
 				self.suggestions = suggestions()
@@ -249,6 +287,8 @@ def tableau_de_bord(request):
 	graph_a =  graph_accueil()
 	graph_p = graph_populaire()
 
+
+	request.session["proposition_id"]="toutes"
 
 	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas, "graph_utilisateur":mark_safe(graph_u),"graph_accueil":mark_safe(graph_a),"graph_populaire":mark_safe(graph_p),"onglet": onglet})
 

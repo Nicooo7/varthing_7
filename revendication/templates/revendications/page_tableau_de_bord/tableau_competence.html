@@ -1,0 +1,96 @@
+{% load static %}
+
+
+
+                                    <div class="row" id="choix_competences">
+                                          <div class="col s4">
+                                            <a id = "bouton_mes_competences" class="waves-effect waves-light btn pink">Mes compétences</a>
+                                          </div>
+                                          
+                                          <div class="col s4">
+                                            <a id = "bouton_tous_les_competences" class="waves-effect waves-light btn pink">Suggestions</a>
+                                          </div>
+                                        </div>
+
+
+                             <div class="card white lighten-2" id="carte_competences">
+                                      <div class="card-content black-text" >
+                                        <div class="titre_revendication">
+                                          {% include "revendications/page_tableau_de_bord/entete_tableau.html" with titre="Compétences" couleur="pink" nom_logo="pan_tool" objet="competence"%}
+                                        </div>
+                                        <table class=" pink striped lighten-4 display centered" id="tableau_competences">
+                                        <thead>
+                                          <tr class="pink "  style="font-size: 15px; color: black;">
+                                              <th>Titre </th>
+                                              <th>Description</th>
+                                              <th>Date de creation</th>
+                                              <th>Date d'echeance</th>
+                                              <th>proposition</th>
+                                              <th>createur</th>
+                                              <th>action</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                      {% for competence in datas.competences %}
+                                          <tr class="pink lighten-3 {{competence.mienne}}">
+                                            <td > <a  style="color: black" href="page_competence.html?competence_id={{competence.id}}">{{competence.titre}}</a>> </td>
+                                            <td > {{competence.description}}</td>
+                                            <td > {{competence.date_creation}}</td> 
+                                            <td > {{competence.date_echeance|date:"Y/m/d"}}</td>
+                                            
+                                            <td >{% for proposition in competence.propositions.all %}{{proposition.ennonce}}{% endfor %}</td>
+                                            <td > {{competence.createur}}</td>
+
+
+                                            
+                                            {% if competence.mienne == "oui" %}
+                                            <td><a href="page_supprimer_soutien_competence.html?competence_id={{competence.id}}&proposition_id={{competence.proposition.id}}" id = "supprimer_soutien_competence" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus participer"><i class="material-icons pink">thumb_down</i> </a>
+                                        
+                                            {% else %}
+                                            <td> 
+                                              <a href="page_soutenir_competence.html?competence_id={{competence.id}}&proposition_id={{competence.proposition.id}}" id = "soutenir_competence" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="participer"><i class="material-icons pink"> thumb_up</i></a>
+                                            </td>
+                                            {% endif %}
+
+                                          </tr>
+                                      {% endfor %}  
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>  
+                                  <script>
+
+                                  bouton_mes_competences = jQuery('#bouton_mes_competences');
+                                  bouton_tous_les_competences = jQuery('#bouton_tous_les_competences')
+                                  carte_competences = jQuery('#carte_competences')
+                                  ajouter_competence = jQuery('#ajouter_competence')
+                                
+
+                    
+                                bouton_mes_competences.click(function() {
+                                              
+                                              jQuery(".non").hide();
+                                                        });
+
+                                bouton_tous_les_competences.click(function() {
+                                            
+                                          
+                                            jQuery(".non").show();
+                                                      });
+
+
+
+
+                                 dt = jQuery("#tableau_competences").DataTable({
+                            dom: 'lftrip',
+                            language: {url: "{% static 'bower_components/DataTables/media/french.json' %}"} 
+                      });
+                                  //dt.column(5).visible(false);
+
+
+
+                                  
+                                  </script>    
+
+
+

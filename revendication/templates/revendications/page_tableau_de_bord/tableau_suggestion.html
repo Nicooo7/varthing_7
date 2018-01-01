@@ -19,31 +19,43 @@
                                           {% if e.ennonce %}
                                           <tr class="orange lighten-3 ">
                                             <td > {{e.ennonce}}</td>
-                                            <td >{{e.date_creation}}</td>
+                                            <td >{{e.date_creation|date:"Y/m/d"}}</td>
                                             <td > {{e.nb_soutien}}</td>
                                             <td > {{e.force_suggestion}}</td>
                                            </tr> 
                                            {% endif %}
-                                           {% if e.nb_participant %}
+                                           {% if e.participants %}
                                             {% if e.mienne == "non" %}
                                           <tr class="purple lighten-3">
                                             <td > {{e.titre}}</td>
-                                            <td >{{e.date}}</td>
-                                            <td >X</td>
-                                            <td >X</td>
+                                            <td >{{e.date|date:"Y/m/d"}}</td>
+                                            <td >_</td>
+                                            <td >_</td>
                                            </tr> 
                                            {% endif %}
                                            {% endif %}
-                                           {% if e.nb_signataires %}
+
+                                           {% if e.signataires %}
                                            {% if e.mienne == "non" %}
                                           <tr class="green lighten-3">
                                             <td > {{e.titre}}</td>
-                                            <td >{{e.date_creation}}</td>
+                                            <td >{{e.date_creation|date:"Y/m/d"}}</td>
                                             <td >X</td>
                                             <td >X</td>
                                            </tr> 
                                            {% endif %}
                                            {% endif %}
+
+
+                                          {% if e.format %}
+                                          <tr class="indigo lighten-3">
+                                            <td > {{e.nom}}</td>
+                                            <td >{{e.date_creation|date:"Y/m/d"}}</td>
+                                            <td >_</td>
+                                            <td >_</td>
+                                           </tr> 
+                                          {% endif %}
+
                                       {% endfor %}  
                                         </tbody>
                                       </table>

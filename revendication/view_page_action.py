@@ -29,7 +29,9 @@ app_name = 'revendication'
 
 
 #_____________________vue_______________________#
-
+def telecharger(request):
+	fichier = request.GET['fichier_url'] 
+	return redirect(fichier)
 
 
 def soutenir_une_revendication (request):

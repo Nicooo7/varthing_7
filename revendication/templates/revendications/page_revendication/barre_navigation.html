@@ -1,0 +1,65 @@
+<!-- Boutons creation formulaires-->
+  <div class="section"></div>
+  <nav>
+    <div class="nav-wrapper grey lighten-3">
+         <ul class= "left">      
+                
+                     <li> <a class="btn-floating  waves-effect waves-light orange" id="B_revendications">
+                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="revendications en lien" cible="Tableau_revendication" id="B_I_revendications" >record_voice_over</i>
+                      </a> </li>
+               
+               
+                     <li> <a class="btn-floating  waves-effect waves-light green" id="B_petitions">
+                        <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="pétitions en lien"cible="Tableau_petition"  id="B_I_petitions" >format_align_center</i>
+                      </a>  </li>
+
+                
+               
+                       <li><a class="btn-floating  waves-effect waves-light purple" id="B_evenements" >
+                           <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="évènements en lien" cible="Tableau_evenement"  id="B_I_evenements" >event</i>
+                      </a>  </li> 
+                 
+                
+                   <li><a class="btn-floating  waves-effect waves-light pink lighten-1" id="B_coups_de_mains">
+                      <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="coups de mains en lien" cible="Tableau_competence" id="B_I_coups_de_main" >pan_tool</i>
+                    </a> </li>
+               
+                  
+                         <li> <a class="btn-floating   waves-effect waves-light indigo darken-2" id="B_documents">
+                         <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="documents en lien" cible="Tableau_document"  id="B_I_documents" >card_travel</i>
+                          </a> </li>
+                
+                 
+                      <li><a class="btn-floating waves-effect waves-light  teal darken-2" id="B_organisations">
+                     <i class="material-icons tooltipped large" data-position="bottom" data-delay="0" data-tooltip="organisations en lien" cible="Tableau_organisation" id="B_I_organisations" >group</i>
+                      </a>
+                    </li>
+
+
+                     <li><a class="btn-floating waves-effect waves-light  white" id="B_statistiques">
+                     <i class="material-icons tooltipped large blue" data-position="bottom" data-delay="0" data-tooltip="satistiques" cible="Statistiques" id="B_I_statistiques" >timeline</i>
+                      </a>
+                    </li>
+              </ul>
+
+
+
+
+
+<!-- BOUTONS DE DROITE -->
+   <ul class="right ">
+        {% if datas.soutenue == "oui" %} 
+             <li> <a href= "#" class="btn  btn-large waves-effect waves-light blue"> Vous soutenez </a>
+            {% endif %}  </li> 
+        {% if datas.soutenue == "oui" %} 
+        <li><a href= "page_supprimer_soutien_revendication.html?proposition_id={{datas.proposition.id}}&page=revendication" id = "supprimer_soutien_revendication" class="btn   waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus soutenir"><i class="large material-icons orange"> thumb_down</i></a></li>
+       
+        {% else %}
+        <li>
+          <a href= "page_soutenir_revendication.html?proposition_id={{datas.proposition.id}}&page=revendication" id = "supprimer_soutien_revendication" class="btn waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="soutenir"><i class="large material-icons orange"> thumb_up</i></a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>  
+  </nav>   
+  <div class="section"> </div>   

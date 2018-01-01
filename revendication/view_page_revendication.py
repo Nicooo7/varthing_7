@@ -34,15 +34,10 @@ app_name = 'revendication'
 
 def page_revendication(request):
 	
-
-	p_id = request.GET["proposition_id"]
-	try:
-		proposition = Proposition.objects.get(id= p_id)
+	try: 
+		proposition = Proposition.objects.get(ennonce = str(request.GET["proposition_id"]))
 	except:
-		proposition= Proposition.objects.get(ennonce= p_id)
-
-
-
+		proposition = Proposition.objects.get(id= request.GET["proposition_id"])
 
 	def revendications(proposition):
 		triplets = data_propositions_proches(proposition)
@@ -52,6 +47,25 @@ def page_revendication(request):
 			proposition.score = triplet[2]
 			liste.append(proposition)
 		return liste
+
+	
+
+	def competence(proposition):
+		liste= []
+		competences = Competence.objects.all()
+		for competence in competences:
+			if proposition in competence.propositions.all():
+				liste.append(competence)
+		return liste
+
+	def petition(proposition):
+		liste= []
+		petitions = Petition.objects.all()
+		for petition in petitions:
+			if proposition in petition.propositions.all():
+				liste.append(petition)
+		return liste	
+
 			
 
 
@@ -70,11 +84,12 @@ def page_revendication(request):
 				#print("jjjqsdfqmsldkfjqmslkdfjqmlskdjfqsjdfmlqskdjflqskjdflqskjdflqksjdflqkjdf createur", self.createur)
 				except:
 					self.createur = "inconnu"
-				self.evenements = Evenement.objects.filter(proposition_id = id_proposition)
-				self.petitions = proposition.petition_set.all()
-				self.competences = proposition.competence_set.all()
-				self.organisations = Evenement.objects.filter(proposition_id = id_proposition)
-				#self.documents = proposition.document_set.all()
+
+				self.evenements = Evenement.objects.filter(proposition = proposition)
+				self.petitions = petition(proposition)
+				self.competences = competence(proposition)
+				#self.organisations = organisation(proposition)
+				self.documents = Document.objects.filter(proposition = proposition)
 				mes_propositions = Proposition.objects.filter(soutien__user = utilisateur, soutien__lien = "SO")
 				if proposition in mes_propositions:
 					self.soutenue = "oui"
@@ -87,6 +102,8 @@ def page_revendication(request):
 						self.revendication = RevendicationForm
 						self.petition =PetitionForm
 						self.evenement= EvenementForm
+						self.competence =CompetenceForm
+						self.document = DocumentForm
 				self.formulaires = formulaire()
 
 
@@ -98,11 +115,10 @@ def page_revendication(request):
 	
 	#print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", proposition)
 	graph = graph_revendication(proposition)
-	print("****************************************************, graph",graph)	
+		
 	graph = mark_safe(graph)
 	datas = creer_les_datas(proposition)
-
-
+	request.session["proposition_id"]= request.GET["proposition_id"]
 
 	return render (request, 'revendications/page_revendication.html', {"datas":datas, "graph":graph})	
 
