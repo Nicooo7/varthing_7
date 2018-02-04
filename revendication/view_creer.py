@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
+from django.contrib.auth.hashers import *
 #from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -200,7 +201,7 @@ def creer_competence(request):
 def creer_evenement(request):
 
 	#proposition =retourner_la_proposition(request)
-	print ("___________creation evenement_")
+	#print ("___________creation evenement_")
 
 	utilisateur= request.user
 
@@ -245,4 +246,54 @@ def creer_evenement(request):
 
 
 
+def creer_organisation(request):
+
+	#proposition =retourner_la_proposition(request)
+	print ("___________creation organisation_")
+
+	utilisateur= request.user
+
+	if request.user.is_authenticated:
+		user = request.user
+	else:
+		print ('authentification necessaire')
+
+	if request.method == 'POST':
+		#
+		# Un formulaire a été envoyé !
+		#
+		form = OrganisationForm(request.POST)
+		if form.is_valid():
+			#
+			# Traitement du formulaire valide
+			#
+			nom = unidecode(form.cleaned_data['nom']).encode('utf-8')
+			description = unidecode(form.cleaned_data['description']).encode('utf-8')
+			url_du_site = unidecode(form.cleaned_data['url_du_site']).encode('utf-8')
+			mail_contact = 	unidecode(form.cleaned_data['mail_contact']).encode('utf-8')
+			lieu_action = form.cleaned_data['lieu_action']
+			mot_de_passe = unidecode(form.cleaned_data['mot_de_passe']).encode('utf-8')
+			
+			
+   
+			# Création de l'organisation et des soutiens...
+
+			o = Organisation(nom=nom, description=description, url_du_site=url_du_site, mail_contact = mail_contact)
+			utilisateur= User.objects.create_user("organisation_"+str(o.nom), "o.nom@varthing.org", mot_de_passe)
+			utilisateur.save()
+			o.utilisateur = utilisateur
+			o.save()
+			
+			soutien = Soutien.objects.create(organisation = o, user = user, lien = 'CR')
+			soutien.save()
+
+			
+			
+			
+			
+
+			
+			#on retourne à la page 
+			
+		return redirect ('page_tableau_de_bord.html')
 

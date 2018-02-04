@@ -1,0 +1,96 @@
+{% extends 'revendications/page_revendication.html' %}
+{% load static %}
+
+{% block rubrique_titre %}
+{% endblock rubrique_titre %}
+
+
+{% block haut %}
+  <!-- Boutons creation formulaires-->
+  <div class="section"></div>
+  <nav>
+    <div class="nav-wrapper grey lighten-3">
+      {% if datas.soutenue == "oui" %}   
+      <ul class= "left">
+        <li><a href= "page_gestion_organisation.html?organisation_id={{datas.organisation.id}}&page=revendication" id = "gerer_organisation" class="btn  waves-effect waves-light teal tooltipped" data-position="right" data-delay="0" data-tooltip="gestion de l'organisation"><i class="large material-icons teal"> create</i></a></li>
+        <li>
+      </ul> 
+      {% endif %} 
+      <ul class="right ">
+        {% if datas.soutenue == "oui" %} 
+             <li> <a href= "#" class="btn  btn-large waves-effect waves-light blue"> Vous soutenez </a>
+            {% endif %}  </li> 
+        {% if datas.soutenue == "oui" %} 
+        <li><a href= "page_supprimer_soutien_organisation.html?organisation_id={{datas.organisation.id}}&page=revendication" id = "supprimer_soutien_organisation" class="btn   waves-effect waves-light teal tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus soutenir"><i class="large material-icons teal"> thumb_down</i></a></li>
+        {% else %}
+        <li>
+          <a href= "page_soutenir_organisation.html?organisation_id={{datas.organisation.id}}&page=revendication" id = "creer_soutien_organisation" class="btn waves-effect waves-light teal tooltipped" data-position="right" data-delay="0" data-tooltip="soutenir"><i class="large material-icons teal"> thumb_up</i></a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>  
+  </nav>   
+  <div class="section"> </div>   
+{% endblock haut %}
+
+{% block milieu_haut %}
+{% endblock milieu_haut %}
+
+{% block gauche %}
+{% endblock gauche %}
+
+
+    {% block autre %}
+        <div class="card white lighten-2" id="l_organisation">
+          <div class="card-content black-text">
+            <span class="card-title center"><h3 style="color:teal"> ORGANISATION : {{datas.organisation.nom}}</h3></span> 
+            <div class="row">
+              <div class="col s12">
+               <h5> proposé par {{datas.createur}}</h5> 
+                <div class="card-content black-text">
+                <span class="card-title"></span>
+                 <p><a class="btn teal " href="#"> membres : {{datas.organisation.nb_de_membre}}</a></p>
+                 <div class= "section"> </div>
+                 <p><a class="btn teal " href="#"> description : {{datas.organisation.description}}</a></p>
+                  <div class="section"> </div>
+                  <p><a class="btn teal " href="#"> création : {{datas.organisation.date_creation}}</a></p>
+                  <div class="section"> </div>
+              </div>
+
+
+
+          <div class="col s12">
+           <div class="card white lighten-2" id="statistiques">
+              <div class="card-content black-text">
+                <span class="card-title"></span>
+                  <ul class="collapsible popout" data-collapsible="accordion">
+                    <!-- icone, element, collection -->
+                     
+                      {% include "revendications/page_organisation/element_accordeon.html" with element_titre="proposition" couleur="orange darken-2" collection=datas.organisation.propositions icone="record_voice_over" datas=datas%}
+                    
+                      {% include "revendications/page_organisation/element_accordeon.html" with element_titre="organisation" couleur="teal darken-2" collection=datas.organisation.organisations icone="group" datas=datas %}
+
+                      {% include "revendications/page_organisation/element_accordeon.html" with element_titre="petition" couleur="green" collection=datas.organisation.petitions  icone="format_align_center" datas=datas %}
+
+                      {% include "revendications/page_organisation/element_accordeon.html" with element_titre="evenement" couleur="purple" collection=datas.organisation.evenements datas=datas icone="event" %}
+
+                      {% include "revendications/page_organisation/element_accordeon.html" with element_titre="document" couleur="indigo" collection=datas.organisation.documents datas=datas icone="card_travel" %}
+
+                      {% include "revendications/page_organisation/element_accordeon.html" with element_titre="competence" couleur="pink" collection=datas.organisation.competences datas=datas icone="pan_tool" %}
+                 </ul>
+                </div>
+              </div>
+            </div>     
+
+
+
+                      
+
+      
+  {% endblock autre %}
+
+{% block autres_scripts %}
+<script>
+</script>
+{% endblock autres_scripts %}
+

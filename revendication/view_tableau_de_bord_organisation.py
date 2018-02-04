@@ -39,16 +39,17 @@ app_name = 'revendication'
 
 
 
-def tableau_de_bord(request):
+def tableau_de_bord_organisation(request):
 	
-	print ("ON EST SUR LA PAGE DU TABLEAU DU BORD")
 
 	utilisateur = request.user
+	organisation_id = request.GET["organisation_id"]
+	organisation = Organisation.objects.get(id=organisation_id)
 
 
 	def creer_les_evenements_du_calendriers ():
 
-		evenements = Evenement.objects.filter(soutien__user = utilisateur, soutien__lien = 'SO')
+		evenements = organisation.evenement.all()
 		fichier_evenement = u""
 		for evenement in evenements:
 			ligne =  evenement.titre + "/" + str(evenement.date) + "/" + str(evenement.id) + "/" + str(evenement.description) +"ggg" 
@@ -65,7 +66,7 @@ def tableau_de_bord(request):
 
 	def revendications():
 		propositions = Proposition.objects.all()
-		mes_propositions = Proposition.objects.filter(soutien__user = utilisateur, soutien__lien = "SO")
+		mes_propositions = organisation.proposition.all()
 		date_M1 = datetime.now()-timedelta(30)
 		liste= []
 		#est ce que je soutiens?
@@ -85,7 +86,7 @@ def tableau_de_bord(request):
 	def suggestions():
 		#les utilisateurs proches de moi
 		utilisateurs = User.objects.all()
-		mes_propositions = Proposition.objects.filter(soutien__user=utilisateur, soutien__lien="SO") 
+		mes_propositions = organisation.proposition.all()
 		liste_des_propositions_communes = []
 		liste_des_proximites =[]
 		liste = []
@@ -98,7 +99,10 @@ def tableau_de_bord(request):
 					if p not in liste_des_propositions_communes:
 						liste_des_propositions_communes.append(p)
 			nb_propositions_communes = len(liste_des_propositions_communes)
-			proximite = nb_propositions_communes/(len(mes_propositions)+len(propositions_u))
+			try:
+				proximite = nb_propositions_communes/(len(mes_propositions)+len(propositions_u))
+			except:
+				proximite = 0
 			for p in propositions_u:
 				if p not in mes_propositions:
 					p.force_suggestion = proximite
@@ -122,7 +126,7 @@ def tableau_de_bord(request):
 
 
 	def documents():
-		propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		propositions = organisation.proposition.all()
 		liste=[]
 		documents = Document.objects.all()
 		for d in documents:
@@ -132,7 +136,7 @@ def tableau_de_bord(request):
 		return liste 		
 
 	def mes_revendications():
-		propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		propositions = organisation.proposition.all()
 		date_M1 = datetime.now()-timedelta(30)
 		liste= []
         #progression?
@@ -148,8 +152,10 @@ def tableau_de_bord(request):
 
 
 	def evenements():
-		liste_de_mes_evenements = Evenement.objects.filter(soutien__user = utilisateur)
-		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		
+		liste_de_mes_evenements = organisation.evenement.all()
+		liste_de_mes_propositions = organisation.proposition.all()
+		
 		evenements = Evenement.objects.all()
 		liste = []
 		for ev in evenements:
@@ -162,25 +168,11 @@ def tableau_de_bord(request):
 		return liste
 
 
-	def organisations():
-	#creer la liste des organisations dont je soutiens les propositions
-		liste_de_mes_organisations = Organisation.objects.filter(soutien__user = utilisateur)
-		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
-		organisations = Organisation.objects.exclude(utilisateur = utilisateur)
-		liste = []
-		for org in organisations:
-			if org.proposition in liste_de_mes_propositions:
-				if org in liste_de_mes_organisations:
-					org.mienne = "oui"
-				else:
-					org.mienne = "non"
-			liste.append(org)
-		return liste
 
 
 	def competences():
-		liste_de_mes_competences = Competence.objects.filter(soutien__user = utilisateur)
-		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		liste_de_mes_competences = organisation.competence.all()
+		liste_de_mes_propositions = organisation.proposition.all()
 		competences = Competence.objects.all()
 		liste = []
 		for comp in competences:
@@ -200,8 +192,8 @@ def tableau_de_bord(request):
 
 
 	def petitions():
-		liste_de_mes_petitions = Petition.objects.filter(soutien__user = utilisateur, soutien__lien="SO")
-		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur, soutien__lien ="SO")
+		liste_de_mes_petitions = organisation.petition.all()
+		liste_de_mes_propositions = organisation.proposition.all()
 		petitions = Petition.objects.all()
 		liste = []
 		for p in petitions:
@@ -217,11 +209,6 @@ def tableau_de_bord(request):
 					liste.append(p)
 		return liste
 
-
-
-	def retirer_soutien(x):
-		soutien = Soutien.objects.get(proposition__id=x, utilisateur = request.user)
-		soutien.delete()
 			
 
 
@@ -263,7 +250,6 @@ def tableau_de_bord(request):
 			def __init__ (self):
 				self.mes_evenements = Evenement.objects.filter(soutien__user = utilisateur, soutien__lien = 'SO')
 				self.evenements = evenements()
-				self.organisations = Organisation.objects.filter(soutien__user = utilisateur)
 				#self.documents = Documents.objects.filter(soutien__user = utilisateur)
 				self.competences = competences()
 				self.documents = documents()
@@ -272,10 +258,12 @@ def tableau_de_bord(request):
 				self.suggestions = suggestions()
 				self.autocompletion = liste_autocompletion()
 				self.calendrier = creer_les_evenements_du_calendriers()
-				self.organisations = organisations()
+				
 				#revendications
 				self.mes_revendications = mes_revendications()
 				self.page = "tableau_de_bord"
+				self.page_organisation ="oui"
+				self.organisation = organisation
 
 				#formulaires:
 				class formulaire:
@@ -308,28 +296,5 @@ def tableau_de_bord(request):
 	request.session["proposition_id"]="toutes"
 
 	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas, "graph_utilisateur":mark_safe(graph_u),"graph_accueil":mark_safe(graph_a),"graph_populaire":mark_safe(graph_p),"onglet": onglet})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -32,10 +32,20 @@ class UtilisateurForm(forms.Form):
 
 
 class OrganisationForm(forms.Form):
-	nom = forms.CharField(max_length=100)
-	mot_de_passe = forms.CharField(max_length=100)
-	mail = forms.EmailField(max_length=254)
-	description =  forms.CharField(max_length=10000)
+	#liste des lieux:
+	liste_lieux = []
+	lieux = Lieu.objects.all()
+	for l in lieux:
+		#print (l)
+		liste_lieux.append((str(l),str(l)))
+	description = forms.CharField(max_length = 500, required = False)
+	url_du_site = forms.URLField(max_length=200, required = False)
+	nom = forms.CharField(max_length = 150)
+	mail_contact =  forms.EmailField(max_length=254,required = False)
+	login = forms.CharField(max_length = 20, required = False)
+	mot_de_passe = forms.CharField(max_length = 10,required = False)
+	lieu_action =  forms.MultipleChoiceField(choices = liste_lieux,required = False)
+    
 
 class EvenementForm(forms.Form):
 	
@@ -99,7 +109,8 @@ class DocumentForm(forms.Form):
     fichier = forms.FileField()
     
     
-
+class Authentification_organisationForm(forms.Form):
+	mot_de_passe = forms.CharField(max_length=100)
 
 
 class AuthentificationForm(forms.Form):

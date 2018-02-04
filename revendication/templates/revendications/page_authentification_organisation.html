@@ -1,0 +1,17 @@
+{% load static %}
+
+<h1>Se connecter</h1>
+
+{% if error %}
+<p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
+{% endif %}
+
+Vous étiez connectés en temps que {{ user.username }} ! 
+Saisissez le mot de passe de l'organisation pour vous déconnecter et l'administrer
+
+
+<form method="post" action="page_gestion_organisation.html?organisation_id={{id}}&page=revendication">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Se connecter" />
+</form>

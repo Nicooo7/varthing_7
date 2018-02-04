@@ -1,0 +1,22 @@
+                    <li>
+                      <div class="collapsible-header {{couleur}}" style="color: white"><i class="material-icons" style="color: white">{{icone}}</i>{{element_titre}}s en lien 
+                      </div>
+                      
+                      <div class="collapsible-body">
+                         <ul class="collection">
+                          {% for c in collection %}
+                            {% if element_titre == "proposition" %}
+                            <a href="page_revendication.html?proposition_id={{c.id}}" style="color: black">
+                            {% else %}
+                            <a href="page_{{element_titre}}.html?{{element_titre}}_id={{c.id}}" style="color: black">
+                            {% endif %}
+
+                            <li class="collection-item grey lighten-2">{{c}}
+                            </li>
+                            <div class="section"></div>
+                           </a>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </li>
+                  

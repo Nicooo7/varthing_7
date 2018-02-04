@@ -1,99 +1,62 @@
-{% extends 'revendications/page_type.html' %}
+{% extends 'revendications/page_tableau_de_bord.html' %}
 {% load static %}
 
-
-{% block titre_central%}
-Accueil
-{% endblock %}
+{% block rubrique_titre %}
+{% endblock rubrique_titre %}
 
 
 
 
- {% block image_parallax %}
-{% endblock %}
+       <!-- barre de navigation -->
+      {% block haut %}
+        {% include "revendications/page_accueil/barre_navigation.html" with datas=datas %}  
+      {% endblock haut %}
 
 
-{%block option1%}
- <a class="btn-floating btn-large waves-effect waves-light red" ><i class="material-icons" onclick = "document.location.href = 'page_creer_revendication'">add</i></a> Je crée une revendication
- {% endblock %}
- 
-
-
-
-{% block contenu_central%}
-
-
-
-
-
-  <div class= "section"> </div>
-  <div class= "section"> </div>
-  <div class= "section"> </div>
-
- <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onclick = "document.location.href = 'page_creer_revendication'">add</i></a> Je crée une revendication
-
-	<div class= "section"> </div>
-	<div class= "section"> </div>
-	<div class= "section"> </div>
-
-       <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Dernières revendications crées</span>
-              {% for proposition in dernieres_revendication_creees %}
-              <p>{{proposition}}<a href="page_revendication.html?ennonce={{proposition.ennonce}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-              {% endfor %}
-
-            </div>
-          
-          </div>
-        </div>
-      </div>
-
-      <div class= "section"> </div>
-	<div class= "section"> </div>
-	<div class= "section"> </div>
-
-       <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Les revendications les plus populaires</span>
-              {% for proposition in propositions_populaires %}
-                <p>{{proposition}}<a href="page_revendication.html?ennonce={{proposition.ennonce}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-              {% endfor %}
-
-            </div>
-        
-          </div>
-        </div>
-      </div>
-
-        <div class= "section"> </div>
-	<div class= "section"> </div>
-	<div class= "section"> </div>
-
-       <div class="row">
-        <div class="col s12">
-          <div class="card teal darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Les revendications en forte accélération !</span>
-   		
-             {% for proposition in proposition_en_acceleration %}
-              <p>{{proposition}}<a href="page_revendication.html?ennonce={{proposition.ennonce}}"><i class="material-icons">  &nbsp pageview</i></a></p>
-              {% endfor %}
-              
-             
-
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <!--  formulaires-->
       
 
-{% endblock %}
+          {% block formulaire %}
+            <div id="Formulaires" style="display: none">
+              
+              {% include "revendications/page_tableau_de_bord/formulaire_generique.html" with objet="evenement" titre="creation d'une nouvel evenement" formulaire=datas.formulaires.evenement datas=datas %}
+
+              {% include "revendications/page_tableau_de_bord/formulaire_generique.html" with objet="petition" titre="creation d'une nouvelle petition" formulaire=datas.formulaires.petition datas=datas %}
+             
+               {% include "revendications/page_tableau_de_bord/formulaire_generique.html" with objet="competence" titre="creation d'une nouvelle competence" formulaire=datas.formulaires.competence datas=datas %}
+              
+              {% include "revendications/page_tableau_de_bord/formulaire_generique.html" with objet="document" titre="creation d'un nouveau document" formulaire=datas.formulaires.document datas=datas %}
+
+            </div>
+          {% endblock formulaire %}
+      
+
+
+{% block droite %}
+{% endblock droite %}
+
+
+{% block gauche %}
+{% endblock gauche %}
+
+
+{% block autres_scripts %}  
+      <script src="{% static "revendication/js/affichageGraphique.js" %}"> </script>                              
+     <script src="{% static "revendication/js/pageRevendication.js" %}"> </script>
+{% endblock autres_scripts %}
+
+
+
+
+
+
+
+
+   
+
+                             
+        
+
 
 
 

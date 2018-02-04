@@ -58,6 +58,21 @@ def soutenir_une_revendication (request):
 		return redirect ('page_tableau_de_bord.html')
 
 
+def soutenir_une_organisation (request):
+	# Vérification identifiant valide ? si non, 404
+	
+	organisation_id = request.GET["organisation_id"]
+	organisation = Organisation.objects.get(id=organisation_id)
+	utilisateur = request.user
+
+	soutien = Soutien.objects.get_or_create(organisation = organisation, user= utilisateur, lien='SO')
+	print ("soutien", soutien)
+	soutien[0].save()
+	
+		
+	return redirect ('page_tableau_de_bord.html')
+
+
 def soutenir_une_petition (request):
 	# Vérification identifiant valide ? si non, 404
 

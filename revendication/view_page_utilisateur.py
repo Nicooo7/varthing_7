@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
 from .forms import *
+
 #from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -37,7 +38,6 @@ app_name = 'revendication'
 
 
 def authentification(request):
-	error = False
 	
 	if request.method == 'POST':
 		form = AuthentificationForm(request.POST)
@@ -51,12 +51,48 @@ def authentification(request):
 				return redirect ('page_accueil')
 				
 			else:
-				error = True
+				form = AuthentificationForm()		
+				return render(request, 'revendications/page_authentification.html', {'form': form})
 		else:
 			form = AuthentificationForm()
 	else:		
 		form = AuthentificationForm()		
 		return render(request, 'revendications/page_authentification.html', {'form': form})
+
+
+
+
+def se_connecter_comme_organisation(request):
+	organisation_id = request.GET["organisation_id"]
+	organisation = Organisation.objects.get(id= organisation_id)
+	u = organisation.utilisateur
+	username = str(u.username)
+	
+	if request.method == 'POST':
+		form = Authentification_organisationForm(request.POST)
+		print("FORM", form)
+		if form.is_valid():
+			print("FORMULAIRE VALIDE")
+			password = request.POST["mot_de_passe"]
+			print ("PASSWORD:", password)
+			print ("USERNAME:", username)
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				login(request, user)
+				print ("authentification réussie")
+				return redirect ('page_accueil')
+			else: 
+				print("ECHECH D'AUTHENTIICATION")
+				
+		else:
+			print("FORMULAIRE NON VALIDE")
+			form = Authentification_organisationForm()		
+			return render(request, 'revendications/page_authentification_organisation.html', {'form': form, "id" : organisation_id})
+		
+	else:		
+		form = Authentification_organisationForm()		
+		return render(request, 'revendications/page_authentification_organisation.html', {'form': form, "id" : organisation_id})
+
 
 
 

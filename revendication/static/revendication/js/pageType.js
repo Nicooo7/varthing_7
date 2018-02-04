@@ -26,7 +26,7 @@ jQuery(document).ready(function()
             jQuery(".button-collapse").sideNav();
             jQuery("#tableau_mes_revendications").DataTable();
             jQuery('.tap-target').tapTarget('open');
-
+            jQuery('.collapsible').collapsible();
 
 
              boutons = jQuery('[cible]')

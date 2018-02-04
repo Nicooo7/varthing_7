@@ -50,7 +50,7 @@ class Lieu (models.Model):
     ville = models.CharField(max_length=200)
     
     def __str__(self):
-        return self.ville
+        return str(self.pays + "__" + self.region + "__" + self.ville)
 
 class Autre_utilisateur (models.Model):
     user = models.ForeignKey(User, null =True)
@@ -114,14 +114,7 @@ class Profile (models.Model):
 
 
         
-class Organisation (models.Model):
-    description = models.CharField(max_length = 200, null = True)
-    profile = models.ForeignKey(Profile, null=True)
-    adherent =  models.ManyToManyField(User, through= "Soutien", null =True)
-    date_creation = models.DateField (default= timezone.now, null=True)
 
-    def __str__(self):
-        return "organisation {0}".format(self.profile)
 
 
 ######################################################
@@ -138,7 +131,6 @@ class Petition(models.Model):
     date_echeance = models.DateField("Date d'échéance", null=True, blank=True)
     objectif_de_signataires = models.IntegerField(null=True)
     signataires = models.ManyToManyField(User, through="Soutien", null=True)
-    
 
     
     # Méthode/Propriété : "createur" : donne le username du créateur de la pétition
@@ -206,7 +198,6 @@ class Document(models.Model):
     date_creation = models.DateField("Date création document", auto_now=True)
     proposition = models.ForeignKey(Proposition, null =True)
     evenement = models.ForeignKey(Evenement, null = True, blank=True)
-    organisation = models.ForeignKey(Organisation, null = True, blank=True)
     petition = models.ForeignKey(Petition, null = True, blank=True)
     competence = models.ForeignKey(Competence, null = True, blank=True)
     fichier = models.FileField(upload_to='uploads/%Y/%m/%d/')
@@ -226,6 +217,54 @@ class Document(models.Model):
     nb_consultations = property(__nb_de_consultation)
 
 
+class Organisation (models.Model):
+    description = models.CharField(max_length = 500, null = True, blank = True)
+    profile = models.ForeignKey(Profile, null=True, blank = True)
+    date_creation = models.DateField (default= timezone.now, null=True, blank = True)
+    url_du_site = models.URLField(max_length=200, null = True, blank = True)
+    nom = models.CharField(max_length = 150, null = True, blank = True)
+    mail_contact =  models.EmailField(max_length=254, null= True, blank = True)
+    lieu_action =  models.ManyToManyField(Lieu, blank = True)
+    login = models.CharField(max_length = 20, null = True, blank = True)  
+    mot_de_passe = models.CharField(max_length = 10, null = True, blank = True)
+    utilisateur = models.ForeignKey(User, null=True, blank=True) 
+ 
+
+    def __str__(self):
+        return "organisation {0}".format(self.nom)
+
+    def __nb_de_membre(self):
+        soutien = Soutien.objects.filter(organisation=self, lien = 'SO')
+        return soutien.count()
+    nb_de_membre = property(__nb_de_membre)
+
+    def __membres(self):
+        return Soutien.objects.filter(organisation=self, lien = 'SO')     
+    membres = property(__membres)
+
+    def __propositions(self):
+        return Proposition.objects.filter(soutien__user = self.utilisateur)     
+    propositions = property(__propositions)
+
+    def __organisations(self):
+        return Organisation.objects.filter(soutien__user = self.utilisateur)     
+    organisations = property(__organisations)
+
+    def __petitions(self):
+        return Petition.objects.filter(soutien__user = self.utilisateur)     
+    petitions = property(__petitions)
+
+    def __documents(self):
+        return Document.objects.filter(soutien__user = self.utilisateur)     
+    documents = property(__documents)
+
+    def __evenements(self):
+        return Evenement.objects.filter(soutien__user = self.utilisateur) 
+    evenements = property(__evenements)
+
+    def __competences(self):
+        return Competence.objects.filter(soutien__user = self.utilisateur) 
+    competences = property(__competences)
 
 
 
@@ -234,7 +273,8 @@ class Soutien(models.Model):
 
     CHOIX_LIEN= (
                 ('CR' , 'createur'),
-                ('SO', 'soutien')
+                ('SO', 'soutien'),
+                
     )
     propositions = models.ForeignKey(Proposition, null =True)
     user = models.ForeignKey(User, null=True)
@@ -243,10 +283,12 @@ class Soutien(models.Model):
 
     # Elément soutenu
     evenement = models.ForeignKey(Evenement, null = True, blank=True)
-    organisation = models.ForeignKey(Organisation, null = True, blank=True)
     petition = models.ForeignKey(Petition, null = True, blank=True)
     competence = models.ForeignKey(Competence, null = True, blank=True)
     document= models.ForeignKey(Document, null = True, blank=True)
+    organisation= models.ForeignKey(Organisation, null = True, blank= True)
+   
+
 
     def __str__(self):
         return self.user.username

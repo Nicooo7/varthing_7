@@ -32,26 +32,30 @@ app_name = 'revendication'
 
    	
 
-def page_evenement(request):
+def page_petition(request):
+	
+	for petition in Petition.objects.all():
+		petition.objectif_de_signataire = 300
+		petition.save()
+
+	petition_id = request.GET["petition_id"]
+	petition = Petition.objects.get(id = petition_id)
 	
 
-	evenement_id = request.GET["evenement_id"]
-	evenement = Evenement.objects.get(id = evenement_id)
-	
-
-	def creer_les_datas(evenement):
+	def creer_les_datas(petition):
 		
 		utilisateur = request.user
 
 		class Data:
 			def __init__ (self):	
-				self.evenement = evenement
+				self.petition = petition
+				self.propositions = petition.propositions.all()
 				try:
-					self.createur = str(Soutien.objects.filter(evenement__id = evenement_id).filter(lien = 'CR')[0])
+					self.createur = str(Soutien.objects.filter(petition__id = petition_id).filter(lien = 'CR')[0])
 				except:
 					self.createur = "inconnu"
-				mes_evenements = Evenement.objects.filter(soutien__user = utilisateur, soutien__lien = "SO")
-				if evenement in mes_evenements:
+				mes_petitions = Petition.objects.filter(soutien__user = utilisateur, soutien__lien = "SO")
+				if petition in mes_petitions:
 					self.soutenue = "oui"
 				else:
 					self.soutenue = "non"
@@ -61,7 +65,7 @@ def page_evenement(request):
 
 
 	
-	datas = creer_les_datas(evenement)
+	datas = creer_les_datas(petition)
 
 
-	return render (request, 'revendications/page_evenement.html', {"datas":datas})
+	return render (request, 'revendications/page_petition.html', {"datas":datas})

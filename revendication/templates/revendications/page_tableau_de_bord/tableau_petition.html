@@ -34,7 +34,7 @@
                                         <tbody>
                                       {% for petition in datas.petitions %}
                                           <tr class="green lighten-3 {{petition.mienne}}">
-                                            <td >{{petition.titre}}</td>
+                                            <td ><a  style="color: black" href="page_petition.html?petition_id={{petition.id}}">{{petition.titre}}</a></td>
                                             <td >{{petition.date_creation|date:"Y/m/d"}}</td>
                                             <td > {{petition.date_echeance|date:"Y/m/d"}}</td>
                                             <td > {{petition.objectif_de_signataires}}</td>

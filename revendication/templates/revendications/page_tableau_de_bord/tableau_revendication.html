@@ -17,7 +17,7 @@
                                         {% include "revendications/page_tableau_de_bord/entete_tableau.html" with titre="Revendications" couleur="orange" nom_logo="record_voice_over" objet="revendication" class="page_tableau_de_bord"%}
                                       </div>
                                       <div id="titre_revendication_page_revendication">
-                                        {% include "revendications/page_tableau_de_bord/entete_tableau.html" with titre="Revendications en lien" couleur="orange" nom_logo="record_voice_over" objet="revendication"%}
+                                        {% include "revendications/page_tableau_de_bord/entete_tableau.html" with titre="Revendications" couleur="orange" nom_logo="record_voice_over" objet="revendication"%}
                                       </div>
                                      
 
@@ -40,13 +40,15 @@
                                                     <td >{{proposition.date_creation|date:"Y/m/d"}}</td>
                                                     <td > {{proposition.nb_soutien}}</td>
                                                     <td > {{proposition.progression}}</td>
-                                                    {% if proposition.mienne == "oui" %}
-                                                        <td><a href= "page_supprimer_soutien_revendication.html?proposition_id={{proposition.id}}&page=tableau_de_bord" id = "supprimer_soutien_revendication" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus soutenir"><i class="material-icons orange">thumb_down</i> </a>
-                                                    {% else %}
-                                                      <td> 
-                                                        <a href= "page_soutenir_revendication.html?proposition_id={{proposition.id}}&page=tableau_de_bord" id = "ajouter_soutien_revendication" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="soutenir"><i class="material-icons orange"> thumb_up</i></a>
-                                                      </td>
-                                                    {% endif %}
+                                                    
+                                                        {% if proposition.mienne == "oui" %}
+                                                            <td><a href= "page_supprimer_soutien_revendication.html?proposition_id={{proposition.id}}&page=tableau_de_bord" id = "supprimer_soutien_revendication" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="ne plus soutenir"><i class="material-icons orange">thumb_down</i> </a>
+                                                        {% else %}
+                                                          <td> 
+                                                            <a href= "page_soutenir_revendication.html?proposition_id={{proposition.id}}&page=tableau_de_bord" id = "ajouter_soutien_revendication" class="btn-floating waves-effect waves-light orange tooltipped" data-position="right" data-delay="0" data-tooltip="soutenir"><i class="material-icons orange"> thumb_up</i></a>
+                                                          </td>
+                                                        {% endif %}
+                                                   
                                                 
                                            {% endif %}
 

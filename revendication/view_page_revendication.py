@@ -105,6 +105,7 @@ def page_revendication(request):
 						self.competence =CompetenceForm
 						self.document = DocumentForm
 				self.formulaires = formulaire()
+				self.page = "revendication"
 
 
 		data = Data()		

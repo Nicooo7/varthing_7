@@ -36,43 +36,37 @@
 {% endblock gauche %}
 
 
-    {% block autres_cartes %}
+    {% block autre %}
         <div class="card white lighten-2" id="l_evenement">
           <div class="card-content black-text">
-
-
-
-            <span class="card-title center"><h3 style="color:purple">{{datas.evenement.titre}}</h3></span> 
+            <span class="card-title center"><h3 style="color:purple"> {{datas.evenement.titre}}</h3></span> 
             <div class="row">
               <div class="col s12">
-               <h5> proposé par {{datas.createur}} </h5> 
-              </div>
-              
-
-              
-              
+               <h5> proposé par {{datas.evenement.createur}}</h5> 
               </div>
             </div>
+          </div>
         </div>
 
       <div clas="row">
           <div class="col s12" style="heigth: 500px">
            <div class="card white lighten-2" id="statistiques">
               <div class="card-content black-text">
-                <span class="card-title">Statistiques</span>
-                 <p>participants: {{datas.evenement.participants|length}}</p>
-                 <p>lieu: {{datas.evenement.lieu}}</p>
-                 <p>description: {{datas.evenement.description}}</p>
-                  <p>date: {{datas.evenement.date}}</p>
+                <span class="card-title"></span>
+                 <p><a class="btn purple " href="#"> participants : {{datas.evenement.nb_participant}}</a></p>
+                 <div class= "section"> </div>
+                 <p><a class="btn purple " href="#"> lieu : {{datas.evenement.lieu}}</a></p>
+                 <div class= "section"> </div>
+                 <p><a class="btn purple " href="#"> description : {{datas.evenement.description}}</a></p>
                   <div class="section"> </div>
-                  <p>proposition en rapport:<a class="btn orange right" href="page_revendication.html?proposition_id={{datas.evenement.proposition.id}}"> {{datas.evenement.proposition.ennonce}}</a></p>
+                  <p><a class="btn purple " href="#"> date : {{datas.evenement.date}}</a></p>
+                  <div class="section"> </div>
+                  <p><a class="btn orange right" href="page_revendication.html?proposition_id={{datas.evenement.proposition.id}}"> proposition en rapport: {{datas.evenement.proposition.ennonce}}</a></p>
               </div>
             </div>
           </div>
       </div>
-
-
-{% endblock autres_cartes %}
+  {% endblock autre %}
 
 {% block autres_scripts %}
 <script>

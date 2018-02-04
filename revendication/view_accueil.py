@@ -7,11 +7,13 @@ from django.template import loader
 #from django.core.exceptions import ObjectDoesNotExist
 
 
-from revendication.models import *
+from .forms import *
+from .models import *
 from django.contrib.auth.models import* 
 from django.contrib.auth import *
 from bs4 import BeautifulSoup
 from django.template.response import *
+from datetime import *
 import bs4
 import re
 import pickle
@@ -19,147 +21,201 @@ import os
 from nltk import *
 from bs4 import BeautifulSoup
 from random import *
-from datetime import datetime
-from datetime import timedelta
 from .creation_graph import *
 from unidecode import unidecode
-
-page = []
-liste_des_elements_de_page = []
+from django.utils.safestring import mark_safe
 
 
-app_name = 'accueil'
 
 
+app_name = 'revendication'
 
 
 
 
 
 
-
-
-#__________________vues _______________________
-
-
-
-def varthing(request):
-	return render(request, 'revendications/varthing.html')
+#_____________________vue_______________________#
 
 
 
-def accueil(request):
+def page_accueil(request):
 	if request.user.is_authenticated:
-		print("connecte")
+		pass
 	else:
 		return render(request, 'revendications/varthing.html')
-	
 	from django.contrib.auth.models import User
-	utilisateur = request.user.username
-	#print ("voici l'utilisateur" , utilisateur)
+	utilisateur = request.user
+
+
+	def creer_les_evenements_du_calendriers ():
+
+		evenements = Evenement.objects.all()
+		fichier_evenement = u""
+		for evenement in evenements:
+			ligne =  evenement.titre + "/" + str(evenement.date) + "/" + str(evenement.id) + "/" + str(evenement.description) +"ggg" 
+			fichier_evenement = fichier_evenement + ligne
 
 
 
-	propositions = Proposition.objects.all()
-	for proposition in propositions:
-		p = Proposition.objects.get(id = proposition.id)
-		p.ennonce = unidecode(p.ennonce).lower()
-		p.save()
+		fichier_evenement = unidecode(fichier_evenement).encode("utf-8")
+		#print ("************************** fichier_evenement", fichier_evenement)
+		return fichier_evenement
+
+
+	def revendications():
+		propositions = Proposition.objects.all()
+		mes_propositions = Proposition.objects.filter(soutien__user = utilisateur, soutien__lien = "SO")
+		date_M1 = datetime.now()-timedelta(30)
+		liste= []
+        #progression?
+		for p in propositions:
+			soutiens_M1 = Soutien.objects.filter(date__lte = date_M1, propositions = p)
+			nb_soutiens = len(soutiens_M1)
+			p.progression = nb_soutiens
+			liste.append(p)
+			if p in mes_propositions:
+				p.mienne = "oui"
+			else:
+				p.mienne = "non"
+		print("liste______", liste)
+		return liste 
+		
+			
+
+
+	def documents():
+		documents = Document.objects.all()
+		return documents 		
+
+		
+
+	def evenements():
+		liste_de_mes_evenements = Evenement.objects.filter(soutien__user = utilisateur)
+		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		evenements = Evenement.objects.all()
+		liste = []
+		for ev in evenements:
+			if ev in liste_de_mes_evenements:
+				ev.mienne = "oui"
+			else:
+				ev.mienne = "non"
+			liste.append(ev)
+		return liste
+
+
+	def competences():
+		liste_de_mes_competences = Competence.objects.filter(soutien__user = utilisateur)
+		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		competences = Competence.objects.all()
+		liste = []
+		for comp in competences:
+			if comp in liste_de_mes_competences : 
+				comp.mienne = "oui"
+			else:
+				comp.mienne = "non"
+			liste.append(comp)
+		return liste
 
 	
-	#dernieres revendications crees:
-	def dernieres_revendications():
-		dernieres_revendication_creees = []
+	def organisations():
+	#creer la liste des organisations dont je soutiens les propositions
+		liste_de_mes_organisations = Organisation.objects.filter(soutien__user = utilisateur)
+		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		organisations = Organisation.objects.all()
 		liste = []
-		propositions= []
-		propositions = Proposition.objects.all()
-		for proposition in propositions:
-			liste.append((proposition, proposition.date_creation))
+		for org in organisations:
+			if org in liste_de_mes_organisations:
+				org.mienne = "oui"
+			else:
+				org.mienne = "non"
+			liste.append(org)
+		return liste	
+
+
+	def petitions():
+		liste_de_mes_petitions = Petition.objects.filter(soutien__user = utilisateur)
+		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
+		petitions = Petition.objects.all()
+		liste = []
+		for p in petitions:
+			if p in liste_de_mes_petitions : 
+				p.mienne = "oui"
+			else:
+				p.mienne = "non"
+			liste.append(p)
+		return liste	
+
+
+		
+	
+	class formulaire:
+		def __init__ (self):
+			self.revendication = RevendicationForm
+			self.petition =PetitionForm
+			self.evenement= EvenementForm
+		
+
+
+	def trier_les_elements_par_dates(liste):
+		liste = sorted(liste, key=lambda x: x[1])
+		liste.reverse()
 			
-		lambda colonne: colonne[1]
-		liste = sorted(liste, key=lambda colonnes: colonnes[1])
-		print (liste)
-		liste.reverse()
-		print (liste)
-		
-		dernieres_revendication_creees = [t[0] for t in liste[0:4]]
-		return dernieres_revendication_creees
-	dernieres_revendication_creees = dernieres_revendications()	
 
 
-	#acceleration des soutiens:
-		#compter les soutiens des revendications à ce jour
-	def acceleration_des_soutiens():
-		liste_acceleration = []
-		dictionnaire = {}
-		dictionnaire2 = {}
-		liste_finale = []
+	def creer_les_datas(utilisateur):
 
-		propositions = Proposition.objects.all()
-		for proposition in propositions:
-			soutiens = Soutien.objects.filter(propositions = proposition)
-			nb_soutien = soutiens.count()
-			dictionnaire[proposition.id] =nb_soutien
-
-		#compter les soutiens des revendications il y a 2 semaines
-		liste2= []
-		time_delta= timedelta(days=50)
-
-		propositions = Proposition.objects.all()
-		for proposition in propositions:
-			soutiens = Soutien.objects.filter(propositions = proposition, date__lte= (datetime.now() - time_delta)) 
-			nb_soutien = soutiens.count()
-			dictionnaire2[proposition.id] = nb_soutien
-		#calculer la proportion de soutien en plus entre ce jour et il y a deux semaines
-
-		for proposition in propositions:
-			nb_soutien_ce_jour = dictionnaire[proposition.id]
-			#print ("nb soutien ce jour", nb_soutien_ce_jour)
-			nb_soutien_avant = dictionnaire2[proposition.id]
-			#print ("nb soutien avant", nb_soutien_avant)
-			proportion = (nb_soutien_ce_jour - nb_soutien_avant)/nb_soutien_ce_jour
-			liste_acceleration.append((proposition.id, proportion))
-		
-		lambda colonne: colonne[1]
-		liste_acceleration = sorted(liste_acceleration, key=lambda colonnes: colonnes[1])
-		liste_acceleration.reverse()
-		liste_acceleration = liste_acceleration[0:4]
-		print (liste_acceleration, "liste acceleration")
-		for couple in liste_acceleration:
-			print(couple)
-			proposition = Proposition.objects.get (id = couple[0])
-			liste_finale.append(proposition)
-		print (liste_finale)
-		return (liste_finale)
-	proposition_en_acceleration = acceleration_des_soutiens()	
-
-		
+		class Datas:
+			def __init__ (self):
+				self.evenements = evenements()
+				self.competences = competences()
+				self.documents = documents()
+				self.petitions = petitions()
+				self.revendications = revendications()
+				self.organisations = organisations()
+				self.suggestions = self.revendications
 
 
-	#propositions triées selon leur nombre de soutien.
-	def populaires():	
-		liste = []
-		propositions = Proposition.objects.all()
-		for proposition in propositions:
-			soutiens = Soutien.objects.filter(propositions = proposition)
-			nb_soutien = soutiens.count()
-			liste.append((proposition, nb_soutien))
-			liste = sorted(liste, key=lambda colonnes: colonnes[1])
-		liste.reverse()
-		populaires = [t[0] for t in liste [0:3]]
-		return populaires
-	propositions_populaires = populaires()		
+				#formulaires:
+				class formulaire:
+					def __init__ (self):
+						self.revendication = RevendicationForm
+						self.petition =PetitionForm
+						self.evenement= EvenementForm
+				self.formulaires = formulaire()
+				
+
+
+		datas = Datas()
+		return datas
 
 
 
-	graph_accueil()
+	datas = creer_les_datas(utilisateur)
+
+	try:
+		onglet = request.session["onglet"]
+	except:
+		onglet = "vide"
+
+	
+	graph_a =  graph_accueil()
+	
 
 
-	return render(request, 'revendications/page_accueil.html', {"utilisateur":utilisateur, "propositions_populaires":propositions_populaires,  "dernieres_revendication_creees" : dernieres_revendication_creees, "proposition_en_acceleration" : proposition_en_acceleration})
+	request.session["proposition_id"]="toutes"
+
+	return render(request, 'revendications/page_accueil.html', {"datas":datas, "graph_accueil":mark_safe(graph_a),"onglet": onglet})
 
 
 
 
+
+	
+	
+
+
+	
 
 
 
