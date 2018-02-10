@@ -5,7 +5,9 @@
 {% endblock rubrique_titre %}
 
 
-
+{% block navigation %}
+    {% include "revendications/page_type/barre_navigation.html" with cle="accueil" %}
+{% endblock navigation%}
 
        <!-- barre de navigation -->
       {% block haut %}
@@ -40,7 +42,8 @@
 {% endblock gauche %}
 
 
-{% block autres_scripts %}  
+{% block autres_scripts %} 
+    <script> var onglet = "{{onglet}}"; var message = "{{message}}"</script>  
       <script src="{% static "revendication/js/affichageGraphique.js" %}"> </script>                              
      <script src="{% static "revendication/js/pageRevendication.js" %}"> </script>
 {% endblock autres_scripts %}

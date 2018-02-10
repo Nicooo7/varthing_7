@@ -37,7 +37,7 @@ def retourner_la_proposition(request):
 
 def creer_document(request):
 		#proposition =retourner_la_proposition(request)
-	#print ("___________creation evenement_")
+	##print ("___________creation evenement_")
 
 	utilisateur= request.user
 
@@ -50,7 +50,7 @@ def creer_document(request):
 		# Un formulaire a été envoyé !
 		#
 		form = DocumentForm(request.POST,request.FILES)
-		print("formulaire:", form)
+		#print("formulaire:", form)
 		if form.is_valid():
 			#
 			# Traitement du formulaire valide
@@ -65,7 +65,7 @@ def creer_document(request):
 			
 			#document.propositions.add(proposition)
 			document.save()
-			print("*********************************************************** object enregistré")
+			#print("*********************************************************** object enregistré")
 			# Création de la relation de soutient (CR) entre l'user et la pétition
 			soutien = Soutien.objects.create(document = document, user = utilisateur, lien = 'CR')
 
@@ -94,7 +94,7 @@ def creer_revendication(request):
 			le_soutien = Soutien.objects.create(user=utilisateur, propositions = la_proposition, lien= 'CR')
 			le_soutien = Soutien.objects.create(user=utilisateur, propositions = la_proposition, lien= 'SO')
 			le_soutien.save()
-			print ("soutien ajouté:{0} ".format(la_proposition.supporter))
+			#print ("soutien ajouté:{0} ".format(la_proposition.supporter))
 
 			#on retourne à la page accueil
 			return redirect ('page_tableau_de_bord.html')	
@@ -193,23 +193,23 @@ def creer_competence(request):
 			return redirect ('page_revendication.html?proposition_id='+ str(proposition.id))
 
 		else: 
-			print("form non valide")
-
+			#print("form non valide")
+			pass
 
 
 
 def creer_evenement(request):
 
 	#proposition =retourner_la_proposition(request)
-	#print ("___________creation evenement_")
+	##print ("___________creation evenement_")
 
 	utilisateur= request.user
 
 	if request.user.is_authenticated:
 		user = request.user
 	else:
-		print ('authentification necessaire')
-
+		#print ('authentification necessaire')
+		pass
 
 	proposition_id = request.session["proposition_id"]
 	proposition = Proposition.objects.get(id=proposition_id)
@@ -249,14 +249,15 @@ def creer_evenement(request):
 def creer_organisation(request):
 
 	#proposition =retourner_la_proposition(request)
-	print ("___________creation organisation_")
+	#print ("___________creation organisation_")
 
 	utilisateur= request.user
 
 	if request.user.is_authenticated:
 		user = request.user
 	else:
-		print ('authentification necessaire')
+		#print ('authentification necessaire')
+		pass
 
 	if request.method == 'POST':
 		#

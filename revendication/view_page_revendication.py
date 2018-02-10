@@ -120,6 +120,7 @@ def page_revendication(request):
 	graph = mark_safe(graph)
 	datas = creer_les_datas(proposition)
 	request.session["proposition_id"]= request.GET["proposition_id"]
+	request.session["onglet"]="proposition"
 
 	return render (request, 'revendications/page_revendication.html', {"datas":datas, "graph":graph})	
 

@@ -6,7 +6,7 @@ from django.http import HttpResponse, Http404
 from django.template import loader
 #from django.core.exceptions import ObjectDoesNotExist
 
-
+from . import *
 from .forms import *
 from .models import *
 from django.contrib.auth.models import* 
@@ -22,6 +22,10 @@ from bs4 import BeautifulSoup
 from random import *
 from .creation_graph import *
 from unidecode import unidecode
+from django.utils.safestring import mark_safe
+from colored import colored
+from colored import fore, back, style
+
 
 app_name = 'revendication'
 
@@ -33,11 +37,8 @@ def telecharger(request):
 	fichier = request.GET['fichier_url'] 
 	return redirect(fichier)
 
-
-def soutenir_une_revendication (request):
+def soutenir_un_element (request, element):
 	# Vérification identifiant valide ? si non, 404
-	
-	proposition_id = request.GET["proposition_id"]
 	try:
 		proposition = Proposition.objects.get(id = request.GET["proposition_id"])
 	except Proposition.DoesNotExist:
@@ -45,8 +46,45 @@ def soutenir_une_revendication (request):
 
 	utilisateur = request.user
 
+	soutien = Soutien.objects.get_or_create(element = element, user= utilisateur, lien='SO')
+	soutien[0].save()
+	
+	#request.path ="revendications/consult_revendications.html"
+	request.session["onglet"]=str(element)
+
+
+	#On cree un soutien si la proposition en rapport est soutenue par l'utilisateur
+	if element.proposition in Proposition.objects.filter(soutien__user = utilisateur):
+		soutien = Soutien.objects.get_or_create(element = element, user= utilisateur, lien='SO')
+		#print (fore.LIGHT_BLUE + back.RED + style.BOLD + "soutien" + style.RESET)
+		soutien[0].save()
+		message ="vide"
+
+
+	#Sinon on renvoi un message d'erreur en expliquant la raison
+	else:
+		message =  "vous devez soutenir la proposition " + str(element.proposition.ennonce) + " pour pouvoir participer soutenir cet élément"
+
+	
+	request.session['message'] = mark_safe(message)
+	return retour_vers_page(request)
+
+
+
+
+def soutenir_une_revendication (request):
+	# Vérification identifiant valide ? si non, 404	
+	
+	proposition_id = request.GET["proposition_id"]
+	try:
+		proposition = Proposition.objects.get(id = request.GET["proposition_id"])
+	except Proposition.DoesNotExist:
+		raise Http404	
+
+	utilisateur = request.user
+
 	soutien = Soutien.objects.get_or_create(propositions = proposition, user= utilisateur, lien='SO')
-	print ("soutien", soutien)
+	#print ("soutien", soutien)
 	soutien[0].save()
 	
 	#request.path ="revendications/consult_revendications.html"
@@ -65,12 +103,31 @@ def soutenir_une_organisation (request):
 	organisation = Organisation.objects.get(id=organisation_id)
 	utilisateur = request.user
 
-	soutien = Soutien.objects.get_or_create(organisation = organisation, user= utilisateur, lien='SO')
-	print ("soutien", soutien)
+	soutenir_un_element(request, organisation)
+
+
+	"""soutien = Soutien.objects.get_or_create(organisation = organisation, user= utilisateur, lien='SO')
 	soutien[0].save()
 	
+
+	#On cree un soutien si la proposition en rapport est soutenue par l'utilisateur
+	if organisation.proposition in Proposition.objects.filter(soutien__user = utilisateur):
+		soutien = Soutien.objects.get_or_create(organisation = organisation, user= utilisateur, lien='SO')
+		#print (fore.LIGHT_BLUE + back.RED + style.BOLD + "soutien" + style.RESET)
+		soutien[0].save()
+		message ="vide"
+
+
+	#Sinon on renvoi un message d'erreur en expliquant la raison
+	else:
+		message =  "vous devez soutenir la proposition " + str(organisation.proposition.ennonce) + " pour pouvoir participer soutenir cet élément"
+
+	
+	request.session['message'] = mark_safe(message)
+	return retour_vers_page(request)
+
 		
-	return redirect ('page_tableau_de_bord.html')
+	return redirect ('page_tableau_de_bord.html')"""
 
 
 def soutenir_une_petition (request):
@@ -85,22 +142,40 @@ def soutenir_une_petition (request):
 	utilisateur = request.user
 
 	soutien = Soutien.objects.get_or_create(petition = petition, user= utilisateur, lien='SO')
-	print ("soutien", soutien)
 	soutien[0].save()
 	
 	#request.path ="revendications/consult_revendications.html"
 	request.session["onglet"]="petition"
 
 
-	try:
-		proposition = request.GET["proposition_id"]
-		if request.GET ['page'] == "revendication":
-			return redirect ('page_revendication.html?proposition_id='+ proposition_id)
-		else:	
-			return redirect ('page_tableau_de_bord.html')
-	except:
-		return redirect ('page_tableau_de_bord.html')
+	#On cree un soutien si la proposition en rapport est soutenue par l'utilisateur
+	for proposition in petition.propositions.all():
+		if proposition in Proposition.objects.filter(soutien__user = utilisateur):
+			soutien = Soutien.objects.get_or_create(petition = petition, user= utilisateur, lien='SO')
+			#print (fore.LIGHT_BLUE + back.RED + style.BOLD + "soutien" + style.RESET)
+			soutien[0].save()
+			message ="vide"
 
+
+	#Sinon on renvoi un message d'erreur en expliquant la raison
+		else:
+			message =  "vous devez soutenir la proposition " + str(proposition.ennonce) + " pour pouvoir participer soutenir cet élément"
+
+	
+	request.session['message'] = mark_safe(message)
+	return retour_vers_page(request)
+
+
+#RETOUR VERS LA PAGE
+def retour_vers_page(request):
+	request.session["onglet"]="evenement"
+	try:
+		if request.GET ['page'] == "revendication":
+			return redirect ('page_revendication.html?proposition_id='+ request.GET["proposition_id"])
+		else:	
+			return redirect ('page_tableau_de_bord.html',)
+	except:	
+		return redirect ('page_tableau_de_bord.html')	
 
 
 def soutenir_un_evenement (request):
@@ -114,19 +189,23 @@ def soutenir_un_evenement (request):
 
 	utilisateur = request.user
 
-	soutien = Soutien.objects.get_or_create(evenement = evenement, user= utilisateur, lien='SO')
-	print ("soutien", soutien)
-	soutien[0].save()
+
+	#On cree un soutien si la proposition en rapport est soutenue par l'utilisateur
+	if evenement.proposition in Proposition.objects.filter(soutien__user = utilisateur):
+		soutien = Soutien.objects.get_or_create(evenement = evenement, user= utilisateur, lien='SO')
+		#print (fore.LIGHT_BLUE + back.RED + style.BOLD + "soutien" + style.RESET)
+		soutien[0].save()
+		message ="vide"
+
+
+	#Sinon on renvoi un message d'erreur en expliquant la raison
+	else:
+		message =  "vous devez soutenir la proposition " + str(evenement.proposition.ennonce) + " pour pouvoir participer soutenir cet élément"
+
 	
-	#request.path ="revendications/consult_revendications.html"
-	request.session["onglet"]="evenement"
-	try:
-		if request.GET ['page'] == "revendication":
-			return redirect ('page_revendication.html?proposition_id='+ request.GET["proposition_id"])
-		else:	
-			return redirect ('page_tableau_de_bord.html')
-	except:	
-		return redirect ('page_tableau_de_bord.html')		
+	request.session['message'] = mark_safe(message)
+	return retour_vers_page(request)
+		
 
 	
 
@@ -158,12 +237,12 @@ def est_ce_que_je_soutiens(proposition):
 	utilisateur = request.user
 	supporters = Soutien.objects.filter(propositions = proposition, lien = 'SO')
 	for supporter in supporters:
-		print ("supporter" , supporter)
+		#print ("supporter" , supporter)
 		if utilisateur == supporter.user:
 			return "soutenue"
 
 	s = est_ce_que_je_soutiens(proposition)	
-	print ("s", s)
+	#print ("s", s)
 
 
 	graph_revendication(proposition)	

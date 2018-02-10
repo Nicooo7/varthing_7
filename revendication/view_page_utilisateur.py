@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
 from .forms import *
-
+from .autre import *
 #from django.core.exceptions import ObjectDoesNotExist
 
 

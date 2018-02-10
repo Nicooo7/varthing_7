@@ -156,6 +156,8 @@ class Petition(models.Model):
         #return reverse('detail_petition', args=[str(self.id)])
         return reverse('detail_petition')
 
+
+
     def __str__(self):
         return self.titre
 

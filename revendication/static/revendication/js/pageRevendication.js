@@ -1,5 +1,9 @@
-			jQuery("#bouton_mes_petitions").hide()
+		jQuery("#bouton_mes_petitions").hide()
              jQuery("#bouton_toutes_les_petitions").hide()
+
+             jQuery("#bouton_mes_organisations").hide()
+             jQuery("#bouton_toutes_les_organisations").hide()
+
 
              jQuery("#bouton_mes_evenements").hide()
              jQuery("#bouton_tous_les_evenements").hide()

@@ -78,7 +78,7 @@ def page_accueil(request):
 				p.mienne = "oui"
 			else:
 				p.mienne = "non"
-		print("liste______", liste)
+		#print("liste______", liste)
 		return liste 
 		
 			
@@ -202,10 +202,11 @@ def page_accueil(request):
 	graph_a =  graph_accueil()
 	
 
-
+	message = request.session['message']
+	request.session['message']="vide"
 	request.session["proposition_id"]="toutes"
 
-	return render(request, 'revendications/page_accueil.html', {"datas":datas, "graph_accueil":mark_safe(graph_a),"onglet": onglet})
+	return render(request, 'revendications/page_accueil.html', {"datas":datas, "graph_accueil":mark_safe(graph_a),"onglet": onglet, "message":mark_safe(message)})
 
 
 

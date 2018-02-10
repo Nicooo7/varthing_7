@@ -9,6 +9,7 @@ from django.template import loader
 from django.utils.safestring import mark_safe
 from .forms import *
 from .models import *
+from .autre import *
 from django.contrib.auth.models import* 
 from django.contrib.auth import *
 from bs4 import BeautifulSoup
@@ -67,5 +68,5 @@ def page_petition(request):
 	
 	datas = creer_les_datas(petition)
 
-
+	request.session["onglet"]="petition"
 	return render (request, 'revendications/page_petition.html', {"datas":datas})

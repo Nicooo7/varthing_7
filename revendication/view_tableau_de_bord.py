@@ -5,8 +5,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
 #from django.core.exceptions import ObjectDoesNotExist
-
-
+from .autre import *
 from .forms import *
 from .models import *
 from django.contrib.auth.models import* 
@@ -34,14 +33,14 @@ app_name = 'revendication'
 
 
 
-
 #_____________________vue_______________________#
+
 
 
 
 def tableau_de_bord(request):
 	
-	print ("ON EST SUR LA PAGE DU TABLEAU DU BORD")
+	#print ("ON EST SUR LA PAGE DU TABLEAU DU BORD")
 
 	utilisateur = request.user
 
@@ -164,16 +163,17 @@ def tableau_de_bord(request):
 
 	def organisations():
 	#creer la liste des organisations dont je soutiens les propositions
-		liste_de_mes_organisations = Organisation.objects.filter(soutien__user = utilisateur)
+		liste_de_mes_organisations = Organisation.objects.filter(soutien__user = utilisateur, soutien__lien='SO')
 		liste_de_mes_propositions = Proposition.objects.filter(soutien__user = utilisateur)
-		organisations = Organisation.objects.exclude(utilisateur = utilisateur)
+		organisations = Organisation.objects.all()
 		liste = []
 		for org in organisations:
-			if org.proposition in liste_de_mes_propositions:
-				if org in liste_de_mes_organisations:
-					org.mienne = "oui"
-				else:
-					org.mienne = "non"
+			for p in org.propositions:
+				if p in liste_de_mes_propositions:
+					if org in liste_de_mes_organisations:
+						org.mienne = "oui"
+					else:
+						org.mienne = "non"
 			liste.append(org)
 		return liste
 
@@ -304,10 +304,14 @@ def tableau_de_bord(request):
 	graph_a =  graph_accueil()
 	graph_p = graph_populaire()
 
-
+	try: 
+		message = request.session["message"]
+	except:
+		message= "chien"
 	request.session["proposition_id"]="toutes"
+	request.session['message']="vide"
 
-	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas, "graph_utilisateur":mark_safe(graph_u),"graph_accueil":mark_safe(graph_a),"graph_populaire":mark_safe(graph_p),"onglet": onglet})
+	return render(request, 'revendications/page_tableau_de_bord.html', {"datas":datas, "graph_utilisateur":mark_safe(graph_u),"graph_accueil":mark_safe(graph_a),"graph_populaire":mark_safe(graph_p),"onglet": onglet, "message":message, "ptdb": "page_tableau_de_bord"})
 
 
 

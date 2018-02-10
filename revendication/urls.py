@@ -20,7 +20,7 @@ from . import view_page_action
 from . import view_supprimer
 from . import view_page_evenement
 from . import view_page_petition
-from . import view_tableau_de_bord_organisation
+
 page =[]
 liste_des_elements_de_page = []
 
@@ -59,6 +59,7 @@ urlpatterns = [
     url(r'^page_supprimer_soutien_petition', view_supprimer.supprimer_soutien_petition, name = 'page_supprime_soutien_petition'),
     url(r'^page_soutenir_evenement', view_page_action.soutenir_un_evenement, name = 'page_soutenir_evenement'),
     url(r'^page_supprimer_soutien_evenement', view_supprimer.supprimer_soutien_evenement, name = 'page_supprime_soutien_evenement'),
+    url(r'^page_supprimer_soutien_organisation', view_supprimer.supprimer_soutien_organisation, name = 'page_supprime_soutien_organisation'),
     #url(r'^page_telecharger', view_page_action.telecharger, name = 'page_telecharger'),
     ]
 

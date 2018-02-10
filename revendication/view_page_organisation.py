@@ -9,6 +9,7 @@ from django.template import loader
 from django.utils.safestring import mark_safe
 from .forms import *
 from .models import *
+from .autre import *
 from django.contrib.auth.models import* 
 from django.contrib.auth import *
 from bs4 import BeautifulSoup
@@ -63,6 +64,6 @@ def page_organisation(request):
 
 	
 	datas = creer_les_datas(organisation)
-
+	request.session["onglet"]="organisation"
 
 	return render (request, 'revendications/page_organisation.html', {"datas":datas})

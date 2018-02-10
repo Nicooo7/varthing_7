@@ -8,6 +8,7 @@ from django.template import loader
 
 from .forms import *
 from .models import *
+from .autre import *
 from django.contrib.auth.models import* 
 from django.contrib.auth import *
 from bs4 import BeautifulSoup
@@ -48,6 +49,16 @@ def retourner_evenement(request):
 		evenement_id = request.GET["evenement_id"]
 		evenement = Evenement.objects.get(id = evenement_id)	
 		return evenement
+	else:
+		return "vide"
+
+
+def retourner_organisation(request):
+	app_name = 'revendication'
+	if request.GET:
+		organisation_id = request.GET["organisation_id"]
+		organisation = Organisation.objects.get(id = organisation_id)	
+		return organisation
 	else:
 		return "vide"
 
@@ -112,3 +123,24 @@ def supprimer_soutien_evenement(request):
 	except:
 		return redirect ('page_tableau_de_bord.html')		
 
+
+def supprimer_soutien_organisation(request):
+	
+	organisation =retourner_organisation(request)
+	utilisateur= request.user
+	liste = []
+	try:
+		soutien = Soutien.objects.get(organisation= organisation, user=utilisateur, lien="SO")
+		soutien.delete()
+	except:
+		soutien = Soutien.objects.get(organisation= organisation, user=utilisateur, lien="CR")
+		soutien.delete()
+	request.session["onglet"]="organisation"
+	proposition_id = request.session["proposition_id"]
+	try:
+		if request.session["proposition_id"] != "toutes":
+			return redirect ('page_revendication.html?proposition_id='+ str(proposition_id))
+		else:	
+			return redirect ('page_tableau_de_bord.html')
+	except:
+		return redirect ('page_tableau_de_bord.html')	

@@ -96,8 +96,8 @@ def affichage_graphique_de_triplet(triplets, seuil):
 			if triplet[2] >= seuil: 
 				G.add_edge(triplet[0], triplet[1], weight = triplet[2])
 		except:
-			print ("objet vide")
-
+			#print ("objet vide")
+			pass
 	pos = nx.spring_layout(G)
 	#print (pos)
 
@@ -132,8 +132,8 @@ def affichage_graphique_de_triplet(triplets, seuil):
 				a = a+1
 		
 		except:
-			print("objet vide pour les edges")
-
+			#print("objet vide pour les edges")
+			pass
 	
 
 	
@@ -198,7 +198,7 @@ def data_propositions_proches (proposition):
 		if triplet[0]== proposition.ennonce:
 			if triplet[2] > 0:
 				selection.append(triplet)
-	print ("_________________________________________________________selection : " ,selection)
+	#print ("_________________________________________________________selection : " ,selection)
 	return selection
 
 
@@ -221,7 +221,7 @@ def les_revendications_les_plus_populaires():
 		for e in liste:
 			selection.append(e[0])
 		selection = selection[0:4]
-		print ("+++++++++++++++++++++++++++++selection", selection)
+		#print ("+++++++++++++++++++++++++++++selection", selection)
 		return selection
 
 
@@ -245,7 +245,7 @@ def data_populaires():
 		if proposition1 in liste_ennonces:
 			selection.append(triplet)
 
-	print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$selection" , selection)
+	#print ("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$selection" , selection)
 	return selection	
 
 
@@ -270,9 +270,9 @@ def graph_utilisateur(utilisateur):
 
 def graph_revendication(proposition):
 	triplets = data_propositions_proches(proposition)
-	print("££££*******£££££££££***********£££££££££££", triplets)
+	#print("££££*******£££££££££***********£££££££££££", triplets)
 	data = affichage_graphique_de_triplet(triplets, seuil=0.1)
-	print("********************************************£££££££££££££££££££££££££££££", data)
+	#print("********************************************£££££££££££££££££££££££££££££", data)
 	#enregistrer_les_datas(data = data, nom = "graph")
 	return data
 

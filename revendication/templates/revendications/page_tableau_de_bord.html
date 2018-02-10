@@ -2,7 +2,9 @@
 {% extends 'revendications/page_type.html' %}
 {% load static %}
 
-
+  {% block navigation %}
+    {% include "revendications/page_type/barre_navigation.html" with cle="tableau_de_bord" %}
+  {% endblock navigation%}
 
 
 {% block titre_central%}
@@ -16,7 +18,6 @@
             
         <!-- barre de navigation--> 
         {% block haut %} 
-                   
               {% if datas.page_organisation == "oui" %}
                    
                     <h2 class="center">
@@ -123,9 +124,13 @@
 
 
 
-        {% block autres_scripts %}  
+        {% block autres_scripts %} 
+            
+            <script> var onglet = "{{onglet}}"; var message = "{{message}}"</script> 
+
             <script src="{% static "revendication/js/affichageGraphique.js" %}"> </script>                              
              <script src="{% static "revendication/js/pageTableauDeBord.js" %}"> </script>
+
         {% endblock autres_scripts %}
 
               

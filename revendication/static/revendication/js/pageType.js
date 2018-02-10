@@ -3,6 +3,27 @@
 //___________________________________________materialize____________________________________________
 
 jQuery.noConflict();
+ 
+
+
+//_________________definition des fonctions___________________
+
+                      
+
+
+  function bouton_actif(x){
+          
+          boutons.parent().css("border", "solid black 0px")
+          x.css("border", "solid black 2px") 
+                          }
+
+                  
+  function afficher_un_message(message){if (message != "vide") {alert(message)}
+                                        } 
+
+
+
+
 jQuery(document).ready(function()
           { 
   
@@ -28,48 +49,40 @@ jQuery(document).ready(function()
             jQuery('.tap-target').tapTarget('open');
             jQuery('.collapsible').collapsible();
 
+            if(typeof message != "undefined") {afficher_un_message(message)}
+
 
              boutons = jQuery('[cible]')
              ancien= jQuery("#Statistiques")
                       
-                          
-
-                  function bouton_actif(x){
-                          
-                          boutons.parent().css("border", "solid black 0px")
-                          x.css("border", "solid black 2px") 
-                                          }
-
-
-                  function onglet(){
-                             var onglet = "{{onglet}}"
-                             if (onglet == "revendication"){
-                                       jQuery("#bouton_revendications").click()
-                                                        }
-                             else if (onglet == "petition"){
-                                        jQuery("#bouton_petitions").click()
-                                                          }
-                             else if (onglet == "evenement"){
-                                      jQuery("#bouton_evenements").click()
-                                                      }  
-                             else if (onglet == "vide"){jQuery("#badge_liste").get(0).click();}
-                                     }
-
-                             
-
-                
-
-                   boutons.click(function() {
-                              
+             boutons.click(function() { 
                                 bouton_actif(jQuery(this).parent())
                                 var cible= "#"+ jQuery(this).attr('cible') 
-                                ancien.hide() 
+                                ancien.hide()
                                 ancien = jQuery(cible)
                                 ancien.show()
-                                          });                  
-  
+                                          }); 
 
+           
 
+            if (onglet == "proposition"){
+                                    jQuery("#bouton_revendications").click();
+                                     jQuery("#B_I_revendications").click();
+                                      
+                                  }
+             if (onglet == "evenement"){
+                                    jQuery("#bouton_evenements").click();
+                                     jQuery("#B_I_evenements").click();                 
+                                  }
+             if (onglet == "documents"){
+                                    jQuery("#bouton_documents").click(); 
+                                    jQuery("#B_I_documents").click();                
+                                  }
+             if (onglet == "petition"){
+                                    jQuery("#bouton_petitions").click();  
+                                    jQuery("#B_I_petitions").click();                
+                                  }
+            else {jQuery("#badge_container").click(); jQuery("#B_I_suggestions").click(); }
           });
  
                   
