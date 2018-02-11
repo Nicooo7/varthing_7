@@ -22,9 +22,9 @@ from bs4 import BeautifulSoup
 from random import *
 from .creation_graph import *
 from unidecode import unidecode
-from django.utils.safestring import mark_safe
-from colored import colored
-from colored import fore, back, style
+#from django.utils.safestring import mark_safe
+#from colored import colored
+#ifrom colored import fore, back, style
 
 
 app_name = 'revendication'

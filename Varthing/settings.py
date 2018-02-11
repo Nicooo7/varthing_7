@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'revendication.apps.RevendicationConfig',
     #'debug_toolbar',
-    #'gunicorn',
+    'gunicorn',
   ]
 
 

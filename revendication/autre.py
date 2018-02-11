@@ -1,12 +1,11 @@
 # coding: utf-8
 import bs4
 import re
-import urllib.request
 import pickle
 import os
 from nltk import *
 from bs4 import BeautifulSoup
-from colored import fore, back, style
+#from colored import fore, back, style
 
 
 app_name = 'revendication'
@@ -14,8 +13,8 @@ app_name = 'revendication'
 #os.chdir("/Users/nicolasvinurel/Desktop/test")
 
 
-def coloration(message1, message2):
-	print (fore.LIGHT_BLUE + back.RED + style.BOLD + str(message1) + str(message2) + style.RESET)
+#def coloration(message1, message2):
+#	print (fore.LIGHT_BLUE + back.RED + style.BOLD + str(message1) + str(message2) + style.RESET)
 
 
 def creer_les_proximites():

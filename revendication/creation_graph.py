@@ -107,7 +107,7 @@ def affichage_graphique_de_triplet(triplets, seuil):
 	for cle, valeur in pos.items():
 
 		ennonce = str(cle)
-		proposition = Proposition.objects.filter(ennonce = ennonce)
+		proposition = Proposition.objects.get(ennonce = ennonce)
 		nbsoutien = Proposition.nb_soutien(proposition)
 		size = str(nbsoutien)
 		noeud = str(cle) + "/" + str(cle)  + "/" + str(valeur[0]) + "/" + str(valeur[1]) + "/" + str(size) 
